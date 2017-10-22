@@ -43,8 +43,8 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">--------------------</li>
-                <li><a href="/haiwan/backend/refundRule/index">退票新建</a></li>
-                <li><a href="/haiwan/backend/refundRule/list">退票管理</a></li>
+                <li><a href="/haiwan/backend/rule/index">退票维护</a></li>
+                <li><a href="/haiwan/backend/rule/list">退票查询</a></li>
             </ul>
         </li>
 
@@ -54,8 +54,8 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">--------------------</li>
-                <li><a href="/haiwan/backend/category/index">类目新建</a></li>
-                <li><a href="/haiwan/backend/category/list">类目管理</a></li>
+                <li><a href="/haiwan/backend/category/index">类目维护</a></li>
+                <li><a href="/haiwan/backend/category/list">类目查询</a></li>
             </ul>
         </li>
 

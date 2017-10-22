@@ -10,15 +10,15 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <h3 class="page-header">类目管理</h3>
+                    <h3 class="page-header">退票查询</h3>
                 </div>
                 <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>
-                            <th>类目id</th>
-                            <th>名字</th>
-                            <th>类目编号</th>
+                            <th>规则ID</th>
+                            <th>规则名称</th>
+                            <th>规则代号</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
                             <th colspan="2">操作</th>
@@ -26,18 +26,18 @@
                         </thead>
                         <tbody>
 
-                        <#list categoryList as category>
+                        <#list ruleList as rule>
                         <tr>
-                            <td>${category.categoryId}</td>
-                            <td>${category.categoryName}</td>
-                            <td>${category.categoryType}</td>
-                            <td>${category.createTime}</td>
-                            <td>${category.updateTime}</td>
+                            <td>${rule.ruleId}</td>
+                            <td>${rule.ruleName}</td>
+                            <td>${rule.ruleNo}</td>
+                            <td>${rule.createTime}</td>
+                            <td>${rule.updateTime}</td>
                             <td>
-                                <a href="/haiwan/backend/category/index?categoryId=${category.categoryId}">修改</a>
+                                <a href="/haiwan/backend/rule/index?ruleId=${rule.ruleId}">修改</a>
                             </td>
                             <td>
-                                <a href="/haiwan/backend/category/delete?categoryId=${category.categoryId}">删除</a>
+                                <a href="/haiwan/backend/rule/delete?ruleId=${rule.ruleId}">删除</a>
                             </td>
                         </tr>
                         </#list>
