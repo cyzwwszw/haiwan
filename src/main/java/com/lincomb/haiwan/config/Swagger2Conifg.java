@@ -24,15 +24,15 @@ public class Swagger2Conifg {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.one"))
+                .apis(RequestHandlerSelectors.basePackage("com.lincomb.haiwan.controller.client"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot中使用Swagger2构建RESTful APIs")
-                .description("spring rest")
+                .title("海湾工程 APIs")
+                .description("供联调使用")
                 .termsOfServiceUrl("http://baidu.com")
                 .contact("duke_qian")
                 .version("1.0")
