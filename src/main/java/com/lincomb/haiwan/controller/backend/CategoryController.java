@@ -68,7 +68,7 @@ public class CategoryController {
             return new ModelAndView("common/error", map);
         }
 
-        map.put("url", "/sell/seller/category/list");
+        map.put("url", "/haiwan/backend/category/list");
         return new ModelAndView("common/success", map);
     }
 }

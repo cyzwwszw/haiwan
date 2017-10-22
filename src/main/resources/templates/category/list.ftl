@@ -9,6 +9,11 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row clearfix">
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <h3 class="page-header">类目管理</h3>
+                        </div>
+                    </div>
                     <div class="col-md-12 column">
                         <table class="table table-bordered table-condensed">
                             <thead>

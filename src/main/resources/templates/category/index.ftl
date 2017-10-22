@@ -10,17 +10,30 @@
             <div class="container-fluid">
                 <div class="row clearfix">
                     <div class="col-md-12 column">
-                        <form role="form" method="post" action="/haiwan/backend/category/save">
+                        <h3 class="page-header">类目新增</h3>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6 column">
+                        <form role="form" class="form-horizontal" method="post" action="/haiwan/backend/category/save">
                             <div class="form-group">
-                                <label>名称</label>
-                                <input name="categoryName" type="text" class="form-control" value="${(category.categoryName )!''}"/>
+                                <label  class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-10">
+                                    <input name="categoryName" type="text" class="form-control" value="${(category.categoryName )!''}"/>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>type</label>
-                                <input name="categoryType" type="number" class="form-control" value="${(category.categoryType)!''}"/>
+                                <label  class="col-sm-2 control-label">编号</label>
+                                <div class="col-sm-10">
+                                    <input name="categoryType" type="number" class="form-control" value="${(category.categoryType)!''}"/>
+                                </div>
                             </div>
                             <input hidden type="text" name="categoryId" value="${(category.categoryId)!''}">
-                            <button type="submit" class="btn btn-default">提交</button>
+
+                            <div class="col-sm-offset-2 col-sm-10">
+                             <button type="submit" class="btn btn-default">提交</button>
+                            </div>
                         </form>
                     </div>
                 </div>
