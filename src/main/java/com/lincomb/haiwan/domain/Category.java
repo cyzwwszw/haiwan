@@ -26,6 +26,8 @@ public class Category {
 
     private Integer categoryType;
 
+    private Integer categoryStatus;
+
     private Date createTime;
 
     private Date updateTime;

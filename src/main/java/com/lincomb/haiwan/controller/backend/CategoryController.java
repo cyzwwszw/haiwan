@@ -1,6 +1,7 @@
 package com.lincomb.haiwan.controller.backend;
 
 import com.lincomb.haiwan.domain.Category;
+import com.lincomb.haiwan.enums.CategoryStatusEnum;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.form.CategoryForm;
 import com.lincomb.haiwan.service.CategoryService;
@@ -71,4 +72,22 @@ public class CategoryController {
         map.put("url", "/haiwan/backend/category/list");
         return new ModelAndView("common/success", map);
     }
+
+    @GetMapping("/delete")
+    public ModelAndView delete(@RequestParam(value = "categoryId") Integer categoryId,
+                              Map<String, Object> map){
+        try{
+            Category category = categoryService.findOne(categoryId);
+            category.setCategoryStatus(CategoryStatusEnum.DELETE.getCode());
+            categoryService.save(category);
+        }catch (HaiwanException e){
+            map.put("msg", e.getMessage());
+            map.put("url","/haiwan/backend/category/list");
+            return new ModelAndView("common/error", map);
+        }
+
+        map.put("url", "/haiwan/backend/category/list");
+        return new ModelAndView("common/success", map);
+    }
+
 }
