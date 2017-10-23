@@ -1,7 +1,7 @@
-package com.lincomb.info.base.util;
+package com.lincomb.haiwan.util;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
+
+import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
 
 import java.text.DateFormat;
@@ -26,14 +26,11 @@ public class DateUtil {
      * yyyy-MM-dd
      */
     public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
-
     private static final String SIMPLE_DATE_FORMAT_MONTH = "MM";
     private static final String SIMPLE_DATE_FORMAT_DAY = "dd";
 
     public static final String YYYYMMDD_FORMAT = "yyyyMMdd";
     public static final String YYMMDD_FORMAT = "yy/MM/dd";
-
-
 
     /**
      * yyyy-MM-dd HH:mm:ss
@@ -104,7 +101,7 @@ public class DateUtil {
      * @函数名称：stringToUtilDate
      * @功能描述：将String型的日期格式转换为Util型的日期格式
      */
-    public static java.util.Date strToUtilDate(String str) {
+    public static Date strToUtilDate(String str) {
         if (null != str && str.length() > 0) {
             try {
                 return (new SimpleDateFormat(SIMPLE_TIME_YYYYMMDDHH24MMSS)).parse(str);
@@ -151,7 +148,7 @@ public class DateUtil {
      * @函数名称：stringToUtilDate
      * @功能描述：将String型的日期格式转换为Util型的日期格式
      */
-    public static java.util.Date stringToUtilDate(String str) {
+    public static Date stringToUtilDate(String str) {
         if (null != str && str.length() > 0) {
             try {
                 // 对两种时间格式进行转化。
@@ -174,7 +171,7 @@ public class DateUtil {
      * @函数名称：stringToUtilDate
      * @功能描述：将String型的日期格式转换为Util型的日期格式
      */
-    public static java.util.Date stringToUtilDate(String str, String format) {
+    public static Date stringToUtilDate(String str, String format) {
         if (null != str && str.length() > 0) {
             try {
                 return (new SimpleDateFormat(format)).parse(str);
@@ -193,7 +190,7 @@ public class DateUtil {
      * @函数名称：utilDateToSql
      * @功能描述：将Util型的日期格式转换为Sql型的日期格式
      */
-    public static java.sql.Date utilDateToSql(java.util.Date date) {
+    public static java.sql.Date utilDateToSql(Date date) {
     	if(date==null){
     		return null;
     	}
@@ -206,11 +203,11 @@ public class DateUtil {
      * @函数名称：sqlDateToUtil
      * @功能描述：将Sql型的日期格式转换为Util型的日期格式
      */
-    public static java.util.Date sqlDateToUtil(java.sql.Date date) {
+    public static Date sqlDateToUtil(java.sql.Date date) {
     	if(date==null){
     		return null;
     	}
-        return new java.util.Date(date.getTime());
+        return new Date(date.getTime());
     }
 
     /**
@@ -233,7 +230,7 @@ public class DateUtil {
      * @函数名称：toDateTimeString
      * @功能描述：将Util型的带时间日期格式转换为String型的日期格式
      */
-    public static String toDateTimeString(java.util.Date d) {
+    public static String toDateTimeString(Date d) {
         if (d == null) {
             return null;
         } else {
@@ -249,7 +246,7 @@ public class DateUtil {
      * @函数名称：toDateTimeString
      * @功能描述：将Util型的带时间日期格式转换为String型的日期格式
      */
-    public static String toDateTimeYYMMDDString(java.util.Date d) {
+    public static String toDateTimeYYMMDDString(Date d) {
         if (d == null) {
             return null;
         } else {
@@ -266,7 +263,7 @@ public class DateUtil {
      * @函数名称：toDateTimeString
      * @功能描述：将Util型的带时间日期格式转换为String型的日期格式
      */
-    public static String toDateTimeString(java.util.Date d, String pattern) {
+    public static String toDateTimeString(Date d, String pattern) {
         if (d == null) {
             return null;
         } else {
@@ -294,7 +291,7 @@ public class DateUtil {
      * @函数名称：toDateString
      * @功能描述：将Sql型的只带日期格式转换为String型的日期格式
      */
-    public static String yyyyMMddCurrentString(java.util.Date d) {
+    public static String yyyyMMddCurrentString(Date d) {
         if (d == null) {
             return null;
         } else {
@@ -321,7 +318,7 @@ public class DateUtil {
      * @函数名称：toDateString
      * @功能描述：将Sql型的只带日期格式转换为String型的日期格式
      */
-    public static String toDateString(java.util.Date d) {
+    public static String toDateString(Date d) {
         if (d == null) {
             return null;
         } else {
@@ -385,7 +382,7 @@ public class DateUtil {
      * @函数名称：getCurrentTime
      * @功能描述：获取当前时间(只带时间)
      */
-    public static String getCurrentDateTimeStr(java.util.Date date) {
+    public static String getCurrentDateTimeStr(Date date) {
     	if(date==null){
     		return null;
     	}
@@ -516,7 +513,7 @@ public class DateUtil {
      * @函数名称：addMonth
      * @功能描述：
      */
-    public static java.util.Date addMonth(java.util.Date beginTime, int i) {
+    public static Date addMonth(Date beginTime, int i) {
     	if(beginTime==null){
     		return null;
     	}
@@ -532,7 +529,7 @@ public class DateUtil {
      * @函数名称：addDay
      * @功能描述：
      */
-    public static java.util.Date addDay(java.util.Date beginTime, int i) {
+    public static Date addDay(Date beginTime, int i) {
     	if(beginTime==null){
     		return null;
     	}
@@ -630,8 +627,8 @@ public class DateUtil {
     public static int compareHourByTimestamp(String beginTime, String endTime) {
         Long beginTimestamp = Long.parseLong(beginTime);
         Long endTimestamp = Long.parseLong(endTime);
-        return compareHour(new java.util.Date(beginTimestamp),
-                new java.util.Date(endTimestamp));
+        return compareHour(new Date(beginTimestamp),
+                new Date(endTimestamp));
     }
 
     /**
@@ -703,7 +700,7 @@ public class DateUtil {
      * @return
      */
     public static String dateProcess(String dateStr) {
-        if (StringUtils.isBlank(dateStr))
+        if (StringUtil.isEmpty(dateStr))
             return "";
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         try {
@@ -722,7 +719,7 @@ public class DateUtil {
      */
     public static String dateConv(String dateStr, String from_pattern,
                                   String to_pattern) {
-        if (StringUtils.isBlank(dateStr))
+        if (StringUtil.isEmpty(dateStr))
             return "";
         SimpleDateFormat format = new SimpleDateFormat(to_pattern);
         try {
@@ -745,8 +742,8 @@ public class DateUtil {
      * @return true 表示a<b
      */
     public static boolean compareString(String a, String b) {
-        java.util.Date x = stringToUtilDate(a);
-        java.util.Date y = stringToUtilDate(b);
+        Date x = stringToUtilDate(a);
+        Date y = stringToUtilDate(b);
         return compareAWithB(x, y);
     }
 
@@ -758,9 +755,9 @@ public class DateUtil {
      * @return
      */
     public static boolean compareWithNow(String a, String time) {
-        java.util.Date x = stringToUtilDate(a);
+        Date x = stringToUtilDate(a);
         int interval = Integer.parseInt(time);
-        java.util.Date y = new Date(System.currentTimeMillis() - interval
+        Date y = new Date(System.currentTimeMillis() - interval
                 * 1000);
         return compareAWithB(x, y);
     }
@@ -784,13 +781,13 @@ public class DateUtil {
      * @return
      */
     public static String addMinute(String minute) {
-        if (StringUtils.isBlank(minute)) {
+        if (StringUtil.isEmpty(minute)) {
             return null;
         }
 
         try {
             int minuteInt = Integer.valueOf(minute);
-            java.util.Date newDate = new java.util.Date();
+            Date newDate = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(newDate);
             cal.add(Calendar.MINUTE, minuteInt);
@@ -865,7 +862,7 @@ public class DateUtil {
         try {
             sdf.parse(date);
             return true;
-        } catch (java.text.ParseException e) {
+        } catch (ParseException e) {
             return false;
         }
     }
@@ -1276,9 +1273,9 @@ public class DateUtil {
 	public static boolean dateCompare(String str) {
 		boolean bea = false;
 		SimpleDateFormat sdf_d = new SimpleDateFormat("yyyy-MM-dd");
-		String isDate = sdf_d.format(new java.util.Date());
-		java.util.Date date1;
-		java.util.Date date0;
+		String isDate = sdf_d.format(new Date());
+		Date date1;
+		Date date0;
 		try {
 			date1 = sdf_d.parse(str);
 			date0 = sdf_d.parse(isDate);
