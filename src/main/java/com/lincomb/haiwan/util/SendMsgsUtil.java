@@ -43,9 +43,9 @@ public class SendMsgsUtil {
             byte[] bys = conn.postParams(smsParams, true);
             String result = new String(bys, "UTF-8");
             if (result != null && "0".equals(result)) {
-                return "Send success.";
+                return SmsEnum.SEND_STATUS_SUCCESS.getValue();
             } else {
-                return "Send fail.";
+                return SmsEnum.SEND_STATUS_FAIL.getValue();
             }
         } catch (Exception e) {
             return "发送短信失败，mobileNo/content >> " + mobileNo + "/" + content +
