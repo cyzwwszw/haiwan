@@ -17,6 +17,9 @@ public enum  ResultEnum {
     ORDER_OWNER_ERROR(34,"该订单不属于该客户"),
 
     CATEGORY_NOT_EXIST(41,"类目不存在"),
+
+
+    WX_MP_ERROR(51,"微信异常"),
     ;
 
     private Integer code;

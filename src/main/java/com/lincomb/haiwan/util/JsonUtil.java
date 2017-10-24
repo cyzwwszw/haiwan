@@ -2,6 +2,8 @@ package com.lincomb.haiwan.util;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.StringWriter;
 
@@ -9,7 +11,7 @@ import java.io.StringWriter;
  * JsonUtil
  * 提供Json和对象之间的转换。
  */
-public class JsonUtil {
+public class  JsonUtil {
 
     /**
      * 把对象转换成Json字符串。
@@ -45,5 +47,12 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
         return t;
+    }
+
+    public static String toJson(Object object){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+        return gson.toJson(object);
     }
 }
