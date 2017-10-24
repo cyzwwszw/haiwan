@@ -16,16 +16,16 @@ import java.util.Date;
 @Entity
 @DynamicUpdate
 @Data
-public class Order {
+public class Order_t {
 
     @Id
-    private String orderId;
+    private String order_id;
 
     private String productId;
 
-    private String categoryId;
+    private String buyerId;
 
-    private Integer buyerId;
+    private Integer categoryId;
 
     private Integer orderStatus;
 
@@ -47,6 +47,6 @@ public class Order {
 
     private Date updateTime;
 
-    public Order() {
+    public Order_t() {
     }
 }
