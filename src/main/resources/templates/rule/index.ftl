@@ -18,14 +18,17 @@
                 <div class="col-md-6 column">
                     <form role="form" class="form-horizontal" method="post" action="/haiwan/backend/rule/save">
                         <div class="form-group">
+                            <div class="col-md-12 column">
+                                <h4 class="page-header">基本信息</h4>
+                            </div>
                             <label class="col-sm-2 control-label">规则名称</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input name="ruleName" type="text" class="form-control" value="${(rule.ruleName )!''}"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">规则代号</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input name="ruleNo" type="text" class="form-control" value="${(rule.ruleNo)!''}"/>
                             </div>
                         </div>
@@ -37,8 +40,12 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12 column">
+                            <h4 class="page-header">配置参数</h4>
+                        </div>
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">规则描述</label>
+                            <label class="col-sm-2 control-label">有效时间</label>
                             <div class="col-sm-10">
 
                                 <label class="radio">
@@ -58,17 +65,21 @@
                                     >
                                     入住前无限制
                                 </label>
-
-
-
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">折扣率</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input name="ruleDiscount" type="number" class="form-control"
                                        value="${(rule.ruleDiscount)!''}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+                                <label>"70"表示扣除费用的30%作为服务费，包含转款收费，只返还用户70%</label>
                             </div>
                         </div>
 

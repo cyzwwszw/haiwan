@@ -1,16 +1,17 @@
 package com.lincomb.haiwan.enums;
 
-public enum ProductStatusEnum implements CodeEnum{
+public enum ProductPayTypeEnum implements CodeEnum{
 
-    UP(0,"上架"),
-    DOWN(1,"下架"),
-    DELETE(2,"删除");
+    ALL(0,"都支持"),
+    ONLINE(1,"仅线上支持"),
+    OFFLINE(2,"仅线下支持"),
+    ;
 
     private Integer code;
 
     private String message;
 
-    ProductStatusEnum(Integer code, String message) {
+    ProductPayTypeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

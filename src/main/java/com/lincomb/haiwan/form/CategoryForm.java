@@ -1,5 +1,6 @@
 package com.lincomb.haiwan.form;
 
+import com.lincomb.haiwan.enums.CategoryStatusEnum;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -18,4 +19,6 @@ public class CategoryForm {
 
     @NotNull(message = "类目编号不能为空")
     private Integer categoryType;
+
+    private Integer categoryStatus = CategoryStatusEnum.NOMARL.getCode();
 }

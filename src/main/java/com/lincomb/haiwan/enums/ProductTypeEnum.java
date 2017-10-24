@@ -1,16 +1,18 @@
 package com.lincomb.haiwan.enums;
 
-public enum ProductStatusEnum implements CodeEnum{
+public enum ProductTypeEnum implements CodeEnum{
 
-    UP(0,"上架"),
-    DOWN(1,"下架"),
-    DELETE(2,"删除");
+    SINGLE(0,"单人间"),
+    NORMAL(1,"标准间"),
+    FAMILY(2,"家庭间"),
+    VIP(3,"VIP间")
+    ;
 
     private Integer code;
 
     private String message;
 
-    ProductStatusEnum(Integer code, String message) {
+    ProductTypeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

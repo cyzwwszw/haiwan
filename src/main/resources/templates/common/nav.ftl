@@ -12,8 +12,8 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">--------------------</li>
-                <li><a href="/haiwan/backend/product/list">产品发布</a></li>
-                <li><a href="/haiwan/backend/product/index">产品管理</a></li>
+                <li><a href="/haiwan/backend/product/index">产品发布</a></li>
+                <li><a href="/haiwan/backend/product/list">产品管理</a></li>
             </ul>
         </li>
 

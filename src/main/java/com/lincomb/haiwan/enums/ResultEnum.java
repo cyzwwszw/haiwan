@@ -16,6 +16,7 @@ public enum  ResultEnum {
     ORDER_STATUS_ERROR(33,"订单状态不正确"),
     ORDER_OWNER_ERROR(34,"该订单不属于该客户"),
 
+    CATEGORY_NOT_EXIST(41,"类目不存在"),
     ;
 
     private Integer code;

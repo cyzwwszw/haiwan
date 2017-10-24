@@ -10,9 +10,9 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <h3 class="page-header">类目管理</h3>
+                    <h3 class="page-header">类目查询</h3>
                 </div>
-                <div class="col-md-12 column">
+                <div class="col-md-6 column">
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>

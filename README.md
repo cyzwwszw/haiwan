@@ -8,3 +8,6 @@ created by qyl
 2KeyUtil 产生主键的工具类
 3返回给前端结果工具类
 
+ALTER TABLE product MODIFY product_checkout_time VARCHAR(64) COMMENT '退房时间';
+ALTER TABLE product MODIFY rule_no VARCHAR(16) COMMENT '退票类型';
+
