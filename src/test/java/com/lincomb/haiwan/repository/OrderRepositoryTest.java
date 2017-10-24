@@ -29,9 +29,17 @@ public class OrderRepositoryTest {
     @Test
     public void testd() {
         Order_t order = new Order_t();
-        order.setBuyerId();
-        order.setCategoryId();
-        order.set
+        order.setOrder_id(KeyUtil.genUniqueKey());
+        order.setProductId("1508680395661809415");
+        order.setBuyerId("1508757366552317340");
+        order.setCategoryId(1);
+        order.setOrderStatus(0);
+        order.setPayStatus(0);
+        order.setPayType(0);
+        order.setOrderChannel(0);
+        order.setOrderCount(1);
+        order.setOrderAmount(new BigDecimal(100));
+        orderRepository.save(order);
     }
 
 }
