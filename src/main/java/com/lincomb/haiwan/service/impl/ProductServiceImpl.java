@@ -41,13 +41,12 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product save(Product product) {
         Category category = new Category();
-        category.setCategoryType( product.getCategoryType());
+        category.setCategoryId( product.getCategoryId());
         Example<Category> example = Example.of(category);
         Category category1 = categoryRepository.findOne(example);
         if(category1 == null){
             throw new HaiwanException(ResultEnum.CATEGORY_NOT_EXIST);
         }
-        product.setCategoryName(category1.getCategoryName());
         return productRepository.save(product);
     }
 
