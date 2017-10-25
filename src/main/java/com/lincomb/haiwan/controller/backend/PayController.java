@@ -8,9 +8,7 @@ import com.lincomb.haiwan.service.PayService;
 import com.lly835.bestpay.model.PayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -42,6 +40,14 @@ public class PayController {
         //2 发起支付
         PayResponse payResponse = payService.create(order);
         map.put("payResponse",payResponse) ;
-        return new ModelAndView("pay/create", map);
+        map.put("returnUrl",returnUrl);
+        return new ModelAndView("create", map);
     }
+
+    @PostMapping("/notify")
+    public void notify(@RequestBody String notifyData){
+
+    }
+
+
 }

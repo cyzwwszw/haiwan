@@ -43,6 +43,8 @@ public class Order_t {
 
     private Integer payType;
 
+    private String openId;
+
     private Date createTime;
 
     private Date updateTime;

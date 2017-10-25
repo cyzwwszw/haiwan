@@ -1,6 +1,7 @@
 package com.lincomb.haiwan.service.impl;
 
 import com.lincomb.haiwan.domain.Order_t;
+import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.service.PayService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -22,9 +23,12 @@ public class PayServiceImplTest {
     @Autowired
     private PayService payService;
 
+    @Autowired
+    private OrderService orderService;
+
     @Test
     public void create() throws Exception {
-        Order_t order_t =new Order_t();
+        Order_t order_t = orderService.findOne("1508911524790276219");
         payService.create(order_t);
     }
 
