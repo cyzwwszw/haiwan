@@ -7,36 +7,51 @@ import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author yongsheng.he
- * @describe 用户控制器
+ * @describe 用户
  * @date 2017/10/23 10:17
  */
 @RestController
+@RequestMapping("/client/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * 登录
+     *
+     * @param mobile
+     * @param code
+     * @return
+     */
     @PostMapping("/login")
-    public ResultVO<Object> login(@RequestParam String mobile,@RequestParam String code){
-        if(StringUtil.isEmpty(mobile) || StringUtil.isEmpty(code)){
+    public ResultVO<Object> login(@RequestParam String mobile, @RequestParam String code) {
+        if (StringUtil.isEmpty(mobile) || StringUtil.isEmpty(code)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
-        ResultVO<Object> result=userService.login(mobile,code);
+        ResultVO<Object> result = userService.login(mobile, code);
         return result;
     }
 
+    /**
+     * 发送验证码
+     *
+     * @param mobile
+     * @return
+     */
     @PostMapping("/sendMsgs")
-    public ResultVO<Object> sendMsgs(@RequestParam String mobile){
+    public ResultVO<Object> sendMsgs(@RequestParam String mobile) {
 
-        if(StringUtil.isEmpty(mobile)){
+        if (StringUtil.isEmpty(mobile)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.EMPTY_USER_MOBILE);
         }
-        ResultVO<Object> result=userService.sendMsgs(mobile);
+        ResultVO<Object> result = userService.sendMsgs(mobile);
         return result;
     }
 }

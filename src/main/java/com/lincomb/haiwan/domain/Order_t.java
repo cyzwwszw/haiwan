@@ -19,7 +19,7 @@ import java.util.Date;
 public class Order_t {
 
     @Id
-    private String order_id;
+    private String orderId;
 
     private String productId;
 

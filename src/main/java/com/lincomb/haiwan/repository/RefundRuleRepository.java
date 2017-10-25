@@ -1,6 +1,7 @@
 package com.lincomb.haiwan.repository;
 
 import com.lincomb.haiwan.domain.RefundRule;
+import com.lincomb.haiwan.domain.SendMessageRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface RefundRuleRepository extends JpaRepository<RefundRule, Integer> {
 
+    RefundRule findTopByRuleNo(String ruleNo);
 }

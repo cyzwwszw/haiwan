@@ -29,7 +29,7 @@ public class OrderRepositoryTest {
     @Test
     public void testd() {
         Order_t order = new Order_t();
-        order.setOrder_id(KeyUtil.genUniqueKey());
+        order.setOrderId(KeyUtil.genUniqueKey());
         order.setProductId("1508680395661809415");
         order.setBuyerId("1508757366552317340");
         order.setCategoryId(1);

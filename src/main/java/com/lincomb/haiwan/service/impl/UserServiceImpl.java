@@ -14,6 +14,7 @@ import com.lincomb.haiwan.service.UserService;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.SendMsgsUtil;
 import com.lincomb.haiwan.vo.ResultVO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +33,8 @@ import java.util.regex.Pattern;
  * @date 2017/10/23 12:19
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
-
-    private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private SystemSettingRepository systemSettingRepository;
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultVO<Object> login(String mobile, String code) {
         ResultVO<Object> resultVO;
+        Map<String,Object> map=new HashMap<>();
         try {
             resultVO = validateCode(mobile, code);
             if (!RespCode.SUCCESS.equals(resultVO.getCode())) {
@@ -63,12 +66,14 @@ public class UserServiceImpl implements UserService {
                 buyer.setBuyerMobile(mobile);
                 buyerRepository.save(buyer);
             }
+            map.put("buyerId",buyer.getBuyerId());
         } catch (Exception e) {
-            logger.error("login() Exception:[" + e.getMessage() + "]", e);
+            log.error("login() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         resultVO.setCode(RespCode.SUCCESS);
         resultVO.setMsg(RespMsg.SUCCESS);
+        resultVO.setData(map);
         return resultVO;
     }
 
@@ -80,11 +85,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResultVO<Object> sendMsgs(String mobile) {
-        ResultVO<Object> result;
+        ResultVO<Object> resultVO;
         try {
-            result = validateMsg(mobile);
-            if (!RespCode.SUCCESS.equals(result.getCode())) {
-                return result;
+            resultVO = validateMsg(mobile);
+            if (!RespCode.SUCCESS.equals(resultVO.getCode())) {
+                return resultVO;
             }
             String strRandomCode = SendMsgsUtil.getAuthCode(6);
             String msgsTemplate = SmsEnum.CONTENT_TEMPLATE_REGISTER.getValue();
@@ -92,17 +97,19 @@ public class UserServiceImpl implements UserService {
 
             String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
-                logger.info(msgsContent);
+                log.info(msgsContent);
                 SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
             }
         } catch (Exception e) {
-            logger.error("sendMsg() Exception:[" + e.getMessage() + "]", e);
+            log.error("sendMsg() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
-        return result;
+        resultVO.setCode(RespCode.SUCCESS);
+        resultVO.setMsg(RespMsg.SUCCESS);
+        return resultVO;
     }
 
     /**
@@ -137,7 +144,7 @@ public class UserServiceImpl implements UserService {
             }
 
         } catch (Exception e) {
-            logger.error("method validateMsg() error, cause:[" + e.getMessage() + "]", e);
+            log.error("method validateMsg() error, cause:[" + e.getMessage() + "]", e);
             return new ResultVO<>(RespCode.FAIL, RespMsg.FAIL);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
@@ -169,8 +176,8 @@ public class UserServiceImpl implements UserService {
             sendCalendar.setTime(sendMessageRecord.getEndSetupTime());
             sendCalendar.add(Calendar.MINUTE, Integer.valueOf(effectiveTime.getValue()));
 
-            logger.info("当前时间：" + DateUtil.getFormatDateTime(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
-            logger.info("发送短信时间：" + DateUtil.getFormatDateTime(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("当前时间：" + DateUtil.getFormatDateTime(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("发送短信时间：" + DateUtil.getFormatDateTime(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
             if (curCalendar.after(sendCalendar)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.MSG_INVALID);
@@ -185,7 +192,7 @@ public class UserServiceImpl implements UserService {
             sendMessageRecordRepository.save(sendMessageRecord);
 
         } catch (Exception e) {
-            logger.error("validateCode Exception:[" + e.getMessage() + "]", e);
+            log.error("validateCode Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);

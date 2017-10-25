@@ -1,5 +1,6 @@
 package com.lincomb.haiwan.repository;
 
+import com.lincomb.haiwan.util.DateUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OrderViewRepositoryTest {
 
     @Test
     public void test(){
-        orderViewRepository.findAll();
+
     }
 
 }
