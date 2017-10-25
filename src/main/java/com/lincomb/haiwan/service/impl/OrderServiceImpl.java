@@ -1,25 +1,7 @@
 package com.lincomb.haiwan.service.impl;
 
+
 import com.lincomb.haiwan.domain.Order_t;
-<<<<<<< HEAD
-import com.lincomb.haiwan.repository.OrderRepository;
-import com.lincomb.haiwan.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-/**
- * Created by QianYunlong on 24
- */
-@Service
-public class OrderServiceImpl implements OrderService{
-
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Override
-    public Order_t findOne(String orderId) {
-        return orderRepository.findOne(orderId);
-=======
 import com.lincomb.haiwan.domain.RoomUser;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
@@ -27,7 +9,6 @@ import com.lincomb.haiwan.repository.OrderRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.util.DateUtil;
-import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +33,10 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RoomUserRepository roomUserRepository;
 
+    @Override
+    public Order_t findOne(String orderId) {
+        return orderRepository.findOne(orderId);
+    }
     /**
      * 预定
      *
@@ -109,6 +94,5 @@ public class OrderServiceImpl implements OrderService {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
->>>>>>> heyongsheng1022
     }
 }
