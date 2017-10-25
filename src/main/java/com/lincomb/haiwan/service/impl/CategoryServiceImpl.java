@@ -29,6 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
         Example<Category> ex = Example.of(category);
         Sort sort =new Sort(Sort.Direction.ASC, "categoryType");
         return categoryRepository.findAll(ex,sort);
+
     }
 
     @Override

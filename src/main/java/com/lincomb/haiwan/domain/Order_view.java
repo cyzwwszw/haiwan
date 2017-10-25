@@ -54,13 +54,15 @@ public class Order_view {
 
     private String categoryName;
 
+    private String productPic;
+
     @JsonIgnore
-    public ProductTypeEnum getProductTypeEnum(){
+    public ProductTypeEnum getProductTypeEnum() {
         return EnumUtil.getByCode(productType, ProductTypeEnum.class);
     }
 
     @JsonIgnore
-    public OrderStatusEnum getOrderStatusEnum(){
+    public OrderStatusEnum getOrderStatusEnum() {
         return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
     }
 

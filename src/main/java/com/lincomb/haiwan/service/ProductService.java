@@ -1,8 +1,10 @@
 package com.lincomb.haiwan.service;
 
 import com.lincomb.haiwan.domain.Product;
+import com.lincomb.haiwan.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,4 +30,8 @@ public interface ProductService {
 
     //删除
     Product delete(String productId);
+
+    ResultVO<Object> queryProductDetails(String productId);
+
+    ResultVO<Object> queryPictures(String productId, Integer page, Integer size);
 }
