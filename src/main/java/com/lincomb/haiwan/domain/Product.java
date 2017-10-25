@@ -33,7 +33,7 @@ public class Product {
 
     private String productDescription;
 
-    private Integer categoryType;
+    private Integer categoryId;
 
     private Integer productType;
 

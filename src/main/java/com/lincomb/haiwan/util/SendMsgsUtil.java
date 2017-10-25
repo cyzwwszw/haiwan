@@ -2,6 +2,7 @@ package com.lincomb.haiwan.util;
 
 import com.lincomb.haiwan.enums.SmsEnum;
 import com.lincomb.haiwan.util.HttpConnectionUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Random;
 /**
  * 发送短信Util
  */
+@Slf4j
 public class SendMsgsUtil {
 
     /**
@@ -48,8 +50,9 @@ public class SendMsgsUtil {
                 return SmsEnum.SEND_STATUS_FAIL.getValue();
             }
         } catch (Exception e) {
-            return "发送短信失败，mobileNo/content >> " + mobileNo + "/" + content +
-                    "，error msgs > " + e.getMessage();
+            log.error("发送短信失败，mobileNo/content >> " + mobileNo + "/" + content +
+                    "，error msgs > " + e.getMessage());
+            return SmsEnum.SEND_STATUS_FAIL.getValue();
         }
     }
 
@@ -87,7 +90,7 @@ public class SendMsgsUtil {
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println("手机号码格式有误！");
+                log.info("手机号码格式有误！");
             }
         }
         return false;

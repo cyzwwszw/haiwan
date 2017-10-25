@@ -1,18 +1,24 @@
 package com.lincomb.haiwan.service.impl;
 
-import com.lincomb.haiwan.domain.Category;
-import com.lincomb.haiwan.domain.Product;
-import com.lincomb.haiwan.enums.ProductStatusEnum;
-import com.lincomb.haiwan.enums.ResultEnum;
+import com.lincomb.haiwan.domain.*;
+import com.lincomb.haiwan.enums.*;
 import com.lincomb.haiwan.exception.HaiwanException;
-import com.lincomb.haiwan.repository.CategoryRepository;
-import com.lincomb.haiwan.repository.ProductRepository;
+import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.ProductService;
+import com.lincomb.haiwan.util.FastDFSUtil;
+import com.lincomb.haiwan.vo.ProductDetailsVO;
+import com.lincomb.haiwan.vo.ResultVO;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: shylqian
@@ -20,13 +26,20 @@ import org.springframework.stereotype.Service;
  * @Date: created on 下午10:50 17/10/22
  */
 @Service
-public class ProductServiceImpl implements ProductService{
+@Slf4j
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
+    private RefundRuleRepository refundRuleRepository;
+    @Autowired
+    private PhotoRepository photoRepository;
 
     @Override
     public Product findOne(String productId) {
@@ -41,10 +54,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product save(Product product) {
         Category category = new Category();
-        category.setCategoryType( product.getCategoryType());
+        category.setCategoryType(product.getCategoryId());
         Example<Category> example = Example.of(category);
         Category category1 = categoryRepository.findOne(example);
-        if(category1 == null){
+        if (category1 == null) {
             throw new HaiwanException(ResultEnum.CATEGORY_NOT_EXIST);
         }
         product.setCategoryName(category1.getCategoryName());
@@ -54,10 +67,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product onSale(String productId) {
         Product productInfo = productRepository.findOne(productId);
-        if(productInfo == null){
+        if (productInfo == null) {
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        if(productInfo.getProductStatusEnum() == ProductStatusEnum.UP){
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
             throw new HaiwanException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
@@ -67,10 +80,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product offSale(String productId) {
         Product productInfo = productRepository.findOne(productId);
-        if(productInfo == null){
+        if (productInfo == null) {
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        if(productInfo.getProductStatusEnum() == ProductStatusEnum.DOWN){
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.DOWN) {
             throw new HaiwanException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
@@ -81,13 +94,137 @@ public class ProductServiceImpl implements ProductService{
     public Product delete(String productId) {
 
         Product productInfo = productRepository.findOne(productId);
-        if(productInfo == null){
+        if (productInfo == null) {
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        if(productInfo.getProductStatusEnum() == ProductStatusEnum.DELETE){
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.DELETE) {
             throw new HaiwanException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         productInfo.setProductStatus(ProductStatusEnum.DELETE.getCode());
         return productRepository.save(productInfo);
     }
+
+    @Override
+    public ResultVO<Object> queryProductDetails(String productId) {
+        ProductDetailsVO detailsVO = new ProductDetailsVO();
+        try {
+            Product product = productRepository.findOne(productId);
+
+            detailsVO.setProductId(product.getProductId());
+            detailsVO.setProductName(product.getProductName());
+            detailsVO.setProductDescription(product.getProductDescription());
+            detailsVO.setProductAddress(product.getProductAddress());
+            detailsVO.setProductPrice(product.getProductPrice());
+            detailsVO.setProductPic(product.getProductPic());
+            List<Map<String, String>> maps = new ArrayList<>();
+
+            if (product.getIsHaveYard() == 0) {
+                Map<String, String> map = new HashMap<>();
+                map.put("text", ServicesEnum.YARD.getText());
+                map.put("src", ServicesEnum.YARD.getSrc());
+                maps.add(map);
+            }
+            if (product.getIsHaveBreakfast() == 0) {
+                Map<String, String> map = new HashMap<>();
+                map.put("text", ServicesEnum.BREAKFAST.getText());
+                map.put("src", ServicesEnum.BREAKFAST.getSrc());
+                maps.add(map);
+            }
+            if (product.getIsHaveBathroom() == 0) {
+                Map<String, String> map = new HashMap<>();
+                map.put("text", ServicesEnum.BATHROOM.getText());
+                map.put("src", ServicesEnum.BATHROOM.getSrc());
+                maps.add(map);
+            }
+            if (product.getIsHaveWifi() == 0) {
+                Map<String, String> map = new HashMap<>();
+                map.put("text", ServicesEnum.WIFI.getText());
+                map.put("src", ServicesEnum.WIFI.getSrc());
+                maps.add(map);
+            }
+            maps.addAll(disposeStr(product.getEquipment()));
+            detailsVO.setServicesList(maps);
+
+            List<String> strings = new ArrayList<>();
+
+            List<Item> items = itemRepository.findByProductId(productId);
+            items.forEach(
+                    item -> strings.add(item.getItemDescription()));
+            detailsVO.setItemDescriptionList(strings);
+
+            RefundRule refundRule = refundRuleRepository.findTopByRuleNo(product.getRuleNo());
+            detailsVO.setRuleDescription(refundRule.getRuleDescription());
+
+        } catch (Exception e) {
+            log.error("queryProductDetails() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, detailsVO);
+    }
+
+    @Override
+    public ResultVO<Object> queryPictures(String productId, Integer page, Integer size) {
+        List<String> list = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Photo photo = new Photo();
+            photo.setProductId(productId);
+            Example<Photo> ex = Example.of(photo);
+            Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+            PageRequest request = new PageRequest(page - 1, size, sort);
+            Page<Photo> photoPage = photoRepository.findAll(ex, request);
+            photoPage.getContent().forEach(
+                    p -> list.add(FastDFSUtil.DOWNLOAD_PATH + p.getPhotoUrl()));
+            map.put("photoUrlList", list);
+            map.put("isLast", photoPage.isLast());
+            map.put("isFirst", photoPage.isFirst());
+        } catch (Exception e) {
+            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
+    }
+
+    private List<Map<String, String>> disposeStr(String str) {
+        List<Map<String, String>> maps = new ArrayList<>();
+        String[] strs = str.split(",");
+        for (int i = 0; i < strs.length; i++) {
+            String str1 = strs[i];
+            //电视，冰箱，电脑，烧烤，空调
+            switch (str1) {
+                case "1":
+                    Map<String, String> map1 = new HashMap<>();
+                    map1.put("text", ServicesEnum.TV.getText());
+                    map1.put("src", ServicesEnum.TV.getSrc());
+                    maps.add(map1);
+                    break;
+                case "2":
+                    Map<String, String> map2 = new HashMap<>();
+                    map2.put("text", ServicesEnum.FRIG.getText());
+                    map2.put("src", ServicesEnum.FRIG.getSrc());
+                    maps.add(map2);
+                    break;
+                case "3":
+                    Map<String, String> map3 = new HashMap<>();
+                    map3.put("text", ServicesEnum.FRIG.getText());
+                    map3.put("src", ServicesEnum.FRIG.getSrc());
+                    maps.add(map3);
+                    break;
+                case "4":
+                    Map<String, String> map4 = new HashMap<>();
+                    map4.put("text", ServicesEnum.BBQ.getText());
+                    map4.put("src", ServicesEnum.BBQ.getSrc());
+                    maps.add(map4);
+                    break;
+                case "5":
+                    Map<String, String> map5 = new HashMap<>();
+                    map5.put("text", ServicesEnum.AIRCONDITIONING.getText());
+                    map5.put("src", ServicesEnum.AIRCONDITIONING.getSrc());
+                    maps.add(map5);
+                    break;
+            }
+        }
+        return maps;
+    }
+
 }

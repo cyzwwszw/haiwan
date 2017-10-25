@@ -35,7 +35,7 @@ public class ProductRepositoryTest {
         product.setProductId(KeyUtil.genUniqueKey());
         product.setProductName("阿龙首测");
         product.setProductDescription("这是阿龙第一个测试案例");
-        product.setCategoryType(1);
+        product.setCategoryId(1);
         product.setProductArea(96);
         product.setProductType(0);
         product.setProductAddress("上海");
