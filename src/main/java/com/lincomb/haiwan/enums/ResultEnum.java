@@ -17,6 +17,8 @@ public enum  ResultEnum {
     ORDER_OWNER_ERROR(34,"该订单不属于该客户"),
 
     CATEGORY_NOT_EXIST(41,"类目不存在"),
+    REFUND_NOT_EXIST(42,"退款规则不存在"),
+    REFUND_OVERTIME(43,"退款超过了限制天数"),
 
 
     WX_MP_ERROR(51,"微信异常"),

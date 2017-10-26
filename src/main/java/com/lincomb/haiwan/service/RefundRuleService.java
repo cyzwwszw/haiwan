@@ -13,6 +13,8 @@ public interface RefundRuleService {
 
     RefundRule findOne(Integer ruleId);
 
+    RefundRule findByRuleNo(String ruleNo);
+
     List<RefundRule> findAll();
 
     RefundRule save(RefundRule refundRule);

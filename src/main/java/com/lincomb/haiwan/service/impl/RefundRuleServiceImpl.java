@@ -42,4 +42,9 @@ public class RefundRuleServiceImpl implements RefundRuleService{
     public RefundRule save(RefundRule refundRule) {
         return refundRuleRepository.save(refundRule);
     }
+
+    @Override
+    public RefundRule findByRuleNo(String ruleNo) {
+        return refundRuleRepository.findTopByRuleNo(ruleNo);
+    }
 }
