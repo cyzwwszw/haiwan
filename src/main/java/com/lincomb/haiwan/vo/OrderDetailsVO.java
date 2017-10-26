@@ -20,6 +20,7 @@ public class OrderDetailsVO {
     private String orderStatus;
     private Integer orderCount;
     private BigDecimal orderAmount;
+    private BigDecimal productPrice;
     private String orderDate;
     private String orderDateIn;
     private String orderDateOut;

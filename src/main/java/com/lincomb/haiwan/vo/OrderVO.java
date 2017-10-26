@@ -20,4 +20,5 @@ public class OrderVO {
     private String orderId;
     private Integer orderCount;
     private BigDecimal orderAmount;
+    private BigDecimal productPrice;
 }

@@ -6,7 +6,9 @@ import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.FastDFSUtil;
+import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ProductDetailsVO;
+import com.lincomb.haiwan.vo.ProductVO;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -14,7 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import sun.print.resources.serviceui;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +45,8 @@ public class ProductServiceImpl implements ProductService {
     private RefundRuleRepository refundRuleRepository;
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private QueryProductRepository queryProductRepository;
 
     @Override
     public Product findOne(String productId) {
@@ -144,11 +151,17 @@ public class ProductServiceImpl implements ProductService {
             maps.addAll(disposeStr(product.getEquipment()));
             detailsVO.setServicesList(maps);
 
-            List<String> strings = new ArrayList<>();
+            List<Map<String, String>> strings = new ArrayList<>();
 
             List<Item> items = itemRepository.findByProductId(productId);
             items.forEach(
-                    item -> strings.add(item.getItemDescription()));
+                    item -> {
+                        Map<String, String> map1 = new HashMap<>();
+                        map1.put("itemTitle", ServicesEnum.WIFI.getText());
+                        map1.put("itemDescription", item.getItemDescription());
+                        maps.add(map1);
+                        strings.add(map1);
+                    });
             detailsVO.setItemDescriptionList(strings);
 
             RefundRule refundRule = refundRuleRepository.findTopByRuleNo(product.getRuleNo());
@@ -183,6 +196,80 @@ public class ProductServiceImpl implements ProductService {
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }
+
+    /**
+     * 根据入住时间，结束时间，类目，类型查询
+     *
+     * @param map
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public ResultVO<Object> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, Integer page, Integer size) {
+
+        Map<String, Object> map1 = new HashMap<>();
+        try {
+            List<ProductVO> productVOList = new ArrayList<>();
+            Page<Object[]> page1 = queryProductRepository.findByTimeOrCategoryTypeOrproductType(map, page, size);
+            for (Object[] o : page1.getContent()) {
+                ProductVO vo = new ProductVO();
+                vo.setProductId(StringUtil.null2String(o[0]));
+                vo.setProductName(StringUtil.null2String(o[1]));
+                vo.setProductAddress(StringUtil.null2String(o[2]));
+                vo.setProductPrice(new BigDecimal(StringUtil.null2String(o[3])));
+                vo.setProductPic(StringUtil.null2String(o[4]));
+                vo.setProductType(StringUtil.null2String(o[5]));
+                if (StringUtil.null2String(o[6]).equals("0")) {
+                    vo.setIsHaveWifi(ServicesEnum.WIFI.getText());
+                }
+                if (StringUtil.null2String(o[7]).equals("0")) {
+                    vo.setIsHaveBreakfast(ServicesEnum.BREAKFAST.getText());
+                }
+                if (StringUtil.null2String(o[8]).equals("0")) {
+                    vo.setIsHaveBathroom(ServicesEnum.BATHROOM.getText());
+                }
+                if (StringUtil.null2String(o[9]).equals("0")) {
+                    vo.setIsHaveYard(ServicesEnum.YARD.getText());
+                }
+                vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[11])));
+                productVOList.add(vo);
+            }
+            map1.put("productVOList", productVOList);
+            map1.put("isLast", page1.isLast());
+            map1.put("isFirst", page1.isFirst());
+        } catch (Exception e) {
+            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
+    }
+
+    /**
+     * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
+     *
+     * @param orderDateIn
+     * @param orderDateOut
+     * @param productId
+     * @return
+     */
+    @Override
+    public ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            BigDecimal integer = queryProductRepository.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
+            map.put("residualQuantity", integer);
+        } catch (Exception e) {
+            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
+    }
+
+
+    /**
+     * 私有方法
+     */
 
     private List<Map<String, String>> disposeStr(String str) {
         List<Map<String, String>> maps = new ArrayList<>();

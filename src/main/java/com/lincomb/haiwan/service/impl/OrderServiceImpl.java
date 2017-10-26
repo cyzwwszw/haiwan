@@ -10,6 +10,7 @@ import com.lincomb.haiwan.repository.OrderRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.util.KeyUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
         Map<String, String> map1 = new HashMap<>();
         try {
             Order_t order_t = new Order_t();
+            order_t.setOrderId(KeyUtil.genUniqueKey());
             order_t.setProductId(map.get("productId"));
             Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
             order_t.setOrderDateIn(orderDateIn);
@@ -84,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
         try {
             RoomUser user = new RoomUser();
+            user.setUserId(KeyUtil.genUniqueKey());
             user.setOrderId(map.get("orderId"));
             user.setUserName(map.get("userName"));
             user.setUserIdentityNo(map.get("userIdentityNo"));
