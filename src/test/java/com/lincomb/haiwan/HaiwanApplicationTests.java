@@ -13,10 +13,11 @@ public class HaiwanApplicationTests {
 
     @Test
     public void contextLoads() {
+
         try {
-            FastDFSUtil.upload("E:\\111\\icon_zaocan.png", "icon_zaocan.png");
-        } catch (Exception e) {
-            e.printStackTrace();
+            FastDFSUtil.upload("E:\\111\\295772.jpg","295772.jpg");
+        }catch (Exception e){
+         e.printStackTrace();
         }
     }
 

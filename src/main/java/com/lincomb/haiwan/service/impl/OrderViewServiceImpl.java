@@ -2,14 +2,13 @@ package com.lincomb.haiwan.service.impl;
 
 import com.lincomb.haiwan.domain.Order_view;
 import com.lincomb.haiwan.domain.RoomUser;
-import com.lincomb.haiwan.enums.ProductTypeEnum;
+import com.lincomb.haiwan.enums.OrderStatusEnum;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.repository.OrderViewRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderViewService;
 import com.lincomb.haiwan.util.DateUtil;
-import com.lincomb.haiwan.util.EnumUtil;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.OrderDetailsVO;
 import com.lincomb.haiwan.vo.OrderVO;
@@ -19,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: shylqian
@@ -61,12 +57,16 @@ public class OrderViewServiceImpl implements OrderViewService {
             if (!StringUtil.isEmpty(status)) {
                 orderView.setOrderStatus(Integer.valueOf(status));
             }
-            Example<Order_view> ex = Example.of(orderView);
+            ExampleMatcher matcher = ExampleMatcher.matching();
+            Example<Order_view> ex = Example.of(orderView, matcher);
             Sort sort = new Sort(Sort.Direction.DESC, "createTime");
             PageRequest request = new PageRequest(page - 1, size, sort);
             Page<Order_view> orderViewPage = orderViewRepository.findAll(ex, request);
             List<OrderVO> orderVOList = new ArrayList<>();
             for (Order_view view : orderViewPage.getContent()) {
+                if (view.getOrderStatus() == OrderStatusEnum.CANCEL.getCode()) {
+                    break;
+                }
                 OrderVO vo = new OrderVO();
                 vo.setOrderId(view.getOrderId());
                 vo.setProductId(view.getProductId());
@@ -74,6 +74,7 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setProductType(view.getProductTypeEnum().getMessage());
                 vo.setProductPic(view.getProductPic());
                 vo.setOrderAmount(view.getOrderAmount());
+                vo.setProductPrice(view.getProductPrice());
                 vo.setOrderCount(view.getOrderCount());
                 vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
                 orderVOList.add(vo);
@@ -106,6 +107,7 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setProductType(view.getProductTypeEnum().getMessage());
             vo.setProductPic(view.getProductPic());
             vo.setOrderAmount(view.getOrderAmount());
+            vo.setProductPrice(view.getProductPrice());
             vo.setOrderCount(view.getOrderCount());
             vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
             vo.setOrderDate(DateUtil.getFormatDateTime(view.getCreateTime(), DateUtil.SIMPLE_DATE_FORMAT));
@@ -117,12 +119,10 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setUserName(user.getUserName());
             vo.setUserIdentityNo(user.getUserIdentityNo());
             vo.setUserMobile(user.getUserMobile());
-
         } catch (Exception e) {
-            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            log.error("queryOrderDetails() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
     }
-
 }

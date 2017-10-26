@@ -12,6 +12,7 @@ import com.lincomb.haiwan.repository.SendMessageRecordRepository;
 import com.lincomb.haiwan.repository.SystemSettingRepository;
 import com.lincomb.haiwan.service.UserService;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.util.KeyUtil;
 import com.lincomb.haiwan.util.SendMsgsUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultVO<Object> login(String mobile, String code) {
         ResultVO<Object> resultVO;
-        Map<String,Object> map=new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         try {
             resultVO = validateCode(mobile, code);
             if (!RespCode.SUCCESS.equals(resultVO.getCode())) {
@@ -63,8 +64,10 @@ public class UserServiceImpl implements UserService {
 
             Buyer buyer = buyerRepository.findTopByBuyerMobile(mobile);
             if (buyer == null) {
-                buyer.setBuyerMobile(mobile);
-                buyerRepository.save(buyer);
+                Buyer buyer1 = new Buyer();
+                buyer1.setBuyerId(KeyUtil.genUniqueKey());
+                buyer1.setBuyerMobile(mobile);
+                buyer = buyerRepository.save(buyer1);
             }
             map.put("buyerId",buyer.getBuyerId());
         } catch (Exception e) {

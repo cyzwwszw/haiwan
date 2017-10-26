@@ -4,7 +4,9 @@ public enum OrderStatusEnum implements CodeEnum{
 
     WAIT(0,"待使用"),
     FINISH(1,"已完成"),
-    OVERTIME(2,"过期");
+    OVERTIME(2,"过期"),
+    CANCEL(3,"已取消");
+
 
     private Integer code;
 

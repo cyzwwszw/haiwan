@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: shylqian
@@ -31,7 +31,41 @@ public interface ProductService {
     //删除
     Product delete(String productId);
 
+    /**
+     * 查看产品详情
+     *
+     * @param productId
+     * @return
+     */
     ResultVO<Object> queryProductDetails(String productId);
 
+    /**
+     * 查询图片
+     *
+     * @param productId
+     * @param page
+     * @param size
+     * @return
+     */
     ResultVO<Object> queryPictures(String productId, Integer page, Integer size);
+
+    /**
+     * 根据入住时间，结束时间，类目，类型查询
+     *
+     * @param map
+     * @param page
+     * @param size
+     * @return
+     */
+    ResultVO<Object> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, Integer page, Integer size);
+
+    /**
+     * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
+     *
+     * @param orderDateIn
+     * @param orderDateOut
+     * @param productId
+     * @return
+     */
+    ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId);
 }

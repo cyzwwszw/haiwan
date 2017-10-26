@@ -330,7 +330,7 @@
 
                         <input hidden type="text" name="productId" value="${(product.productId)!''}">
                         <div class="col-sm-offset-2 col-sm-4">
-                            <button type="submit" class="btn btn-default">提交</button>
+                            <button type="submit" class="btn btn-default">保存，下一步</button>
                         </div>
                     </form>
                 </div>

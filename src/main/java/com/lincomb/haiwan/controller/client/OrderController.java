@@ -64,6 +64,16 @@ public class OrderController {
     }
 
     /**
+     * 修改预订信息
+     * @return
+     */
+    @PostMapping("/updateOrder")
+    public ResultVO<Object> updateOrder(){
+        ResultVO<Object> result = null;
+        return result;
+    }
+
+    /**
      * 添加入住人信息
      *
      * @return
@@ -92,6 +102,26 @@ public class OrderController {
         map.put("orderCount", buyerId);
 
         ResultVO<Object> result = orderService.saveRoomUser(map);
+        return result;
+    }
+
+    /**
+     * 查询入住人信息
+     * @return
+     */
+    @PostMapping("/queryRoomUser")
+    public ResultVO<Object> queryRoomUser(){
+        ResultVO<Object> result = null;
+        return result;
+    }
+
+    /**
+     * 修改入住人信息
+     * @return
+     */
+    @PostMapping("/updateRoomUser")
+    public ResultVO<Object> updateRoomUser(){
+        ResultVO<Object> result = null;
         return result;
     }
 
