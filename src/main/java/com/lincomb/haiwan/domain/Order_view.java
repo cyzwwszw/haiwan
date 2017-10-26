@@ -28,6 +28,8 @@ public class Order_view {
 
     private BigDecimal orderAmount;
 
+    private BigDecimal productPrice;
+
     private Integer orderStatus;
 
     private Integer payType;

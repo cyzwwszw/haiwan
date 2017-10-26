@@ -35,50 +35,46 @@ public class ClientProductController {
     private CategoryService categoryService;
 
     /**
-     * 根据类目查询
+     * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
      *
      * @return
      */
-    @PostMapping("/findAllByCategoryType")
-    public ResultVO<Object> findAllByCategoryType(
+    @PostMapping("/findByTimeAndproductId")
+    public ResultVO<Object> findByTimeAndproductId(
+            @RequestParam String orderDateIn,
+            @RequestParam String orderDateOut,
+            @RequestParam String productId
+    ) {
+        if (StringUtil.isEmpty(orderDateIn) || StringUtil.isEmpty(orderDateOut) || StringUtil.isEmpty(productId)) {
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
+        }
+
+        ResultVO<Object> resultVO = productService.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
+        return resultVO;
+    }
+
+    /**
+     * 根据入住时间，结束时间，类目，类型查询
+     *
+     * @return
+     */
+    @PostMapping("/findByTimeOrCategoryTypeOrproductType")
+    public ResultVO<Object> findByTimeOrCategoryTypeOrproductType(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @RequestParam String categoryType) {
+            @RequestParam(value = "orderDateIn", required = false) String orderDateIn,
+            @RequestParam(value = "orderDateOut", required = false) String orderDateOut,
+            @RequestParam(value = "productType", required = false) String productType,
+            @RequestParam(value = "categoryType", required = false) String categoryType
+    ) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orderDateIn", orderDateIn);
+        map.put("orderDateOut", orderDateOut);
+        map.put("productType", productType);
+        map.put("categoryType", categoryType);
 
-        return null;
-    }
-
-    /**
-     * 根据产品类型查询
-     *
-     * @return
-     */
-    @PostMapping("/findAllByProductType")
-    public ResultVO<Object> findAllByProductType() {
-
-        return null;
-    }
-
-    /**
-     * 根据入住时间，结束时间查询
-     *
-     * @return
-     */
-    @PostMapping("/findAllByTime")
-    public ResultVO<Object> findAllByTime() {
-
-        return null;
-    }
-
-    /**
-     * 根据入住时间，结束时间，类目查询
-     *
-     * @return
-     */
-    @PostMapping("/findAllByTimeOrCategoryType")
-    public ResultVO<Object> findAllByTimeOrCategoryType() {
-
-        return null;
+        ResultVO<Object> resultVO = productService.findByTimeOrCategoryTypeOrproductType(map, page, size);
+        return resultVO;
     }
 
     /**

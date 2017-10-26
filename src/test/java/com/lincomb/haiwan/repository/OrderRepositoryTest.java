@@ -1,6 +1,7 @@
 package com.lincomb.haiwan.repository;
 
 import com.lincomb.haiwan.domain.Order_t;
+import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.KeyUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,18 +28,20 @@ public class OrderRepositoryTest {
     private OrderRepository orderRepository;
 
     @Test
-    public void testd() {
+    public void test() {
         Order_t order = new Order_t();
         order.setOrderId(KeyUtil.genUniqueKey());
-        order.setProductId("1508680395661809415");
+        order.setProductId("1508680395661809420");
         order.setBuyerId("1508757366552317340");
         order.setCategoryId(1);
         order.setOrderStatus(0);
         order.setPayStatus(0);
         order.setPayType(0);
         order.setOrderChannel(0);
-        order.setOrderCount(1);
+        order.setOrderCount(2);
         order.setOrderAmount(new BigDecimal(100));
+        order.setOrderDateIn(DateUtil.stringToUtilDate("2017-11-06",DateUtil.SIMPLE_DATE_FORMAT));
+        order.setOrderDateOut(DateUtil.stringToUtilDate("2017-11-08",DateUtil.SIMPLE_DATE_FORMAT));
         orderRepository.save(order);
     }
 

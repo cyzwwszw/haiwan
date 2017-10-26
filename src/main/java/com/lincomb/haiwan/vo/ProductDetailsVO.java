@@ -15,20 +15,12 @@ import java.util.Map;
 public class ProductDetailsVO {
 
     private  String productId;
-
     private String productName;
-
     private String productDescription;
-
     private String productAddress;
-
     private BigDecimal productPrice;
-
     private String productPic;
-
     private List<Map<String,String>> servicesList;
-
-    private List<String> itemDescriptionList;
-
+    private List<Map<String,String>> itemDescriptionList;
     private String ruleDescription;
 }
