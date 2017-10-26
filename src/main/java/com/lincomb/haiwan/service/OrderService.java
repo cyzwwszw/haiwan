@@ -12,6 +12,17 @@ import java.util.Map;
 public interface OrderService {
 
     Order_t findOne(String orderId);
+
+    Order_t payOrder(String orderId);
+
+    Order_t finishOrder(String orderId);
+
+    Order_t cancelOrder(String orderId);
+
+    Order_t refundIngOrder(String orderId);
+
+    Order_t refundOrder(String orderId);
+
     /**
      * 预定
      * @param map

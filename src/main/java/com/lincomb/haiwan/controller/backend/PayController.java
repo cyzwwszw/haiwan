@@ -6,6 +6,7 @@ import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.service.PayService;
 import com.lly835.bestpay.model.PayResponse;
+import com.lly835.bestpay.service.BestPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +46,8 @@ public class PayController {
     }
 
     @PostMapping("/notify")
-    public void notify(@RequestBody String notifyData){
-
+    public PayResponse notify(@RequestBody String notifyData){
+        payService.notify(notifyData);
+        return new ModelAndView("success");
     }
-
-
 }

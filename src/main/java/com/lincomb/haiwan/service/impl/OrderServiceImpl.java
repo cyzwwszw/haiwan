@@ -3,6 +3,7 @@ package com.lincomb.haiwan.service.impl;
 
 import com.lincomb.haiwan.domain.Order_t;
 import com.lincomb.haiwan.domain.RoomUser;
+import com.lincomb.haiwan.enums.OrderStatusEnum;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.repository.OrderRepository;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private RoomUserRepository roomUserRepository;
 
@@ -94,5 +96,40 @@ public class OrderServiceImpl implements OrderService {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
+    }
+
+    @Override
+    public Order_t finishOrder(String orderId) {
+        Order_t order_t = findOne(orderId);
+        order_t.setOrderStatus(OrderStatusEnum.FINISH.getCode());
+        return orderRepository.save(order_t);
+    }
+
+    @Override
+    public Order_t cancelOrder(String orderId) {
+        Order_t order_t = findOne(orderId);
+        order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        return orderRepository.save(order_t);
+    }
+
+    @Override
+    public Order_t payOrder(String orderId) {
+        Order_t order_t = findOne(orderId);
+        order_t.setOrderStatus(OrderStatusEnum.PAY.getCode());
+        return orderRepository.save(order_t);
+    }
+
+    @Override
+    public Order_t refundIngOrder(String orderId) {
+        Order_t order_t = findOne(orderId);
+        order_t.setOrderStatus(OrderStatusEnum.REFUND_ING.getCode());
+        return orderRepository.save(order_t);
+    }
+
+    @Override
+    public Order_t refundOrder(String orderId) {
+        Order_t order_t = findOne(orderId);
+        order_t.setOrderStatus(OrderStatusEnum.REFUND.getCode());
+        return orderRepository.save(order_t);
     }
 }
