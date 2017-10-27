@@ -7,7 +7,6 @@ import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.service.PayService;
 import com.lincomb.haiwan.vo.ResultVO;
 import com.lly835.bestpay.model.PayResponse;
-import com.lly835.bestpay.service.BestPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
