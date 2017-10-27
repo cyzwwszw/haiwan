@@ -24,6 +24,7 @@ public class OrderDetailsVO {
     private String orderDate;
     private String orderDateIn;
     private String orderDateOut;
+    private String userId;
     private String userName;
     private String userIdentityNo;
     private String userMobile;

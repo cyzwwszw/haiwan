@@ -278,8 +278,8 @@ public class ProductServiceImpl implements ProductService {
     public ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId) {
         Map<String, Object> map = new HashMap<>();
         try {
-            BigDecimal integer = queryProductRepository.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
-            map.put("residualQuantity", integer);
+            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
+            map.put("residualQuantity", residualQuantity);
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);

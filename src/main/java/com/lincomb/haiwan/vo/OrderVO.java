@@ -3,6 +3,8 @@ package com.lincomb.haiwan.vo;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author yongsheng.he
@@ -21,4 +23,6 @@ public class OrderVO {
     private Integer orderCount;
     private BigDecimal orderAmount;
     private BigDecimal productPrice;
+    private String orderDate;
+    private Map<String, String> refundMap;
 }

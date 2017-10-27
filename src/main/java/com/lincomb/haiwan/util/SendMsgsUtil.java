@@ -71,15 +71,13 @@ public class SendMsgsUtil {
         return code.toString();
     }
 
-    //-----------私有方法-----------
-
     /**
      * 验证手机号
      *
      * @param mobileNo
      * @return
      */
-    private static boolean validMobileNo(String mobileNo) {
+    public static boolean validMobileNo(String mobileNo) {
         if (mobileNo != null) {
             try {
                 long mobile = Long.parseLong(mobileNo.trim());

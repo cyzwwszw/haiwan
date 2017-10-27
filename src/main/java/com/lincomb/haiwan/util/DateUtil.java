@@ -82,11 +82,11 @@ public class DateUtil {
 
     private static FastDateFormat timeFormat = FastDateFormat.getInstance(timePattern);
 
-    public static String getFormatDateTime(Date date) {
-        DateFormat df = new SimpleDateFormat(SIMPLE_TIME_YYYYMMDDHH24MMSS);
-        return df.format(date);
-    }
-
+    /**
+     * @param date
+     * @param timePattern
+     * @return
+     */
     public static String getFormatDateTime(Date date, String timePattern) {
         DateFormat df = new SimpleDateFormat(timePattern);
         return df.format(date);
@@ -114,7 +114,7 @@ public class DateUtil {
     }
 
     /**
-     * 获取天数
+     * 获取俩个日期的相差天数
      *
      * @return
      */
@@ -139,50 +139,10 @@ public class DateUtil {
         return calendar.getTime();
     }
 
-    /**
-     * @param str
-     * @return
-     * @函数名称：stringToUtilDate
-     * @功能描述：将String型的日期格式转换为Util型的日期格式
-     */
-    public static Date strToUtilDate(String str) {
-        if (null != str && str.length() > 0) {
-            try {
-                return (new SimpleDateFormat(SIMPLE_TIME_YYYYMMDDHH24MMSS)).parse(str);
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-                return null;
-            }
-        } else
-            return null;
-    }
-
-    /**
-     * @param time 要格式化的日期字符串: 10位 yyyy/MM/dd或yyyy-MM-dd或yyyy:MM:dd
-     * @return 返回格式化后的日期
-     * @函数名称：dateTo8 @功能描述：10位yyyy/MM/dd,yyyy-MM-dd,yyyy:MM:dd 转换为8位yyyyMMdd
-     */
-    public static String timeNumberTodate(String time) {
-        if (time == null) {
-            return null;
-        }
-        int len = time.length();
-        return time.substring(0, len - 4) + formatDateSign
-                + time.substring(len - 4, len - 2) + formatDateSign
-                + time.substring(len - 2, len);
-    }
-
-    /**
-     * @param str
-     * @return
-     * @函数名称：stringToSqlDate
-     * @功能描述：将String型的日期格式转换为Sql型的日期格式
-     */
-    public static java.sql.Date stringToSqlDate(String str) {
-        if (stringToUtilDate(str) == null || str.length() < 1)
-            return null;
-        else
-            return new java.sql.Date(stringToUtilDate(str).getTime());
+    public static int jieQuTian(Date date) {
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        return instance.get(Calendar.DATE);
     }
 
     /**
@@ -195,7 +155,7 @@ public class DateUtil {
         if (null != str && str.length() > 0) {
             try {
                 // 对两种时间格式进行转化。
-                if (str.length() <= SIMPLE_DATE_FORMAT.length()) { // 只包含日期。
+                if (str.length() <= SIMPLE_DATE_FORMAT.length()) {  // 只包含日期。
                     return (new SimpleDateFormat(SIMPLE_DATE_FORMAT)).parse(str);
                 } else { // 日期和时间都有
                     return (new SimpleDateFormat(SIMPLE_TIME_FORMAT_H)).parse(str);
@@ -269,34 +229,6 @@ public class DateUtil {
 
     /**
      * @param d
-     * @return
-     * @函数名称：toDateTimeString
-     * @功能描述：将Util型的带时间日期格式转换为String型的日期格式
-     */
-    public static String toDateTimeString(Date d) {
-        if (d == null) {
-            return null;
-        } else {
-            return (new SimpleDateFormat(SIMPLE_TIME_FORMAT_H)).format(d);
-        }
-    }
-
-    /**
-     * @param d
-     * @return
-     * @函数名称：toDateTimeString
-     * @功能描述：将Util型的带时间日期格式转换为String型的日期格式
-     */
-    public static String toDateTimeYYMMDDString(Date d) {
-        if (d == null) {
-            return null;
-        } else {
-            return (new SimpleDateFormat(SIMPLE_TIME_FORMAT_YYYY_MM_DD_HH_MM)).format(d);
-        }
-    }
-
-    /**
-     * @param d
      * @param pattern
      * @return
      * @函数名称：toDateTimeString
@@ -310,82 +242,4 @@ public class DateUtil {
         }
     }
 
-    /**
-     * @param d
-     * @return
-     * @函数名称：toDateString
-     * @功能描述：将Sql型的只带日期格式转换为String型的日期格式
-     */
-    public static String toDateString(java.sql.Date d) {
-        if (d == null) {
-            return null;
-        } else {
-            return (new SimpleDateFormat(SIMPLE_DATE_FORMAT)).format(d);
-        }
-    }
-
-    /**
-     * @param d
-     * @return
-     * @函数名称：toDateString
-     * @功能描述：将Sql型的只带日期格式转换为String型的日期格式
-     */
-    public static String toDateString(Date d) {
-        if (d == null) {
-            return null;
-        } else {
-            return (new SimpleDateFormat(SIMPLE_DATE_FORMAT)).format(d);
-        }
-    }
-
-    /**
-     * @return
-     * @函数名称：getCurrentDate
-     * @功能描述：获取当前日期和时间
-     */
-    public static java.sql.Date getCurrentDateTime() {
-        Calendar newcalendar = null;
-        newcalendar = Calendar.getInstance();
-
-        String year = String.valueOf(newcalendar.get(Calendar.YEAR));
-        String month = String.valueOf(newcalendar.get(Calendar.MONTH) + 1);
-        String day = String.valueOf(newcalendar.get(Calendar.DAY_OF_MONTH));
-        String hour = String.valueOf(newcalendar.get(Calendar.HOUR_OF_DAY));
-        String min = String.valueOf(newcalendar.get(Calendar.MINUTE));
-        String sec = String.valueOf(newcalendar.get(Calendar.SECOND));
-
-        return stringToSqlDate(year + formatDateSign + month + formatDateSign
-                + day + " " + hour + formatTimeSign + min + formatTimeSign
-                + sec);
-    }
-
-    /**
-     * @return
-     * @函数名称：getCurrentDate
-     * @功能描述：获取当前日期(只带日期)
-     */
-    public static java.sql.Date getCurrentDate() {
-        Calendar newcalendar = null;
-        newcalendar = Calendar.getInstance();
-
-        String year = String.valueOf(newcalendar.get(Calendar.YEAR));
-        String month = String.valueOf(newcalendar.get(Calendar.MONTH) + 1);
-        String day = String.valueOf(newcalendar.get(Calendar.DAY_OF_MONTH));
-
-        return stringToSqlDate(year + formatDateSign + month + formatDateSign
-                + day);
-    }
-
-    /**
-     * @return
-     * @函数名称：getCurrentTime
-     * @功能描述：获取当前时间(只带时间)
-     */
-    public static String getCurrentDateTimeStr() {
-        SimpleDateFormat dataFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        String timeString = dataFormat.format(date);
-        return timeString;
-    }
 }

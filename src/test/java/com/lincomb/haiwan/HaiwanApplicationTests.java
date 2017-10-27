@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,11 +25,14 @@ public class HaiwanApplicationTests {
 //         e.printStackTrace();
 //        }
 
-        Date date1=DateUtil.stringToUtilDate("2017-10-27",DateUtil.SIMPLE_DATE_FORMAT);
-        Date date2=DateUtil.stringToUtilDate("2017-10-28",DateUtil.SIMPLE_DATE_FORMAT);
-        System.out.println(DateUtil.getDays(date1,date2));
-
-
+//        Date date1=DateUtil.stringToUtilDate("2017-10-27",DateUtil.SIMPLE_DATE_FORMAT);
+//        Date date2=DateUtil.stringToUtilDate("2017-10-28",DateUtil.SIMPLE_DATE_FORMAT);
+//        System.out.println(date1.getTime());
+//        System.out.println(date1.g);
+//        System.out.println(new Date().getTime());
+//        if (date1.getTime() < new Date().getTime()) {
+//            System.out.println(1);
+//        }
     }
 
 }
