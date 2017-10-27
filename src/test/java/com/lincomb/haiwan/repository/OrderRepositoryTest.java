@@ -33,7 +33,6 @@ public class OrderRepositoryTest {
         order.setOrderId(KeyUtil.genUniqueKey());
         order.setProductId("1508680395661809420");
         order.setBuyerId("1508757366552317340");
-        order.setCategoryId(1);
         order.setOrderStatus(0);
         order.setPayStatus(0);
         order.setPayType(0);

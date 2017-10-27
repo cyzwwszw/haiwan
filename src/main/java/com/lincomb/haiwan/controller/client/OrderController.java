@@ -38,16 +38,14 @@ public class OrderController {
             @RequestParam String orderDateOut,
             @RequestParam String orderAmount,
             @RequestParam String orderCount,
-            @RequestParam String buyerId,
-            @RequestParam String categoryId
+            @RequestParam String buyerId
     ) {
         if (StringUtil.isEmpty(productId)
                 || StringUtil.isEmpty(orderDateIn)
                 || StringUtil.isEmpty(orderDateOut)
                 || StringUtil.isEmpty(orderAmount)
                 || StringUtil.isEmpty(orderCount)
-                || StringUtil.isEmpty(buyerId)
-                || StringUtil.isEmpty(categoryId)) {
+                || StringUtil.isEmpty(buyerId)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
         Map<String, String> map = new HashMap<>();
@@ -57,7 +55,6 @@ public class OrderController {
         map.put("orderAmount", orderAmount);
         map.put("orderCount", orderCount);
         map.put("buyerId", buyerId);
-        map.put("categoryId", categoryId);
 
         ResultVO<Object> result = orderService.reserve(map);
         return result;

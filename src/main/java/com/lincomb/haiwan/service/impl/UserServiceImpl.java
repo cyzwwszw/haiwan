@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 buyer1.setBuyerMobile(mobile);
                 buyer = buyerRepository.save(buyer1);
             }
-            map.put("buyerId",buyer.getBuyerId());
+            map.put("buyerId", buyer.getBuyerId());
         } catch (Exception e) {
             log.error("login() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
             String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
-                log.info(msgsContent);
+                log.error(msgsContent);
                 SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
         Pattern p = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
         Matcher m = p.matcher(mobile);
         if (!m.matches()) {
-            return new ResultVO<Object>(RespCode.FAIL, "手机号码不合法");
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
         }
         try {
             SystemSetting betweenMinLimit = systemSettingRepository.findTopByName(Constants.BETWEEN_MIN_LIMIT);
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 验证 验证码
+     * 验证验证码
      *
      * @param mobile
      * @param code
@@ -162,6 +162,12 @@ public class UserServiceImpl implements UserService {
      */
     private ResultVO<Object> validateCode(String mobile, String code) {
         try {
+            Pattern p = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
+            Matcher m = p.matcher(mobile);
+            if (!m.matches()) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
+            }
+
             SystemSetting effectiveTime = systemSettingRepository.findTopByName(Constants.EFFECTIVE_TIME_LIMIT);
             if (effectiveTime == null) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_EFFECTIVE_LIMIT);
