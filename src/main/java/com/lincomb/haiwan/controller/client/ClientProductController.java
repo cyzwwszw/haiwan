@@ -62,10 +62,10 @@ public class ClientProductController {
     public ResultVO<Object> findByTimeOrCategoryTypeOrproductType(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @RequestParam(value = "orderDateIn", required = false) String orderDateIn,
             @RequestParam(value = "orderDateOut", required = false) String orderDateOut,
             @RequestParam(value = "productType", required = false) String productType,
-            @RequestParam(value = "categoryType", required = false) String categoryType
+            @RequestParam(value = "categoryType", required = false) String categoryType,
+            @RequestParam() String orderDateIn
     ) {
         Map<String, String> map = new HashMap<>();
         map.put("orderDateIn", orderDateIn);

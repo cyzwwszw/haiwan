@@ -15,5 +15,6 @@ public interface PayService {
 
     PayResponse notify(String notifyData);
 
-    RefundResponse refund(String orderId);
+    RefundResponse refund(Order_t order);
 }
+

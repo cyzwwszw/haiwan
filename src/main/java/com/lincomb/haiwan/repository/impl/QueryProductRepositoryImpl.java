@@ -38,57 +38,50 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
      */
     @Override
     public Page<T> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, int pageNo, int pageSize) {
-        String sql = "SELECT v.product_id,v.product_name,v.product_address," +
-                "v.product_price,v.product_pic,v.product_type,v.is_have_wifi,v.is_have_breakfast," +
-                "v.is_have_bathroom,is_have_yard,v.product_quantity,(v.product_quantity - SUM(v.order_count)) aa " +
-                " FROM order_view v WHERE 1=1 ";
 
-        String sql1 = "SELECT COUNT(*) FROM( " +
-                "SELECT v.product_id,v.product_quantity,(v.product_quantity - SUM(v.order_count)) aa " +
-                " FROM order_view v WHERE 1=1  ";
+        StringBuffer sql = new StringBuffer("SELECT p.product_id,p.product_name,p.product_address,p.product_price," +
+                "p.product_pic,p.product_type,p.is_have_wifi,p.is_have_breakfast,p.is_have_bathroom,p.is_have_yard," +
+                "p.product_quantity,p.product_quantity-( SELECT SUM(o.order_count) FROM order_t o " +
+                " WHERE o.product_id=p.product_id AND o.order_status IN (0, 2, 3) " +
+                " AND ((STR_TO_DATE('" + map.get("orderDateIn") + "','%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
 
-        if (!StringUtil.isEmpty(map.get("orderDateIn")) &&
-                !StringUtil.isEmpty(map.get("orderDateOut"))) {
-            sql += " AND v.product_id NOT IN (SELECT o.product_id FROM order_view o WHERE o.order_status IN (0, 1) " +
-                    " AND (o.order_date_in BETWEEN STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d'))" +
-                    " OR " +
-                    "(o.order_date_out BETWEEN STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d')) " +
-                    " GROUP BY o.product_id HAVING SUM(o.order_count)=(SELECT p.product_quantity FROM product p WHERE p.product_id = o.product_id)) ";
+        StringBuffer sql1 = new StringBuffer("SELECT COUNT(*) FROM( " +
+                "SELECT p.product_id,p.product_name,p.product_address,p.product_price," +
+                "p.product_pic,p.product_type,p.is_have_wifi,p.is_have_breakfast,p.is_have_bathroom,p.is_have_yard," +
+                "p.product_quantity,p.product_quantity-( SELECT SUM(o.order_count) FROM order_t o " +
+                " WHERE o.product_id=p.product_id AND o.order_status IN (0, 2, 3) " +
+                " AND ((STR_TO_DATE('" + map.get("orderDateIn") + "','%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
 
-            sql1 += " AND v.product_id NOT IN (SELECT o.product_id FROM order_view o WHERE o.order_status IN (0, 1) " +
-                    " AND (o.order_date_in BETWEEN STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d'))" +
-                    " OR " +
-                    "(o.order_date_out BETWEEN STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d')) " +
-                    " GROUP BY o.product_id HAVING SUM(o.order_count)=(SELECT p.product_quantity FROM product p WHERE p.product_id = o.product_id)) ";
+        if (!StringUtil.isEmpty(map.get("orderDateOut"))) {
+            sql.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
+            sql1.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
         }
-        if (!StringUtil.isEmpty(map.get("categvryId"))) {
-            sql += " AND v.category_id =" + map.get("categoryId");
-            sql1 += " AND v.category_id =" + map.get("categvryId");
+
+        sql.append(" ) GROUP BY o.product_id) as residualQuantity " +
+                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE 1=1 ");
+        sql1.append(" ) GROUP BY o.product_id) as residualQuantity " +
+                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE 1=1 ");
+
+        if (!StringUtil.isEmpty(map.get("categoryType"))) {
+            sql.append(" AND c.category_type =" + map.get("categoryType"));
+            sql1.append(" AND c.category_type =" + map.get("categoryType"));
         }
         if (!StringUtil.isEmpty(map.get("productType"))) {
-            sql += " AND v.product_type=" + map.get("productType");
-            sql1 += " AND v.product_type=" + map.get("productType");
+            sql.append(" AND p.product_type=" + map.get("productType"));
+            sql1.append(" AND p.product_type=" + map.get("productType"));
         }
 
-        sql += " GROUP BY v.product_id HAVING SUM(v.order_count) <> v.product_quantity ";
+        sql.append(" ORDER BY p.create_time DESC,p.product_name ASC ");
 
-        sql1 += " GROUP BY v.product_id HAVING SUM(v.order_count) <> v.product_quantity ) AS b";
+        sql1.append(" ) AS b");
 
-        Query query = em.createNativeQuery(sql);
-
+        Query query = em.createNativeQuery(sql.toString());
         query.setFirstResult((pageNo - 1) * pageSize);
         query.setMaxResults(pageSize);
-
         List<Object[]> list = query.getResultList();
 
-        List<BigInteger> totals = em.createNativeQuery(sql1).getResultList();
-
+        List<BigInteger> totals = em.createNativeQuery(sql1.toString()).getResultList();
         BigInteger total = new BigInteger("0");
-
         if (totals != null && !totals.isEmpty()) {
             if (totals.size() == 1) {
                 total.add(totals.get(0));
@@ -105,21 +98,14 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
     @Override
     public BigDecimal findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId) {
 
-        String sql = "SELECT (o.product_quantity - SUM(o.order_count)) aa FROM order_view o WHERE o.order_status IN (0, 1) ";
-
-        if (!StringUtil.isEmpty(productId)) {
-            sql += " AND o.product_id = '" + productId + "' ";
-        }
-        if (!StringUtil.isEmpty(orderDateIn) &&
-                !StringUtil.isEmpty(orderDateOut)) {
-            sql += " AND (o.order_date_in BETWEEN STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d'))" +
-                    " OR " +
-                    "(o.order_date_out BETWEEN STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') " +
-                    " AND STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d')) ";
-        }
-        sql += " GROUP BY o.product_id";
-
+        String sql = "SELECT IF (isnull(p.product_quantity - (SELECT SUM(o.order_count) FROM order_t o WHERE o.product_id = p.product_id AND o.order_status IN (0, 2, 3) " +
+                " AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
+                "  OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) GROUP BY o.product_id) " +
+                " ),p.product_quantity,p.product_quantity - (SELECT SUM(o.order_count) FROM order_t o WHERE o.product_id = p.product_id AND o.order_status IN (0, 2, 3) " +
+                " AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
+                "  OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) GROUP BY o.product_id) " +
+                " )AS residualQuantity FROM product p LEFT JOIN category c ON p.category_id = c.category_id " +
+                "WHERE p.product_id = '" + productId + "' ";
         List<BigDecimal> residualQuantitys = em.createNativeQuery(sql).getResultList();
 
         if (residualQuantitys != null && !residualQuantitys.isEmpty()) {

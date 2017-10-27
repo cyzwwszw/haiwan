@@ -3,6 +3,8 @@ package com.lincomb.haiwan.vo;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author yongsheng.he
@@ -18,9 +20,8 @@ public class ProductVO {
     private BigDecimal productPrice;
     private String productPic;
     private String productType;
-    private String isHaveWifi;
-    private String isHaveBreakfast;
-    private String isHaveBathroom;
-    private String isHaveYard;
+    private String orderDateIn;
+    private String orderDateOut;
+    private List<String> servicesList;
     private BigDecimal residualQuantity;
 }

@@ -73,12 +73,12 @@ public class PayServiceImpl implements PayService {
         log.info("微信异步通知 response={}", JsonUtil.toJson(payResponse));
         //修改订单的支付状态
         Order_t order_t = orderService.findOne(payResponse.getOrderId());
-        if(null == order_t){
+        if (null == order_t) {
             throw new HaiwanException(ResultEnum.ORDER_NOT_EXIST);
         }
         //查询订单
         //判断金额是否一致
-        if (!MathUtil.equals(payResponse.getOrderAmount(), order_t.getOrderAmount().doubleValue())){
+        if (!MathUtil.equals(payResponse.getOrderAmount(), order_t.getOrderAmount().doubleValue())) {
             throw new HaiwanException(ResultEnum.WX_PAY_MONEY_ERROR);
         }
         //修改订单状态
@@ -95,36 +95,36 @@ public class PayServiceImpl implements PayService {
             throw new HaiwanException(ResultEnum.ORDER_NOT_EXIST);
         }
         Product product = productService.findOne(order.getProductId());
-        if(null == product){
+        if (null == product) {
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
         }
 
         RefundRule refundRule = refundRuleService.findByRuleNo(product.getRuleNo());
-        if(null == refundRule){
+        if (null == refundRule) {
             throw new HaiwanException(ResultEnum.REFUND_NOT_EXIST);
         }
         //退款日期限制
-        if (refundRule.getRuleType().equals(RefundRuleTypeEnum.LIMIT.getCode())){
-            if(refundRule.getRuleDay() > 0){
+        if (refundRule.getRuleType().equals(RefundRuleTypeEnum.LIMIT.getCode())) {
+            if (refundRule.getRuleDay() > 0) {
                 Date now = new Date();
                 Calendar date1 = Calendar.getInstance();
                 date1.setTime(now);
                 Calendar date2 = Calendar.getInstance();
                 date2.setTime(order.getOrderDateIn());
                 date2.set(Calendar.DATE, date2.get(Calendar.DATE) - refundRule.getRuleDay());
-                if(date1.after(date2)){
+                if (date1.after(date2)) {
                     throw new HaiwanException(ResultEnum.REFUND_OVERTIME);
                 }
 
             }
         }
         refundRequest.setOrderId(order.getOrderId());
-        refundRequest.setOrderAmount(order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100))).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+        refundRequest.setOrderAmount(order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+
         refundRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
         log.info("微信支付请求 request={}", JsonUtil.toJson(refundRequest));
         RefundResponse refundResponse = bestPayService.refund(refundRequest);
         log.info("微信支付响应 response={}", JsonUtil.toJson(refundResponse));
-
         orderService.refundOrder(order.getOrderId());
         return refundResponse;
     }
