@@ -26,4 +26,6 @@ public class WechatAccountConfig {
     private String notifyUrl;
 
     private String authorizeUrl;
+
+    private String returnUrl;
 }

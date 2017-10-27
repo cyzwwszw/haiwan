@@ -1,6 +1,9 @@
 package com.lincomb.haiwan.controller.backend;
 
+import com.lincomb.haiwan.config.WechatAccountConfig;
 import com.lincomb.haiwan.domain.Order_t;
+import com.lincomb.haiwan.enums.RespCode;
+import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.enums.ResultEnum;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.service.OrderService;
@@ -27,9 +30,11 @@ public class PayController {
     @Autowired
     private PayService payService;
 
+    @Autowired
+    private WechatAccountConfig wechatAccountConfig;
+
     @GetMapping("/create")
     public ModelAndView create(@RequestParam("orderId")String orderId,
-                               @RequestParam("returnUrl")String returnUrl,
                                Map<String,Object> map){
 
         //1 查询订单
@@ -41,7 +46,7 @@ public class PayController {
         //2 发起支付
         PayResponse payResponse = payService.create(order);
         map.put("payResponse",payResponse) ;
-        map.put("returnUrl",returnUrl);
+        map.put("returnUrl",wechatAccountConfig.getReturnUrl());
         return new ModelAndView("create", map);
     }
 
@@ -56,7 +61,7 @@ public class PayController {
     @GetMapping("/refund")
     public ResultVO<Object> refund(@RequestParam("orderId") String orderId){
         payService.refund(orderId);
-        return new ResultVO<Object>();
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, null);
     }
 
 }
