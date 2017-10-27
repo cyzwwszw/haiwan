@@ -2,6 +2,8 @@ package com.lincomb.haiwan.service;
 
 import com.lincomb.haiwan.domain.Order_t;
 import com.lincomb.haiwan.vo.ResultVO;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Map;
 
 /**
@@ -25,15 +27,41 @@ public interface OrderService {
 
     /**
      * 预定
+     *
      * @param map
      * @return
      */
-    public ResultVO<Object> reserve(Map<String,String> map);
+    public ResultVO<Object> reserve(Map<String, String> map);
+
+    /**
+     * 修改预订信息
+     *
+     * @param map
+     * @return
+     */
+    public ResultVO<Object> updateOrder(Map<String, String> map);
 
     /**
      * 添加入住人信息
+     *
      * @param map
      * @return
      */
-    public ResultVO<Object> saveRoomUser(Map<String,String> map);
+    public ResultVO<Object> saveRoomUser(Map<String, String> map);
+
+    /**
+     * 查询入住人信息
+     *
+     * @param userId
+     * @return
+     */
+    ResultVO<Object> queryRoomUser(String userId);
+
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     * @return
+     */
+    ResultVO<Object> cancel(String orderId);
 }

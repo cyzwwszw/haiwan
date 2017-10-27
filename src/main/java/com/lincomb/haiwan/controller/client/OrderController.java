@@ -65,11 +65,34 @@ public class OrderController {
 
     /**
      * 修改预订信息
+     *
      * @return
      */
     @PostMapping("/updateOrder")
-    public ResultVO<Object> updateOrder(){
-        ResultVO<Object> result = null;
+    public ResultVO<Object> updateOrder(
+            @RequestParam String orderId,
+            @RequestParam String orderDateIn,
+            @RequestParam String orderDateOut,
+            @RequestParam String orderAmount,
+            @RequestParam String orderCount
+    ) {
+
+        if (StringUtil.isEmpty(orderId)
+                || StringUtil.isEmpty(orderDateIn)
+                || StringUtil.isEmpty(orderDateOut)
+                || StringUtil.isEmpty(orderAmount)
+                || StringUtil.isEmpty(orderCount)) {
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
+        }
+
+        Map<String, String> map = new HashMap<>();
+        map.put("orderId", orderId);
+        map.put("orderDateIn", orderDateIn);
+        map.put("orderDateOut", orderDateOut);
+        map.put("orderAmount", orderAmount);
+        map.put("orderCount", orderCount);
+
+        ResultVO<Object> result = orderService.updateOrder(map);
         return result;
     }
 
@@ -84,22 +107,25 @@ public class OrderController {
             @RequestParam String userName,
             @RequestParam String userIdentityNo,
             @RequestParam String userMobile,
-            @RequestParam String buyerId
+            @RequestParam String buyerId,
+            @RequestParam(value = "userId", required = false) String userId
     ) {
         if (StringUtil.isEmpty(orderId)
                 || StringUtil.isEmpty(userName)
                 || StringUtil.isEmpty(userIdentityNo)
                 || StringUtil.isEmpty(userMobile)
                 || StringUtil.isEmpty(buyerId)) {
+
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
 
         Map<String, String> map = new HashMap<>();
-        map.put("productId", orderId);
-        map.put("orderDateIn", userName);
-        map.put("orderDateOut", userIdentityNo);
-        map.put("orderAmount", userMobile);
-        map.put("orderCount", buyerId);
+        map.put("orderId", orderId);
+        map.put("userName", userName);
+        map.put("userIdentityNo", userIdentityNo);
+        map.put("userMobile", userMobile);
+        map.put("buyerId", buyerId);
+        map.put("userId", userId);
 
         ResultVO<Object> result = orderService.saveRoomUser(map);
         return result;
@@ -107,21 +133,16 @@ public class OrderController {
 
     /**
      * 查询入住人信息
+     *
      * @return
      */
     @PostMapping("/queryRoomUser")
-    public ResultVO<Object> queryRoomUser(){
-        ResultVO<Object> result = null;
-        return result;
-    }
+    public ResultVO<Object> queryRoomUser(@RequestParam String userId) {
 
-    /**
-     * 修改入住人信息
-     * @return
-     */
-    @PostMapping("/updateRoomUser")
-    public ResultVO<Object> updateRoomUser(){
-        ResultVO<Object> result = null;
+        if (StringUtil.isEmpty(userId)) {
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
+        }
+        ResultVO<Object> result = orderService.queryRoomUser(userId);
         return result;
     }
 
@@ -164,12 +185,18 @@ public class OrderController {
     /**
      * 取消订单
      *
-     * @param param
+     * @param orderId
      * @return
      */
     @PostMapping("/cancel")
-    public String cancel(@RequestParam String param) {
-        return param;
+    public ResultVO<Object> cancel(@RequestParam String orderId) {
+
+        if (StringUtil.isEmpty(orderId)) {
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
+        }
+
+        ResultVO<Object> result = orderService.cancel(orderId);
+        return result;
     }
 
 }
