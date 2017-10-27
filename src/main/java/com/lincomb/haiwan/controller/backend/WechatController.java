@@ -1,5 +1,6 @@
 package com.lincomb.haiwan.controller.backend;
 
+import com.lincomb.haiwan.config.WechatAccountConfig;
 import com.lincomb.haiwan.enums.ResultEnum;
 import com.lincomb.haiwan.exception.HaiwanException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,12 @@ class WechatController {
     @Autowired
     private WxMpService wxMpService;
 
+    @Autowired
+    private WechatAccountConfig wechatAccountConfig;
+
     @GetMapping("/authorize")
     public String authorize(@RequestParam("returnUrl")String returnUrl){
-        String url = "http://haiwan.nat300.top/haiwan/wechat/userInfo";
+        String url = wechatAccountConfig.getAuthorizeUrl();
         String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url,WxConsts.OAUTH2_SCOPE_USER_INFO, URLEncoder.encode(returnUrl));
         log.info("微信网页授权获取code, result={}", redirectUrl);
         return "redirect:" + redirectUrl;
