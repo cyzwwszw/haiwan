@@ -2,11 +2,14 @@ package com.lincomb.haiwan.service.impl;
 
 
 import com.lincomb.haiwan.domain.Order_t;
+import com.lincomb.haiwan.domain.Product;
 import com.lincomb.haiwan.domain.RoomUser;
 import com.lincomb.haiwan.enums.OrderStatusEnum;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.repository.OrderRepository;
+import com.lincomb.haiwan.repository.ProductRepository;
+import com.lincomb.haiwan.repository.QueryProductRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.util.DateUtil;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +37,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private RoomUserRepository roomUserRepository;
+    @Autowired
+    private QueryProductRepository queryProductRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public Order_t findOne(String orderId) {
@@ -52,17 +59,38 @@ public class OrderServiceImpl implements OrderService {
     public ResultVO<Object> reserve(Map<String, String> map) {
         Map<String, String> map1 = new HashMap<>();
         try {
+
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
+            Integer orderCount = Integer.valueOf(map.get("orderCount"));
+            int inDay = DateUtil.jieQuTian(orderDateIn);
+            int outDay = DateUtil.jieQuTian(orderDateOut);
+            int d = DateUtil.jieQuTian(new Date());
+            if (inDay < d || outDay < d || inDay > outDay) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+            //验证产品数量
+            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
+            if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+            int days = DateUtil.getDays(orderDateIn, orderDateOut);
+
+            Product product = productRepository.findOne(map.get("productId"));
+            BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
+            if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+
             Order_t order_t = new Order_t();
             order_t.setOrderId(KeyUtil.genUniqueKey());
             order_t.setProductId(map.get("productId"));
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
             order_t.setOrderDateIn(orderDateIn);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
             order_t.setOrderDateOut(orderDateOut);
-            order_t.setOrderAmount(new BigDecimal(map.get("orderAmount")));
-            order_t.setOrderCount(Integer.valueOf(map.get("orderCount")));
+            order_t.setOrderAmount(orderAmount);
+            order_t.setOrderCount(orderCount);
             order_t.setBuyerId(map.get("buyerId"));
-            order_t.setCategoryId(Integer.valueOf(map.get("categoryId")));
             order_t.setOrderStatus(0);
             order_t.setPayStatus(0);
             order_t.setOrderChannel(0);
@@ -88,10 +116,31 @@ public class OrderServiceImpl implements OrderService {
 
         Map<String, String> map1 = new HashMap<>();
         try {
-            Order_t order_t = orderRepository.findOne(map.get("orderId"));
             Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            order_t.setOrderDateIn(orderDateIn);
             Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
+            Integer orderCount = Integer.valueOf(map.get("orderCount"));
+            int inDay = DateUtil.jieQuTian(orderDateIn);
+            int outDay = DateUtil.jieQuTian(orderDateOut);
+            int d = DateUtil.jieQuTian(new Date());
+            if (inDay < d || outDay < d || inDay > outDay) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+            //验证产品数量
+            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
+            if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+            int days = DateUtil.getDays(orderDateIn, orderDateOut);
+
+            Product product = productRepository.findOne(map.get("productId"));
+            BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
+            if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+            }
+
+            Order_t order_t = orderRepository.findOne(map.get("orderId"));
+            order_t.setOrderDateIn(orderDateIn);
             order_t.setOrderDateOut(orderDateOut);
             order_t.setOrderAmount(new BigDecimal(map.get("orderAmount")));
             order_t.setOrderCount(Integer.valueOf(map.get("orderCount")));

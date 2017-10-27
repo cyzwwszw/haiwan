@@ -31,5 +31,9 @@ public class RespMsg {
 
     public static String EMPTY_USER_MOBILE = "手机号为空";
 
+    public static String PHONE_ERROR = "手机号格式错误";
+
     public static String REGISTER_FAILED = "注册失败";
+
+    public static String INSUFFICIENT_STOCK = "库存不足";
 }

@@ -25,8 +25,6 @@ public class Order_t {
 
     private String buyerId;
 
-    private Integer categoryId;
-
     private Integer orderStatus;
 
     private Integer orderChannel;
