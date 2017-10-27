@@ -60,14 +60,12 @@ public class OrderServiceImpl implements OrderService {
         Map<String, String> map1 = new HashMap<>();
         try {
 
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
             BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
             Integer orderCount = Integer.valueOf(map.get("orderCount"));
-            int inDay = DateUtil.jieQuTian(orderDateIn);
-            int outDay = DateUtil.jieQuTian(orderDateOut);
-            int d = DateUtil.jieQuTian(new Date());
-            if (inDay < d || outDay < d || inDay > outDay) {
+
+            if (orderDateIn.before(new Date()) || orderDateOut.before(new Date()) || orderDateOut.before(orderDateIn)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
             //验证产品数量
@@ -116,16 +114,15 @@ public class OrderServiceImpl implements OrderService {
 
         Map<String, String> map1 = new HashMap<>();
         try {
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
             BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
             Integer orderCount = Integer.valueOf(map.get("orderCount"));
-            int inDay = DateUtil.jieQuTian(orderDateIn);
-            int outDay = DateUtil.jieQuTian(orderDateOut);
-            int d = DateUtil.jieQuTian(new Date());
-            if (inDay < d || outDay < d || inDay > outDay) {
+
+            if (orderDateIn.before(new Date()) || orderDateOut.before(new Date()) || orderDateOut.before(orderDateIn)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
+
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
             if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {

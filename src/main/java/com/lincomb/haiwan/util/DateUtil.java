@@ -139,12 +139,6 @@ public class DateUtil {
         return calendar.getTime();
     }
 
-    public static int jieQuTian(Date date) {
-        Calendar instance = Calendar.getInstance();
-        instance.setTime(date);
-        return instance.get(Calendar.DATE);
-    }
-
     /**
      * @param str
      * @return
