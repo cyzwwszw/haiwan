@@ -61,12 +61,12 @@ public class PayServiceImpl implements PayService {
         log.info("微信异步通知 response={}", JsonUtil.toJson(payResponse));
         //修改订单的支付状态
         Order_t order_t = orderService.findOne(payResponse.getOrderId());
-        if(null == order_t){
+        if (null == order_t) {
             throw new HaiwanException(ResultEnum.ORDER_NOT_EXIST);
         }
         //查询订单
         //判断金额是否一致
-        if (!MathUtil.equals(payResponse.getOrderAmount(), order_t.getOrderAmount().doubleValue()))){
+        if (!MathUtil.equals(payResponse.getOrderAmount(), order_t.getOrderAmount().doubleValue())) {
             throw new HaiwanException(ResultEnum.WX_PAY_MONEY_ERROR);
         }
         //修改订单状态
@@ -78,10 +78,11 @@ public class PayServiceImpl implements PayService {
     public RefundResponse refund(Order_t order) {
         RefundRequest refundRequest = new RefundRequest();
         refundRequest.setOrderId(order.getOrderId());
-        refundRequest.setOrderAmount(order.getOrderAmount());
+        refundRequest.setOrderAmount(order.getOrderAmount().doubleValue());
         refundRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
         log.info("微信支付请求 request={}", JsonUtil.toJson(refundRequest));
-        RefundResponse refundResponse = bestPayService.pay(refundRequest);
+        RefundResponse refundResponse = bestPayService.refund(refundRequest);
         log.info("微信支付响应 response={}", JsonUtil.toJson(refundResponse));
+        return refundResponse;
     }
 }

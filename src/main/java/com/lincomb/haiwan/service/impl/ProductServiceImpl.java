@@ -5,6 +5,7 @@ import com.lincomb.haiwan.enums.*;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.ProductService;
+import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ProductDetailsVO;
@@ -20,10 +21,7 @@ import sun.print.resources.serviceui;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: shylqian
@@ -214,25 +212,48 @@ public class ProductServiceImpl implements ProductService {
             Page<Object[]> page1 = queryProductRepository.findByTimeOrCategoryTypeOrproductType(map, page, size);
             for (Object[] o : page1.getContent()) {
                 ProductVO vo = new ProductVO();
+                if (o[11] != null) {
+                    if (new BigDecimal(StringUtil.null2String(o[11])).intValue() == 0) {
+                        continue;
+                    }
+                    vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[11])));
+                } else {
+                    vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[10])));
+                }
                 vo.setProductId(StringUtil.null2String(o[0]));
                 vo.setProductName(StringUtil.null2String(o[1]));
                 vo.setProductAddress(StringUtil.null2String(o[2]));
                 vo.setProductPrice(new BigDecimal(StringUtil.null2String(o[3])));
                 vo.setProductPic(StringUtil.null2String(o[4]));
                 vo.setProductType(StringUtil.null2String(o[5]));
+
+                List<String> list = new ArrayList<>();
                 if (StringUtil.null2String(o[6]).equals("0")) {
-                    vo.setIsHaveWifi(ServicesEnum.WIFI.getText());
+                    list.add(ServicesEnum.WIFI.getText());
                 }
                 if (StringUtil.null2String(o[7]).equals("0")) {
-                    vo.setIsHaveBreakfast(ServicesEnum.BREAKFAST.getText());
+                    list.add(ServicesEnum.BREAKFAST.getText());
                 }
                 if (StringUtil.null2String(o[8]).equals("0")) {
-                    vo.setIsHaveBathroom(ServicesEnum.BATHROOM.getText());
+                    list.add(ServicesEnum.BATHROOM.getText());
                 }
                 if (StringUtil.null2String(o[9]).equals("0")) {
-                    vo.setIsHaveYard(ServicesEnum.YARD.getText());
+                    list.add(ServicesEnum.YARD.getText());
                 }
-                vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[11])));
+                vo.setServicesList(list);
+
+                if (!StringUtil.isEmpty(map.get("orderDateIn"))) {
+                    Date date2 = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
+                    vo.setOrderDateIn(DateUtil.getFormatDateTime(date2, DateUtil.SIMPLE_DATE_FORMAT_CN));
+                } else {
+                    vo.setOrderDateIn("");
+                }
+                if (!StringUtil.isEmpty(map.get("orderDateOut"))) {
+                    Date date1 = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+                    vo.setOrderDateOut(DateUtil.getFormatDateTime(date1, DateUtil.SIMPLE_DATE_FORMAT_CN));
+                } else {
+                    vo.setOrderDateOut("");
+                }
                 productVOList.add(vo);
             }
             map1.put("productVOList", productVOList);

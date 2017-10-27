@@ -57,15 +57,14 @@ public class OrderViewServiceImpl implements OrderViewService {
             if (!StringUtil.isEmpty(status)) {
                 orderView.setOrderStatus(Integer.valueOf(status));
             }
-            ExampleMatcher matcher = ExampleMatcher.matching();
-            Example<Order_view> ex = Example.of(orderView, matcher);
+            Example<Order_view> ex = Example.of(orderView);
             Sort sort = new Sort(Sort.Direction.DESC, "createTime");
             PageRequest request = new PageRequest(page - 1, size, sort);
             Page<Order_view> orderViewPage = orderViewRepository.findAll(ex, request);
             List<OrderVO> orderVOList = new ArrayList<>();
             for (Order_view view : orderViewPage.getContent()) {
                 if (view.getOrderStatus() == OrderStatusEnum.CANCEL.getCode()) {
-                    break;
+                    continue;
                 }
                 OrderVO vo = new OrderVO();
                 vo.setOrderId(view.getOrderId());
@@ -115,10 +114,11 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setOrderDateOut(DateUtil.getFormatDateTime(view.getOrderDateOut(), DateUtil.SIMPLE_DATE_FORMAT));
 
             RoomUser user = roomUserRepository.findTopByOrderId(orderId);
-
-            vo.setUserName(user.getUserName());
-            vo.setUserIdentityNo(user.getUserIdentityNo());
-            vo.setUserMobile(user.getUserMobile());
+            if (user != null) {
+                vo.setUserName(user.getUserName());
+                vo.setUserIdentityNo(user.getUserIdentityNo());
+                vo.setUserMobile(user.getUserMobile());
+            }
         } catch (Exception e) {
             log.error("queryOrderDetails() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);

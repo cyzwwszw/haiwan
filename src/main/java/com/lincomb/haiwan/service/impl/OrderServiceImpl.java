@@ -11,6 +11,7 @@ import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.KeyUtil;
+import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
     public Order_t findOne(String orderId) {
         return orderRepository.findOne(orderId);
     }
+
     /**
      * 预定
      *
@@ -76,6 +78,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 修改预订信息
+     *
+     * @param map
+     * @return
+     */
+    @Override
+    public ResultVO<Object> updateOrder(Map<String, String> map) {
+
+        Map<String, String> map1 = new HashMap<>();
+        try {
+            Order_t order_t = orderRepository.findOne(map.get("orderId"));
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
+            order_t.setOrderDateIn(orderDateIn);
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            order_t.setOrderDateOut(orderDateOut);
+            order_t.setOrderAmount(new BigDecimal(map.get("orderAmount")));
+            order_t.setOrderCount(Integer.valueOf(map.get("orderCount")));
+
+            order_t = orderRepository.save(order_t);
+
+            map1.put("orderId", order_t.getOrderId());
+        } catch (Exception e) {
+            log.error("updateOrder() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
+    }
+
+    /**
      * 添加入住人信息
      *
      * @param map
@@ -84,18 +115,61 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResultVO<Object> saveRoomUser(Map<String, String> map) {
 
+        Map<String, String> map1 = new HashMap<>();
         try {
             RoomUser user = new RoomUser();
-            user.setUserId(KeyUtil.genUniqueKey());
+            if (StringUtil.isEmpty(map.get("userId"))) {
+                user.setUserId(KeyUtil.genUniqueKey());
+            } else {
+                user.setUserId(map.get("userId"));
+            }
+
             user.setOrderId(map.get("orderId"));
             user.setUserName(map.get("userName"));
             user.setUserIdentityNo(map.get("userIdentityNo"));
             user.setUserMobile(map.get("userMobile"));
             user.setBuyerId(map.get("buyerId"));
 
-            roomUserRepository.save(user);
+            user = roomUserRepository.save(user);
+            map1.put("userId", user.getUserId());
         } catch (Exception e) {
             log.error("saveRoomUser() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
+    }
+
+    @Override
+    public ResultVO<Object> queryRoomUser(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            RoomUser user = roomUserRepository.findOne(userId);
+            map.put("userId", user.getUserId());
+            map.put("userIdentityNo", user.getUserIdentityNo());
+            map.put("userMobile", user.getUserMobile());
+            map.put("userName", user.getUserName());
+        } catch (Exception e) {
+            log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     * @return
+     */
+    @Override
+    public ResultVO<Object> cancel(String orderId) {
+
+        try {
+            Order_t order_t = orderRepository.findOne(orderId);
+            order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+            orderRepository.save(order_t);
+        } catch (Exception e) {
+            log.error("cancel() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
