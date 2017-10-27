@@ -1,10 +1,5 @@
 package com.lincomb.haiwan.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lincomb.haiwan.enums.ProductStatusEnum;
-import com.lincomb.haiwan.enums.RefundRuleStatusEnum;
-import com.lincomb.haiwan.enums.RefundRuleTypeEnum;
-import com.lincomb.haiwan.util.EnumUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 

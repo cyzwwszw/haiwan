@@ -5,6 +5,7 @@ import com.lincomb.haiwan.enums.ResultEnum;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.service.PayService;
+import com.lincomb.haiwan.vo.ResultVO;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.service.BestPayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,13 @@ public class PayController {
         payService.notify(notifyData);
         return new ModelAndView("success");
     }
+
+
+    @ResponseBody
+    @GetMapping("/refund")
+    public ResultVO<Object> refund(@RequestParam("orderId") String orderId){
+        payService.refund(orderId);
+        return new ResultVO<Object>();
+    }
+
 }

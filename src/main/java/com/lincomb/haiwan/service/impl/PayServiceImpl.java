@@ -87,9 +87,13 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public RefundResponse refund(Order_t order) {
+    public RefundResponse refund(String orderId) {
         RefundRequest refundRequest = new RefundRequest();
         //设置退款金额
+        Order_t order= orderService.findOne(orderId);
+        if(null == order){
+            throw new HaiwanException(ResultEnum.ORDER_NOT_EXIST);
+        }
         Product product = productService.findOne(order.getProductId());
         if(null == product){
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
