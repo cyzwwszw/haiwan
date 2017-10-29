@@ -77,24 +77,12 @@ public class OrderViewServiceImpl implements OrderViewService {
                 OrderVO vo = new OrderVO();
 
                 if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                    Date date = new Date();
-                    Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), date);
-                    System.out.println(view.getCreateTime());
-                    System.out.println(date);
-                    if (minute >= (1000 * 60 * 10)) {
+                    long diff = new Date().getTime() - view.getCreateTime().getTime();
+                    if (diff >= (1000 * 60 * 10)) {
                         Order_t order_t = orderRepository.findOne(view.getOrderId());
                         order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
                         orderRepository.save(order_t);
                         continue;
-                    } else {
-                        long day = minute / (24 * 60 * 60 * 1000);
-                        long hour = (minute / (60 * 60 * 1000) - day * 24);
-                        long min = ((minute / (60 * 1000)) - day * 24 * 60 - hour * 60);
-                        long s = (minute / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-                        System.out.println(min);
-                        System.out.println(s);
-                        map.put("min", min);
-                        map.put("s", s);
                     }
                 }
 
@@ -150,9 +138,12 @@ public class OrderViewServiceImpl implements OrderViewService {
         try {
             Order_view view = orderViewRepository.findTopByOrderId(orderId);
             if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), new Date());
-                int countDown = CountDownEnum.CountDown.getValue() - minute.intValue();
-                vo.setCountDown(countDown);
+                long diff = new Date().getTime() - view.getCreateTime().getTime();
+                if (diff >= (1000 * 60 * 10)) {
+                    Order_t order_t = orderRepository.findOne(view.getOrderId());
+                    order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+                    orderRepository.save(order_t);
+                }
             }
 
             vo.setOrderId(view.getOrderId());

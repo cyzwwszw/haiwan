@@ -68,7 +68,7 @@ public class DateUtil {
      */
     public static long dateDiffMinute(Date beginTime, Date endTime) {
 
-//        long nm = 1000; //一分钟的毫秒数
+//        long nm = 1000*60; //一分钟的毫秒数
         //获得两个时间的毫秒时间差异
         long diff = endTime.getTime() - beginTime.getTime();
 //        long min = diff / nm;//计算差多少分钟
