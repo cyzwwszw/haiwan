@@ -25,4 +25,5 @@ public class OrderVO {
     private BigDecimal productPrice;
     private String orderDate;
     private Map<String, String> refundMap;
+    private Integer countDown;
 }

@@ -22,10 +22,19 @@ public class Test {
 //            System.out.println(1);
 //    }
 
-        Date date = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate("2017-10-29", DateUtil.SIMPLE_DATE_FORMAT));
+        Date date = DateUtil.stringToUtilDate("2017-10-29 11:28:00", DateUtil.SIMPLE_TIME_FORMAT_H);
 
-        if (date.before(new Date()))
-            System.out.println(1);
+//        if (date.before(new Date()))
+//            System.out.println(1);
 
+        System.out.println(date);
+        System.out.println(date.getTime());
+        Date date1 =new Date();
+        System.out.println(date1);
+        System.out.println(date1.getTime());
+        long diff = date1.getTime() - date.getTime();
+        System.out.println(diff);
+        long min = diff / 1000;
+        System.out.println(min);
     }
 }
