@@ -247,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order_t payOrder(String orderId) {
         Order_t order_t = findOne(orderId);
-        order_t.setOrderStatus(OrderStatusEnum.PAY.getCode());
+        order_t.setOrderStatus(OrderStatusEnum.WAIT.getCode());
         return orderRepository.save(order_t);
     }
 
