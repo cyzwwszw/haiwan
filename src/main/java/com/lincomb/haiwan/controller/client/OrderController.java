@@ -68,6 +68,7 @@ public class OrderController {
     @PostMapping("/updateOrder")
     public ResultVO<Object> updateOrder(
             @RequestParam String orderId,
+            @RequestParam String productId,
             @RequestParam String orderDateIn,
             @RequestParam String orderDateOut,
             @RequestParam String orderAmount,
@@ -75,6 +76,7 @@ public class OrderController {
     ) {
 
         if (StringUtil.isEmpty(orderId)
+                || StringUtil.isEmpty(productId)
                 || StringUtil.isEmpty(orderDateIn)
                 || StringUtil.isEmpty(orderDateOut)
                 || StringUtil.isEmpty(orderAmount)
@@ -84,6 +86,7 @@ public class OrderController {
 
         Map<String, String> map = new HashMap<>();
         map.put("orderId", orderId);
+        map.put("productId", productId);
         map.put("orderDateIn", orderDateIn);
         map.put("orderDateOut", orderDateOut);
         map.put("orderAmount", orderAmount);
