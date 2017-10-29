@@ -1,11 +1,9 @@
 package com.lincomb.haiwan.service.impl;
 
 import com.lincomb.haiwan.domain.*;
-import com.lincomb.haiwan.enums.OrderStatusEnum;
-import com.lincomb.haiwan.enums.RespCode;
-import com.lincomb.haiwan.enums.RespMsg;
-import com.lincomb.haiwan.enums.ResultEnum;
+import com.lincomb.haiwan.enums.*;
 import com.lincomb.haiwan.exception.HaiwanException;
+import com.lincomb.haiwan.repository.OrderRepository;
 import com.lincomb.haiwan.repository.OrderViewRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
 import com.lincomb.haiwan.service.OrderService;
@@ -39,9 +37,7 @@ public class OrderViewServiceImpl implements OrderViewService {
     @Autowired
     private RoomUserRepository roomUserRepository;
     @Autowired
-    private OrderService orderService;
-    @Autowired
-    private ProductService productService;
+    private OrderRepository orderRepository;
     @Autowired
     private RefundRuleService refundRuleService;
 
@@ -74,9 +70,22 @@ public class OrderViewServiceImpl implements OrderViewService {
             Page<Order_view> orderViewPage = orderViewRepository.findAll(ex, request);
             List<OrderVO> orderVOList = new ArrayList<>();
 
+            int countDown = 0; //倒计时
+            List<Integer> countDownList = new ArrayList<>();
             for (Order_view view : orderViewPage.getContent()) {
                 if (view.getOrderStatus() == OrderStatusEnum.CANCEL.getCode()) {
                     continue;
+                }
+                if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
+                    Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), new Date());
+                    if (minute >= 10) {
+                        Order_t order_t = orderRepository.findOne(view.getOrderId());
+                        order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+                        orderRepository.save(order_t);
+                        continue;
+                    } else {
+                        countDownList.add(CountDownEnum.CountDown.getValue() - minute.intValue());
+                    }
                 }
                 OrderVO vo = new OrderVO();
                 vo.setOrderId(view.getOrderId());
@@ -88,27 +97,17 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setProductPrice(view.getProductPrice());
                 vo.setOrderCount(view.getOrderCount());
                 vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
-                vo.setOrderDate(DateUtil.getFormatDateTime(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+                vo.setOrderDate(DateUtil.toDateTimeString(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
                 if (view.getOrderStatus() == OrderStatusEnum.WAIT.getCode()) {
                     Map<String, String> map1 = new HashMap<>();
-
-                    Order_t order = orderService.findOne(view.getOrderId());
-                    if (null == order) {
-                        throw new HaiwanException(ResultEnum.ORDER_NOT_EXIST);
-                    }
-                    Product product = productService.findOne(order.getProductId());
-                    if (null == product) {
-                        throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST);
-                    }
-
-                    RefundRule refundRule = refundRuleService.findByRuleNo(product.getRuleNo());
+                    RefundRule refundRule = refundRuleService.findByRuleNo(view.getRuleNo());
                     if (null == refundRule) {
                         throw new HaiwanException(ResultEnum.REFUND_NOT_EXIST);
                     }
                     //设置退款金额
-                    BigDecimal refundAmountB = order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100)));
-                    BigDecimal poundageB = order.getOrderAmount().subtract(refundAmountB);
+                    BigDecimal refundAmountB = view.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100)));
+                    BigDecimal poundageB = view.getOrderAmount().subtract(refundAmountB);
                     Double refundAmountD = refundAmountB.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
                     Double poundageD = poundageB.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
 
@@ -119,6 +118,12 @@ public class OrderViewServiceImpl implements OrderViewService {
                 orderVOList.add(vo);
             }
             map.put("orderVOList", orderVOList);
+
+            if (countDownList != null || countDownList.isEmpty()) {
+                countDownList.sort(Comparator.reverseOrder());
+                countDown = countDownList.get(0).intValue();
+            }
+            map.put("countDown", countDown);
             map.put("isLast", orderViewPage.isLast());
             map.put("isFirst", orderViewPage.isFirst());
         } catch (Exception e) {
@@ -140,6 +145,9 @@ public class OrderViewServiceImpl implements OrderViewService {
         OrderDetailsVO vo = new OrderDetailsVO();
         try {
             Order_view view = orderViewRepository.findTopByOrderId(orderId);
+            Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), new Date());
+            Integer countDown = CountDownEnum.CountDown.getValue() - minute.intValue();
+            vo.setCountDown(countDown);
             vo.setOrderId(view.getOrderId());
             vo.setProductId(view.getProductId());
             vo.setProductName(view.getProductName());
@@ -149,9 +157,9 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setProductPrice(view.getProductPrice());
             vo.setOrderCount(view.getOrderCount());
             vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
-            vo.setOrderDate(DateUtil.getFormatDateTime(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
-            vo.setOrderDateIn(DateUtil.getFormatDateTime(view.getOrderDateIn(), DateUtil.SIMPLE_DATE_FORMAT));
-            vo.setOrderDateOut(DateUtil.getFormatDateTime(view.getOrderDateOut(), DateUtil.SIMPLE_DATE_FORMAT));
+            vo.setOrderDate(DateUtil.toDateTimeString(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            vo.setOrderDateIn(DateUtil.toDateTimeString(view.getOrderDateIn(), DateUtil.SIMPLE_DATE_FORMAT));
+            vo.setOrderDateOut(DateUtil.toDateTimeString(view.getOrderDateOut(), DateUtil.SIMPLE_DATE_FORMAT));
 
             RoomUser user = roomUserRepository.findTopByOrderId(orderId);
             if (user != null) {

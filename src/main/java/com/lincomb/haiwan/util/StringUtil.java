@@ -2,6 +2,8 @@
 package com.lincomb.haiwan.util;
 
 
+import com.lincomb.haiwan.enums.ProductTypeEnum;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -55,7 +57,8 @@ public class StringUtil {
     }
 
     /**
-     *  格式化钱
+     * 格式化钱
+     *
      * @param currency
      * @return
      */

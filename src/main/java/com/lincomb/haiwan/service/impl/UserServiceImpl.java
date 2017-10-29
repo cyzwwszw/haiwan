@@ -3,7 +3,6 @@ package com.lincomb.haiwan.service.impl;
 import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.SendMessageRecord;
 import com.lincomb.haiwan.domain.SystemSetting;
-import com.lincomb.haiwan.enums.Constants;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.enums.SmsEnum;
@@ -16,8 +15,6 @@ import com.lincomb.haiwan.util.KeyUtil;
 import com.lincomb.haiwan.util.SendMsgsUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,7 +98,7 @@ public class UserServiceImpl implements UserService {
             String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
                 log.error(msgsContent);
-                SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
+                SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent);
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
@@ -129,11 +126,11 @@ public class UserServiceImpl implements UserService {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
         }
         try {
-            SystemSetting betweenMinLimit = systemSettingRepository.findTopByName(Constants.BETWEEN_MIN_LIMIT);
+            SystemSetting betweenMinLimit = systemSettingRepository.findTopByName(SmsEnum.BETWEEN_MIN_LIMIT.getValue());
             if (betweenMinLimit == null) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_BETWEEN_LIMIT);
             }
-            SystemSetting dailyMaxLimit = systemSettingRepository.findTopByName(Constants.DAILY_MAX_LIMIT);
+            SystemSetting dailyMaxLimit = systemSettingRepository.findTopByName(SmsEnum.DAILY_MAX_LIMIT.getValue());
             if (dailyMaxLimit == null) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_DAILY_LIMIT);
             }
@@ -168,7 +165,7 @@ public class UserServiceImpl implements UserService {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
             }
 
-            SystemSetting effectiveTime = systemSettingRepository.findTopByName(Constants.EFFECTIVE_TIME_LIMIT);
+            SystemSetting effectiveTime = systemSettingRepository.findTopByName(SmsEnum.EFFECTIVE_TIME_LIMIT.getValue());
             if (effectiveTime == null) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_EFFECTIVE_LIMIT);
             }
@@ -185,8 +182,8 @@ public class UserServiceImpl implements UserService {
             sendCalendar.setTime(sendMessageRecord.getEndSetupTime());
             sendCalendar.add(Calendar.MINUTE, Integer.valueOf(effectiveTime.getValue()));
 
-            log.info("当前时间：" + DateUtil.getFormatDateTime(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
-            log.info("发送短信时间：" + DateUtil.getFormatDateTime(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("当前时间：" + DateUtil.toDateTimeString(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("发送短信时间：" + DateUtil.toDateTimeString(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
             if (curCalendar.after(sendCalendar)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.MSG_INVALID);
