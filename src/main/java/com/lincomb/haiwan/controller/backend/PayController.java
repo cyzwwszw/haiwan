@@ -35,6 +35,7 @@ public class PayController {
 
     @GetMapping("/create")
     public ModelAndView create(@RequestParam("orderId")String orderId,
+                               @RequestParam("openId")String openId,
                                Map<String,Object> map){
 
         //1 查询订单
@@ -44,6 +45,7 @@ public class PayController {
         }
 
         //2 发起支付
+        order.setOpenId(openId);
         PayResponse payResponse = payService.create(order);
         map.put("payResponse",payResponse) ;
         map.put("returnUrl",wechatAccountConfig.getReturnUrl());

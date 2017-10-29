@@ -1,9 +1,6 @@
 package com.lincomb.haiwan.controller.backend;
 
 import com.lincomb.haiwan.domain.Buyer;
-import com.lincomb.haiwan.domain.Category;
-import com.lincomb.haiwan.domain.Product;
-import com.lincomb.haiwan.domain.RefundRule;
 import com.lincomb.haiwan.service.BuyerService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
