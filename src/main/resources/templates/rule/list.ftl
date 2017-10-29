@@ -12,7 +12,7 @@
                 <div class="col-md-12 column">
                     <h3 class="page-header">退票查询</h3>
                 </div>
-                <div class="col-md-6 column">
+                <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>
