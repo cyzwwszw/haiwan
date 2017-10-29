@@ -34,13 +34,11 @@ public class SendMessageRecord {
     public SendMessageRecord() {
     }
 
-    public SendMessageRecord(String mobile, Date endSetupTime, String valicode, Integer invalidFlag, String msgsContent, Date createTime, Date updateTime) {
+    public SendMessageRecord(String mobile, Date endSetupTime, String valicode, Integer invalidFlag, String msgsContent) {
         this.mobile = mobile;
         this.endSetupTime = endSetupTime;
         this.valicode = valicode;
         this.invalidFlag = invalidFlag;
         this.msgsContent = msgsContent;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
     }
 }

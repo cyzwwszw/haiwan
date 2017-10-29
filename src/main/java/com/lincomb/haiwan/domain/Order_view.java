@@ -23,40 +23,26 @@ public class Order_view {
 
     @Id
     private String orderId;
-
     private Integer orderCount;
-
     private BigDecimal orderAmount;
-
     private BigDecimal productPrice;
-
     private Integer orderStatus;
-
     private Integer payType;
-
     private Integer orderChannel;
-
     private Date orderDateOut;
-
     private Date orderDateIn;
-
     private Date createTime;
-
     private String productId;
-
     private String productName;
-
     private Integer productType;
-
     private String buyerId;
-
     private String buyerMobile;
-
     private Integer categoryId;
-
     private String categoryName;
-
     private String productPic;
+    private String ruleNo;
+
+
 
     @JsonIgnore
     public ProductTypeEnum getProductTypeEnum() {

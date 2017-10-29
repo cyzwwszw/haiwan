@@ -10,6 +10,7 @@ public enum OrderStatusEnum implements CodeEnum {
     OVERTIME(5, "已过期"),
     REFUND_ING(6, "退款中"),
     REFUND(7, "已退款");
+
     private Integer code;
 
     private String message;

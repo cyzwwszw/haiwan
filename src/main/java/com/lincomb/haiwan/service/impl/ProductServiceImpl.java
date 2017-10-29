@@ -6,6 +6,7 @@ import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.util.EnumUtil;
 import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ProductDetailsVO;
@@ -155,9 +156,8 @@ public class ProductServiceImpl implements ProductService {
             items.forEach(
                     item -> {
                         Map<String, String> map1 = new HashMap<>();
-                        map1.put("itemTitle", ServicesEnum.WIFI.getText());
+                        map1.put("itemTitle", item.getItemName());
                         map1.put("itemDescription", item.getItemDescription());
-                        maps.add(map1);
                         strings.add(map1);
                     });
             detailsVO.setItemDescriptionList(strings);
@@ -184,7 +184,8 @@ public class ProductServiceImpl implements ProductService {
             PageRequest request = new PageRequest(page - 1, size, sort);
             Page<Photo> photoPage = photoRepository.findAll(ex, request);
             photoPage.getContent().forEach(
-                    p -> list.add(FastDFSUtil.DOWNLOAD_PATH + p.getPhotoUrl()));
+                    p -> list.add(p.getPhotoUrl()));
+//            FastDFSUtil.DOWNLOAD_PATH +
             map.put("photoUrlList", list);
             map.put("isLast", photoPage.isLast());
             map.put("isFirst", photoPage.isFirst());
@@ -225,7 +226,8 @@ public class ProductServiceImpl implements ProductService {
                 vo.setProductAddress(StringUtil.null2String(o[2]));
                 vo.setProductPrice(new BigDecimal(StringUtil.null2String(o[3])));
                 vo.setProductPic(StringUtil.null2String(o[4]));
-                vo.setProductType(StringUtil.null2String(o[5]));
+                vo.setProductType(StringUtil.null2String(o[5]) == "" ? "" : EnumUtil.getByCode(
+                        Integer.valueOf(StringUtil.null2String(o[5])), ProductTypeEnum.class).getMessage());
 
                 List<String> list = new ArrayList<>();
                 if (StringUtil.null2String(o[6]).equals("0")) {
@@ -244,13 +246,13 @@ public class ProductServiceImpl implements ProductService {
 
                 if (!StringUtil.isEmpty(map.get("orderDateIn"))) {
                     Date date2 = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-                    vo.setOrderDateIn(DateUtil.getFormatDateTime(date2, DateUtil.SIMPLE_DATE_FORMAT_CN));
+                    vo.setOrderDateIn(DateUtil.toDateTimeString(date2, DateUtil.SIMPLE_DATE_FORMAT_CN));
                 } else {
                     vo.setOrderDateIn("");
                 }
                 if (!StringUtil.isEmpty(map.get("orderDateOut"))) {
                     Date date1 = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
-                    vo.setOrderDateOut(DateUtil.getFormatDateTime(date1, DateUtil.SIMPLE_DATE_FORMAT_CN));
+                    vo.setOrderDateOut(DateUtil.toDateTimeString(date1, DateUtil.SIMPLE_DATE_FORMAT_CN));
                 } else {
                     vo.setOrderDateOut("");
                 }

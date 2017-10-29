@@ -1,5 +1,6 @@
 package com.lincomb.haiwan.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -13,9 +14,10 @@ import java.util.Map;
  * @Description:
  * @Date: created on 下午5:20 17/10/23
  */
+@Slf4j
 public class UploadUtil {
 
-    public static String upload(HttpServletRequest request){
+    public static String upload(HttpServletRequest request) {
         StringBuffer pictureUrl = new StringBuffer(); // 图片地址
         try {
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
@@ -25,14 +27,13 @@ public class UploadUtil {
             if (multipartResolver.isMultipart(request)) {
                 MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
                 Map<String, MultipartFile> fileMap = mRequest.getFileMap();
-                System.out.println("图片集合的长度：" + fileMap.size());
+                log.info("图片集合的长度为：" + fileMap.size());
                 Iterator<Map.Entry<String, MultipartFile>> it = fileMap.entrySet().iterator();
                 int i = 0;
                 while (it.hasNext()) {
                     Map.Entry<String, MultipartFile> entry = it.next();
                     MultipartFile mFile = entry.getValue();
-                    System.out.println("第" + (i + 1) + "次进入上传图片方法");
-
+                    log.info("第" + (i + 1) + "次进入上传图片方法里");
                     if (!mFile.isEmpty()) {
                         if (i != 0) {
                             pictureUrl.append(",");
@@ -42,16 +43,16 @@ public class UploadUtil {
                         if (!StringUtil.isEmpty(path)) {
                             pictureUrl.append(path);
                         } else {
-                            System.out.println("图片上传失败");
+                            log.info("图片上传失败");
                         }
                     }
                     i++;
                 }
             } else {
-                System.out.println("没有文件上传");
+                log.info("没有文件上传");
             }
         } catch (Exception e) {
-            System.out.println("register Exception:[" + e.getMessage() + "]");
+            log.error("register Exception:[" + e.getMessage() + "]");
         }
         return pictureUrl.toString();
     }

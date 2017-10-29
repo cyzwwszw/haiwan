@@ -25,6 +25,8 @@ public interface OrderService {
 
     Order_t refundOrder(String orderId);
 
+    Order_t overtimeOrder(String orderId);
+
     /**
      * 预定
      *
