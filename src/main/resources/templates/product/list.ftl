@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="row clearfix">
-                    <div class="col-md-6 column">
+                    <div class="col-md-12 column">
                         <table class="table table-bordered table-condensed">
                             <thead>
                             <tr>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td>${product.productId}</td>
                                 <td>${product.productName}</td>
-                                <td>${product.categoryName}</td>
+                                <#--<td>${product.categoryName}</td>-->
                                 <td>${product.getProductTypeEnum().message}</td>
                                 <td>${product.getProductStatusEnum().message}</td>
                                 <td>${product.createTime}</td>
