@@ -18,14 +18,14 @@ import java.util.Date;
 @Slf4j
 public class SchedulingConfig {
 
-    @Autowired
-    private TimedTasksService timedTasksService;
-
-    @Scheduled(fixedDelay = 1000 * 60 * 10)
-    public void tasksEveryTenMinutes() {
-        log.info(DateUtil.toDateTimeString(new Date(), DateUtil.TIMESTAMP_PATTERN) + " >>>进入tasksEveryTenMinutes()方法...");
-        timedTasksService.cancelOrderTasks();
-        timedTasksService.overtimeOrderTasks();
-        log.info(DateUtil.toDateTimeString(new Date(), DateUtil.TIMESTAMP_PATTERN) + " >>>退出tasksEveryTenMinutes()方法...");
-    }
+//    @Autowired
+//    private TimedTasksService timedTasksService;
+//
+//    @Scheduled(fixedDelay = 1000 * 60 * 10)
+//    public void tasksEveryTenMinutes() {
+//        log.info(DateUtil.toDateTimeString(new Date(), DateUtil.TIMESTAMP_PATTERN) + " >>>进入tasksEveryTenMinutes()方法...");
+//        timedTasksService.cancelOrderTasks();
+//        timedTasksService.overtimeOrderTasks();
+//        log.info(DateUtil.toDateTimeString(new Date(), DateUtil.TIMESTAMP_PATTERN) + " >>>退出tasksEveryTenMinutes()方法...");
+//    }
 }

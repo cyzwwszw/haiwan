@@ -70,24 +70,22 @@ public class OrderViewServiceImpl implements OrderViewService {
             Page<Order_view> orderViewPage = orderViewRepository.findAll(ex, request);
             List<OrderVO> orderVOList = new ArrayList<>();
 
-            int countDown = 0; //倒计时
-            List<Integer> countDownList = new ArrayList<>();
             for (Order_view view : orderViewPage.getContent()) {
                 if (view.getOrderStatus() == OrderStatusEnum.CANCEL.getCode()) {
                     continue;
                 }
+                OrderVO vo = new OrderVO();
+
                 if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                    Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), new Date());
-                    if (minute >= 10) {
+                    long diff = new Date().getTime() - view.getCreateTime().getTime();
+                    if (diff >= (1000 * 60 * 10)) {
                         Order_t order_t = orderRepository.findOne(view.getOrderId());
                         order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
                         orderRepository.save(order_t);
                         continue;
-                    } else {
-                        countDownList.add(CountDownEnum.CountDown.getValue() - minute.intValue());
                     }
                 }
-                OrderVO vo = new OrderVO();
+
                 vo.setOrderId(view.getOrderId());
                 vo.setProductId(view.getProductId());
                 vo.setProductName(view.getProductName());
@@ -118,12 +116,6 @@ public class OrderViewServiceImpl implements OrderViewService {
                 orderVOList.add(vo);
             }
             map.put("orderVOList", orderVOList);
-
-            if (countDownList != null || countDownList.isEmpty()) {
-                countDownList.sort(Comparator.reverseOrder());
-                countDown = countDownList.get(0).intValue();
-            }
-            map.put("countDown", countDown);
             map.put("isLast", orderViewPage.isLast());
             map.put("isFirst", orderViewPage.isFirst());
         } catch (Exception e) {
@@ -145,9 +137,15 @@ public class OrderViewServiceImpl implements OrderViewService {
         OrderDetailsVO vo = new OrderDetailsVO();
         try {
             Order_view view = orderViewRepository.findTopByOrderId(orderId);
-            Long minute = DateUtil.dateDiffMinute(view.getCreateTime(), new Date());
-            Integer countDown = CountDownEnum.CountDown.getValue() - minute.intValue();
-            vo.setCountDown(countDown);
+            if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
+                long diff = new Date().getTime() - view.getCreateTime().getTime();
+                if (diff >= (1000 * 60 * 10)) {
+                    Order_t order_t = orderRepository.findOne(view.getOrderId());
+                    order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+                    orderRepository.save(order_t);
+                }
+            }
+
             vo.setOrderId(view.getOrderId());
             vo.setProductId(view.getProductId());
             vo.setProductName(view.getProductName());

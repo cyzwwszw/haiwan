@@ -28,7 +28,6 @@ public class OrderDetailsVO {
     private String userName;
     private String userIdentityNo;
     private String userMobile;
-    private Integer countDown;
 
 
 }

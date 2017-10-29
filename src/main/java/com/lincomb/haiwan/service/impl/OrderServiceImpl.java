@@ -66,11 +66,13 @@ public class OrderServiceImpl implements OrderService {
             Integer orderCount = Integer.valueOf(map.get("orderCount"));
 
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
+                log.error("时间验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
             if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+                log.error("产品数量验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
             Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
@@ -80,6 +82,7 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
             if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
+                log.error("总金额验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 

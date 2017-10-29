@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
             String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
                 log.error(msgsContent);
-                SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent);
+                SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
