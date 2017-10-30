@@ -18,7 +18,7 @@
                 <div class="col-md-12 column">
                     <h4 class="page-header">基本信息</h4>
                 </div>
-                <div class="col-md-6 column">
+                <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <tr>
                             <td class="info">昵称</td>
@@ -41,7 +41,7 @@
                 <div class="col-md-12 column">
                     <h4 class="page-header">账户信息</h4>
                 </div>
-                <div class="col-md-6 column">
+                <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <tr>
                             <td class="info">账户号</td>

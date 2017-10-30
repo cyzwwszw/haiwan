@@ -31,11 +31,11 @@
                             </thead>
                             <tbody>
 
-                            <#list productPage.content as product>
+                            <#list productList as product>
                             <tr>
                                 <td>${product.productId}</td>
                                 <td>${product.productName}</td>
-                                <#--<td>${product.categoryName}</td>-->
+                                <td>${product.categoryName}</td>
                                 <td>${product.getProductTypeEnum().message}</td>
                                 <td>${product.getProductStatusEnum().message}</td>
                                 <td>${product.createTime}</td>

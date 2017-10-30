@@ -49,6 +49,9 @@ public class Buyer {
 
     @JsonIgnore
     public BuyerStatusEnum getBuyerStatusEnum(){
-        return EnumUtil.getByCode(buyerStatus, BuyerStatusEnum.class);
+        if (buyerStatus != null){
+            return EnumUtil.getByCode(buyerStatus, BuyerStatusEnum.class);
+        }
+        return BuyerStatusEnum.OFFLINE;
     }
 }
