@@ -15,5 +15,7 @@ import java.util.List;
  * @describe
  * @date 2017/10/24 16:24
  */
-public interface PhotoRepository extends JpaRepository<Photo,String> {
+public interface PhotoRepository extends JpaRepository<Photo, String> {
+
+    List<Photo> findByProductId(String productId);
 }

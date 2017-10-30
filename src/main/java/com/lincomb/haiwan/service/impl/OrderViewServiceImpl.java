@@ -77,8 +77,13 @@ public class OrderViewServiceImpl implements OrderViewService {
                 OrderVO vo = new OrderVO();
 
                 if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                    long diff = new Date().getTime() - view.getCreateTime().getTime();
+                    Date date = new Date();
+                    System.out.println("当前日期：" + date);
+                    System.out.println("订单日期：" + view.getCreateTime());
+                    long diff = date.getTime() - view.getCreateTime().getTime();
+                    System.out.println("相差毫秒数：" + diff);
                     if (diff >= (1000 * 60 * 10)) {
+                        log.info("查询我的订单的取消订单");
                         Order_t order_t = orderRepository.findOne(view.getOrderId());
                         order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
                         orderRepository.save(order_t);
@@ -137,14 +142,6 @@ public class OrderViewServiceImpl implements OrderViewService {
         OrderDetailsVO vo = new OrderDetailsVO();
         try {
             Order_view view = orderViewRepository.findTopByOrderId(orderId);
-            if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                long diff = new Date().getTime() - view.getCreateTime().getTime();
-                if (diff >= (1000 * 60 * 10)) {
-                    Order_t order_t = orderRepository.findOne(view.getOrderId());
-                    order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
-                    orderRepository.save(order_t);
-                }
-            }
 
             vo.setOrderId(view.getOrderId());
             vo.setProductId(view.getProductId());

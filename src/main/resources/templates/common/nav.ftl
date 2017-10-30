@@ -1,12 +1,9 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
     <ul class="nav sidebar-nav">
         <li class="sidebar-brand">
-            <a href="#">
-                后台管理系统
-            </a>
+            <a href="#">后台管理系统</a>
         </li>
-
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 产品 <span class="caret"></span>
             </a>
@@ -17,7 +14,7 @@
             </ul>
         </li>
 
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 订单 <span class="caret"></span>
             </a>
@@ -27,7 +24,7 @@
             </ul>
         </li>
 
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 用户 <span class="caret"></span>
             </a>
@@ -37,7 +34,7 @@
             </ul>
         </li>
 
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 退票 <span class="caret"></span>
             </a>
@@ -48,7 +45,7 @@
             </ul>
         </li>
 
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 类目 <span class="caret"></span>
             </a>
@@ -59,7 +56,7 @@
             </ul>
         </li>
 
-        <li class="dropdown open">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 对账 <span class="caret"></span>
             </a>
@@ -68,8 +65,8 @@
                 <li><a href="/haiwan/backend/accountInfo/list">对账查询</a></li>
             </ul>
         </li>
-        <#--<li>-->
-            <#--<a href="/haiwan/backend/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>-->
-        <#--</li>-->
+    <#--<li>-->
+    <#--<a href="/haiwan/backend/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>-->
+    <#--</li>-->
     </ul>
 </nav>

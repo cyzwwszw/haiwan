@@ -1,18 +1,18 @@
 package com.lincomb.haiwan.controller.backend;
 
-import com.lincomb.haiwan.converter.Product2ProductDTOConverter;
 import com.lincomb.haiwan.domain.Category;
+import com.lincomb.haiwan.domain.Photo;
 import com.lincomb.haiwan.domain.Product;
 import com.lincomb.haiwan.domain.RefundRule;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.form.ProductForm;
 import com.lincomb.haiwan.service.CategoryService;
+import com.lincomb.haiwan.service.PhotoService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.service.RefundRuleService;
-import com.lincomb.haiwan.util.FastDFSUtil;
-import com.lincomb.haiwan.util.KeyUtil;
-import com.lincomb.haiwan.util.StringUtil;
-import com.lincomb.haiwan.util.UploadUtil;
+import com.lincomb.haiwan.util.*;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.ws.rs.GET;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/backend/product/")
+@Slf4j
 public class ProductController {
 
     @Autowired
@@ -49,6 +52,8 @@ public class ProductController {
     
     @Autowired
     RefundRuleService refundRuleService;
+    @Autowired
+    private PhotoService photoService;
 
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -58,11 +63,11 @@ public class ProductController {
         PageRequest request = new PageRequest(page - 1, size,sort);
         Page<Product> productPage = productService.findAll(request);
         map.put("productPage", productPage);
-        map.put("productList", Product2ProductDTOConverter.convert(productPage.getContent(), categoryService.findAll()));
         map.put("currentPage", page);
         map.put("size", size);
         return new ModelAndView("product/list", map);
     }
+
 
     @GetMapping("/index")
     public ModelAndView index(@RequestParam(value = "productId", required = false) String productId, Map<String, Object> map){
@@ -155,5 +160,61 @@ public class ProductController {
         }
         map.put("url","/haiwan/backend/product/list");
         return new ModelAndView("common/success", map);
+    }
+
+    @RequestMapping("/toPictures")
+    public String toPictures() {
+
+        return "product/Pictures";
+    }
+
+    @RequestMapping("/toItem")
+    public String toItem() {
+
+        return "product/Item";
+    }
+
+    @RequestMapping("/savePictures")
+    public ModelAndView savePeictures(HttpServletRequest request, Map<String, Object> map) {
+
+        String productId = request.getParameter("productId");
+        String fileStr = request.getParameter("fileStr");
+        if (!StringUtil.isEmpty(fileStr)) {
+            List<Photo> photos = photoService.findByProductId(productId);
+            photos.forEach(photo -> {
+                photoService.delete(photo.getPhotoId());
+            });
+        }
+        String[] paths = fileStr.split(",");
+        for (int i = 0; i < paths.length; i++) {
+            Photo photo = new Photo();
+            photo.setProductId(productId);
+            photo.setPhotoUrl(paths[i]);
+            photoService.savePhoto(photo);
+        }
+
+        map.put("url", "/haiwan/backend/product/toPictures");
+        return new ModelAndView("common/success", map);
+    }
+
+    @RequestMapping("/upload")
+    @ResponseBody
+    public String upload(@RequestParam MultipartFile files) {
+        String path = "";
+        try {
+            if (!files.isEmpty()) {
+                // 返回文件保存路径
+                path = FastDFSUtil.upload(files);
+                if (StringUtil.isEmpty(path)) {
+                    log.info("图片上传失败");
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("path", path);
+        return JsonUtil.toJSonString(map);
     }
 }
