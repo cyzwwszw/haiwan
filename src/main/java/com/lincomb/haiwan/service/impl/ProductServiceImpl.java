@@ -59,10 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) {
-        Category category = new Category();
-        category.setCategoryType(product.getCategoryId());
-        Example<Category> example = Example.of(category);
-        Category category1 = categoryRepository.findOne(example);
+        Category category1 = categoryRepository.findOne(product.getCategoryId());
         if (category1 == null) {
             throw new HaiwanException(ResultEnum.CATEGORY_NOT_EXIST);
         }

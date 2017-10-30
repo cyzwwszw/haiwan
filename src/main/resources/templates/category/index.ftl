@@ -1,5 +1,6 @@
 <html>
     <#include "../common/header.ftl">
+    <#--<script src="/haiwan/js/categoryForm_validate.js"></script>-->
     <body>
     <div id="wrapper" class="toggled">
 
@@ -15,8 +16,8 @@
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-6 column">
-                        <form role="form" class="form-horizontal" method="post" action="/haiwan/backend/category/save">
+                    <div class="col-md-12 column">
+                        <form id="categoryForm" role="form" class="form-horizontal" method="post" action="/haiwan/backend/category/save">
                             <div class="form-group">
                                 <label  class="col-sm-2 control-label">名称</label>
                                 <div class="col-sm-4">

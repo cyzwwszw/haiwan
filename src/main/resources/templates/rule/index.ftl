@@ -1,5 +1,7 @@
 <html>
 <#include "../common/header.ftl">
+<#--主要内容验证脚本-->
+<script src="/haiwan/js/ruleForm_validate.js"></script>
 <body>
 <div id="wrapper" class="toggled">
 
@@ -15,8 +17,8 @@
             </div>
 
             <div class="row clearfix">
-                <div class="col-md-6 column">
-                    <form role="form" class="form-horizontal" method="post" action="/haiwan/backend/rule/save">
+                <div class="col-md-12 column">
+                    <form id="ruleForm" role="form" class="form-horizontal" method="post" action="/haiwan/backend/rule/save">
                         <div class="form-group">
                             <div class="col-md-12 column">
                                 <h4 class="page-header">基本信息</h4>
@@ -55,7 +57,7 @@
                                     </#if>
                                     >
                                     入住前
-                                    <input type="number" name="ruleDay" value="${(rule.ruleDay)!''}">天
+                                    <input type="number" name="ruleDay" value="${(rule.ruleDay)!'1'}">天
                                 </label>
                                 <label class="radio">
                                     <input type="radio" name="ruleType"  value="0"
@@ -72,7 +74,7 @@
                             <label class="col-sm-2 control-label">折扣率</label>
                             <div class="col-sm-4">
                                 <input name="ruleDiscount" type="number" class="form-control"
-                                       value="${(rule.ruleDiscount)!''}"/>
+                                       value="${(rule.ruleDiscount)!'100'}"/>
                             </div>
                         </div>
 

@@ -1,5 +1,19 @@
 <html>
 <#include "../common/header.ftl">
+<script src="/haiwan/js/productForm_validate.js"></script>
+<script>
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+        if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+            obj.value= parseFloat(obj.value);
+        }
+    }
+</script>
+
+</script>
 <body>
 <div id="wrapper" class="toggled">
 
@@ -14,8 +28,8 @@
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-6 column">
-                    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
+                <div class="col-md-12 column">
+                    <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
                         <div class="col-md-12 column">
                             <h4 class="page-header">基本信息</h4>
                         </div>
@@ -64,10 +78,10 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">类型</label>
                             <div class="col-sm-4">
-                                <select name="categoryType" class="form-control">
+                                <select name="categoryId" class="form-control">
                                 <#list categoryList as category>
-                                    <option value="${category.categoryType}"
-                                        <#if (product.categoryType)?? && product.categoryType == category.categoryType>
+                                    <option value="${category.categoryId}"
+                                        <#if (product.categoryId)?? && product.categoryId == category.categoryId>
                                             selected
                                         </#if>
                                     >
@@ -78,7 +92,7 @@
                             </div>
                             <label class="col-sm-2 control-label">面积</label>
                             <div class="col-sm-4">
-                                <input name="productArea" type="text" class="form-control"
+                                <input name="productArea" type="number" class="form-control"
                                        value="${(product.productArea )!''}"/>
                             </div>
                         </div>
@@ -140,7 +154,7 @@
                             <label class="col-sm-2 control-label">标准价格</label>
                             <div class="col-sm-4">
                                 <input name="productPrice" type="text" class="form-control"
-                                       value="${(product.productPrice?replace(',',''))!''}">
+                                       value="${(product.productPrice?replace(',',''))!''}" onkeyup="clearNoNum(this)">
                             </div>
                             <label class="col-sm-1 control-label">元</label>
                         </div>
@@ -219,21 +233,14 @@
                                     <input type="radio" name="isHaveWifi" value="0"
                                     <#if (product.isHaveWifi)??&&product.isHaveWifi == 0>
                                            checked
-                                    </#if>>无
+                                    </#if>>有
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="isHaveWifi" value="1"
                                     <#if (product.isHaveWifi)??&&product.isHaveWifi == 1>
                                            checked
-                                    </#if>>免费wifi
+                                    </#if>>无
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="isHaveWifi" value="2"
-                                    <#if (product.isHaveWifi)??&&product.isHaveWifi == 2>
-                                           checked
-                                    </#if>>免费有线
-                                </label>
-
                             </div>
 
                         </div>
