@@ -58,9 +58,9 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
         }
 
         sql.append(" ) GROUP BY o.product_id) as residualQuantity " +
-                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE 1=1 ");
+                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE p.product_status=0 ");
         sql1.append(" ) GROUP BY o.product_id) as residualQuantity " +
-                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE 1=1 ");
+                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE p.product_status=0 ");
 
         if (!StringUtil.isEmpty(map.get("categoryType"))) {
             sql.append(" AND c.category_type =" + map.get("categoryType"));
@@ -71,7 +71,7 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
             sql1.append(" AND p.product_type=" + map.get("productType"));
         }
 
-        sql.append(" ORDER BY p.create_time DESC,p.product_name ASC ");
+        sql.append(" ORDER BY p.create_time,p.product_name DESC ");
 
         sql1.append(" ) AS b");
 
@@ -82,10 +82,8 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
 
         List<BigInteger> totals = em.createNativeQuery(sql1.toString()).getResultList();
         BigInteger total = new BigInteger("0");
-        if (totals != null && !totals.isEmpty()) {
-            if (totals.size() == 1) {
-                total.add(totals.get(0));
-            }
+        for (BigInteger integer : totals) {
+            total = total.add(integer);
         }
 
         Pageable pageable = new PageRequest((pageNo - 1), pageSize);

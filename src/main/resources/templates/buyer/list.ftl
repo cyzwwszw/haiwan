@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="row clearfix">
-                    <div class="col-md-6 column">
+                    <div class="col-md-9 column">
                         <table class="table table-bordered table-condensed">
                             <thead>
                             <tr>
@@ -22,7 +22,6 @@
                                 <th>注册日期</th>
                                 <th>联系电话</th>
                                 <th>上次登录时间</th>
-                                <th>状态</th>
                                 <th colspan="3">操作</th>
                             </tr>
                             </thead>
@@ -34,7 +33,6 @@
                                 <td>${buyer.createTime}</td>
                                 <td>${buyer.buyerMobile}</td>
                                 <td>${buyer.updateTime}</td>
-                                <td>${buyer.getBuyerStatusEnum().message}</td>
                                 <td>
                                     <a href="/haiwan/backend/buyer/index?buyerId=${buyer.buyerId}">查看详情</a>
                                 </td>

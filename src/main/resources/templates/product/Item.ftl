@@ -26,9 +26,15 @@
                                 <div id="panel" class="panel panel-default">
                                     <div class="panel-heading">
                                         <label style="font-size: 16px">项目项</label>
-                                        <label style="float: right">
-                                            <button class="btn btn-primary btn-xs">添加</button>
-                                            <button class="btn btn-danger btn-xs" style="display: none;">删除</button>
+                                        <label class="caozuo-1" style="float: right">
+                                            <button type="button" id="tianjia" class="btn btn-primary btn-xs"
+                                                    onclick="tianjian()">
+                                                添加
+                                            </button>
+                                            <button type="button" id="shanchu" class="btn btn-danger btn-xs"
+                                                    style="display: none;">
+                                                删除
+                                            </button>
                                         </label>
                                     </div>
                                     <div class="panel-body">
@@ -78,8 +84,14 @@
 
     function tianjian() {
         var panel = $(".panel");
-        
-        $("#quanbu").append();
+        var i = panel.length - 1;
+
+        $("#quanbu").append(panel[0]);
+        if (panel.length = 4) {
+            $(".panel #caozuo-" + i).hide();
+            $(".panel #caozuo-" + i + " #tianjia").hide();
+        }
+
     }
 
     function shenchu() {
