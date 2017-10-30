@@ -1,5 +1,10 @@
 <html>
 <#include "../common/header.ftl">
+<script>
+    $().ready(function() {
+        $("#commentForm").validate();
+    });
+</script>
 <body>
 <div id="wrapper" class="toggled">
 
@@ -14,7 +19,7 @@
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-6 column">
+                <div class="col-md-12 column">
                     <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
                         <div class="col-md-12 column">
                             <h4 class="page-header">基本信息</h4>
