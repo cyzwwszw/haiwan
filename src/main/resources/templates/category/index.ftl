@@ -1,6 +1,6 @@
 <html>
     <#include "../common/header.ftl">
-    <script src="/haiwan/js/categoryForm_validate.js"></script>
+    <#--<script src="/haiwan/js/categoryForm_validate.js"></script>-->
     <body>
     <div id="wrapper" class="toggled">
 

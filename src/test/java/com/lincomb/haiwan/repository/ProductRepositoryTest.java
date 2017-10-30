@@ -45,7 +45,7 @@ public class ProductRepositoryTest {
         product.setProductStatus(ProductStatusEnum.UP.getCode());
         product.setIsHaveBreakfast(YESNOEnum.YES.getCode());
         product.setIsHaveBathroom(YESNOEnum.YES.getCode());
-        product.setIsHaveWifi(WifiEnum.FREE_WIFI.getCode());
+        product.setIsHaveWifi(YESNOEnum.YES.getCode());
         product.setIsHaveYard(YESNOEnum.YES.getCode());
         product.setEquipment("000001");
         product.setOthers("美女");
