@@ -1,5 +1,7 @@
 package com.lincomb.haiwan.service;
 
+import com.lincomb.haiwan.domain.Item;
+import com.lincomb.haiwan.domain.Photo;
 import com.lincomb.haiwan.domain.Product;
 import com.lincomb.haiwan.vo.ResultVO;
 import org.springframework.data.domain.Page;
@@ -68,4 +70,20 @@ public interface ProductService {
      * @return
      */
     ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId);
+
+    /**
+     * 添加产品图片
+     *
+     * @param photo
+     * @return
+     */
+    Photo savePhoto(Photo photo);
+
+    /**
+     * 添加产品须知
+     *
+     * @param photo
+     * @return
+     */
+    Item saveItem(Item item);
 }

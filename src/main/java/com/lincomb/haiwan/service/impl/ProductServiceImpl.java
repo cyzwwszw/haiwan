@@ -289,6 +289,28 @@ public class ProductServiceImpl implements ProductService {
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }
 
+    /**
+     * 添加产品图片
+     *
+     * @param photo
+     * @return
+     */
+    @Override
+    public Photo savePhoto(Photo photo) {
+        return photoRepository.save(photo);
+    }
+
+    /**
+     * 添加产品须知
+     *
+     * @param item
+     * @return
+     */
+    @Override
+    public Item saveItem(Item item) {
+        return itemRepository.save(item);
+    }
+
 
     /**
      * 私有方法

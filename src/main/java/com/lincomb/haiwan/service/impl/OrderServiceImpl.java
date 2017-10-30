@@ -25,6 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author yongsheng.he
@@ -169,6 +171,22 @@ public class OrderServiceImpl implements OrderService {
 
         Map<String, String> map1 = new HashMap<>();
         try {
+
+            Pattern p = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
+            Matcher m = p.matcher(map.get("userMobile"));
+            if (!m.matches()) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
+            }
+
+            String IDCARD = "((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65)[0-9]{4})" +
+                    "(([1|2][0-9]{3}[0|1][0-9][0-3][0-9][0-9]{3}" +
+                    "[Xx0-9])|([0-9]{2}[0|1][0-9][0-3][0-9][0-9]{3}))";
+            Pattern p1 = Pattern.compile(IDCARD);
+            Matcher m1 = p1.matcher(map.get("userIdentityNo"));
+            if (!m1.matches()) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.IDCARD_ERROR);
+            }
+
             RoomUser user = new RoomUser();
             if (StringUtil.isEmpty(map.get("userId"))) {
                 user.setUserId(KeyUtil.genUniqueKey());
@@ -226,6 +244,7 @@ public class OrderServiceImpl implements OrderService {
             Order_t order_t = orderRepository.findOne(orderId);
             order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
             orderRepository.save(order_t);
+            log.info("取消订单里的取消订单");
         } catch (Exception e) {
             log.error("cancel() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);

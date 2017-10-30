@@ -6,7 +6,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,9 +37,9 @@ public class UploadUtil {
                     MultipartFile mFile = entry.getValue();
                     log.info("第" + (i + 1) + "次进入上传图片方法里");
                     if (!mFile.isEmpty()) {
-                        if (i != 0) {
-                            pictureUrl.append(",");
-                        }
+//                        if (i != 0) {
+//                            pictureUrl.append(",");
+//                        }
                         // 返回文件保存路径
                         String path = FastDFSUtil.upload(mFile);
                         if (!StringUtil.isEmpty(path)) {
@@ -55,5 +57,44 @@ public class UploadUtil {
             log.error("register Exception:[" + e.getMessage() + "]");
         }
         return pictureUrl.toString();
+    }
+
+    public static List<String> uploadList(HttpServletRequest request) {
+        List<String> list = new ArrayList<>();// 图片地址集合
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+                    request.getSession().getServletContext());
+
+            // 判断是否有文件上传
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
+                Map<String, MultipartFile> fileMap = mRequest.getFileMap();
+                log.info("图片集合的长度为：" + fileMap.size());
+                Iterator<Map.Entry<String, MultipartFile>> it = fileMap.entrySet().iterator();
+                int i = 0;
+                while (it.hasNext()) {
+                    Map.Entry<String, MultipartFile> entry = it.next();
+                    System.out.println(entry.getKey());
+                    MultipartFile mFile = entry.getValue();
+                    log.info("第" + (i + 1) + "次进入上传图片方法里");
+                    if (!mFile.isEmpty()) {
+                        System.out.println(mFile.getName());
+                        // 返回文件保存路径
+//                        String path = FastDFSUtil.upload(mFile);
+//                        if (!StringUtil.isEmpty(path)) {
+//                            list.add(path);
+//                        } else {
+//                            log.info("图片上传失败");
+//                        }
+                    }
+                    i++;
+                }
+            } else {
+                log.info("没有文件上传");
+            }
+        } catch (Exception e) {
+            log.error("register Exception:[" + e.getMessage() + "]");
+        }
+        return list;
     }
 }

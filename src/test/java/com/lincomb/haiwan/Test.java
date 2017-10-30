@@ -1,9 +1,14 @@
 package com.lincomb.haiwan;
 
+import com.lincomb.haiwan.enums.RespCode;
+import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.vo.ResultVO;
 import sun.rmi.runtime.Log;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author yongsheng.he
@@ -27,14 +32,15 @@ public class Test {
 //        if (date.before(new Date()))
 //            System.out.println(1);
 
-        System.out.println(date);
-        System.out.println(date.getTime());
-        Date date1 =new Date();
-        System.out.println(date1);
-        System.out.println(date1.getTime());
-        long diff = date1.getTime() - date.getTime();
-        System.out.println(diff);
-        long min = diff / 1000;
-        System.out.println(min);
+        String IDCARD="((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65)[0-9]{4})" +
+                "(([1|2][0-9]{3}[0|1][0-9][0-3][0-9][0-9]{3}" +
+                "[Xx0-9])|([0-9]{2}[0|1][0-9][0-3][0-9][0-9]{3}))";
+        Pattern p1 = Pattern.compile(IDCARD);
+        Matcher m1 = p1.matcher("740326199505126715");
+        if (!m1.matches()) {
+            System.out.println(1);
+        }else {
+            System.out.println(2);
+        }
     }
 }
