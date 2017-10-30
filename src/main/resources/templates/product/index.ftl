@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">类型</label>
                             <div class="col-sm-4">
-                                <select name="categoryType" class="form-control">
+                                <select name="categoryId" class="form-control">
                                 <#list categoryList as category>
                                     <option value="${category.categoryId}"
                                         <#if (product.categoryId)?? && product.categoryId == category.categoryId>
