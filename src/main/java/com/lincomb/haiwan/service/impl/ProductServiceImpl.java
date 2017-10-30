@@ -43,8 +43,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private RefundRuleRepository refundRuleRepository;
     @Autowired
-    private PhotoRepository photoRepository;
-    @Autowired
     private QueryProductRepository queryProductRepository;
 
     @Override
@@ -169,30 +167,6 @@ public class ProductServiceImpl implements ProductService {
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, detailsVO);
     }
 
-    @Override
-    public ResultVO<Object> queryPictures(String productId, Integer page, Integer size) {
-        List<String> list = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-        try {
-            Photo photo = new Photo();
-            photo.setProductId(productId);
-            Example<Photo> ex = Example.of(photo);
-            Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-            PageRequest request = new PageRequest(page - 1, size, sort);
-            Page<Photo> photoPage = photoRepository.findAll(ex, request);
-            photoPage.getContent().forEach(
-                    p -> list.add(p.getPhotoUrl()));
-//            FastDFSUtil.DOWNLOAD_PATH +
-            map.put("photoUrlList", list);
-            map.put("isLast", photoPage.isLast());
-            map.put("isFirst", photoPage.isFirst());
-        } catch (Exception e) {
-            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
-        }
-        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
-    }
-
     /**
      * 根据入住时间，结束时间，类目，类型查询
      *
@@ -286,16 +260,6 @@ public class ProductServiceImpl implements ProductService {
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }
 
-    /**
-     * 添加产品图片
-     *
-     * @param photo
-     * @return
-     */
-    @Override
-    public Photo savePhoto(Photo photo) {
-        return photoRepository.save(photo);
-    }
 
     /**
      * 添加产品须知
@@ -306,6 +270,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Item saveItem(Item item) {
         return itemRepository.save(item);
+    }
+
+    @Override
+    public List<Item> findByProductId(String productId) {
+        return itemRepository.findByProductId(productId);
     }
 
 

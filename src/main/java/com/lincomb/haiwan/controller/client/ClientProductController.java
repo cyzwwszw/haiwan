@@ -4,6 +4,7 @@ import com.lincomb.haiwan.domain.Category;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.service.CategoryService;
+import com.lincomb.haiwan.service.PhotoService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
@@ -33,6 +34,8 @@ public class ClientProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private PhotoService photoService;
 
     /**
      * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
@@ -105,7 +108,7 @@ public class ClientProductController {
         if (StringUtil.isEmpty(productId)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
-        ResultVO<Object> result = productService.queryPictures(productId, page, size);
+        ResultVO<Object> result = photoService.queryPictures(productId, page, size);
         return result;
     }
 

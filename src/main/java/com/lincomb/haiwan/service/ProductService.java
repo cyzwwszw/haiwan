@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,16 +43,6 @@ public interface ProductService {
     ResultVO<Object> queryProductDetails(String productId);
 
     /**
-     * 查询图片
-     *
-     * @param productId
-     * @param page
-     * @param size
-     * @return
-     */
-    ResultVO<Object> queryPictures(String productId, Integer page, Integer size);
-
-    /**
      * 根据入住时间，结束时间，类目，类型查询
      *
      * @param map
@@ -72,18 +63,18 @@ public interface ProductService {
     ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId);
 
     /**
-     * 添加产品图片
-     *
-     * @param photo
-     * @return
-     */
-    Photo savePhoto(Photo photo);
-
-    /**
-     * 添加产品须知
+     * 添加/修改产品须知
      *
      * @param photo
      * @return
      */
     Item saveItem(Item item);
+
+    /**
+     * 根据产品ID查询产品须知
+     *
+     * @param productId
+     * @return
+     */
+    List<Item> findByProductId(String productId);
 }

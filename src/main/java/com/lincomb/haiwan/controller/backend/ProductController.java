@@ -7,6 +7,7 @@ import com.lincomb.haiwan.domain.RefundRule;
 import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.form.ProductForm;
 import com.lincomb.haiwan.service.CategoryService;
+import com.lincomb.haiwan.service.PhotoService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.service.RefundRuleService;
 import com.lincomb.haiwan.util.*;
@@ -45,12 +46,12 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
-
     @Autowired
     CategoryService categoryService;
-
     @Autowired
     RefundRuleService refundRuleService;
+    @Autowired
+    private PhotoService photoService;
 
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -177,12 +178,18 @@ public class ProductController {
 
         String productId = request.getParameter("productId");
         String fileStr = request.getParameter("fileStr");
+        if (!StringUtil.isEmpty(fileStr)) {
+            List<Photo> photos = photoService.findByProductId(productId);
+            photos.forEach(photo -> {
+                photoService.delete(photo.getPhotoId());
+            });
+        }
         String[] paths = fileStr.split(",");
         for (int i = 0; i < paths.length; i++) {
             Photo photo = new Photo();
             photo.setProductId(productId);
             photo.setPhotoUrl(paths[i]);
-            productService.savePhoto(photo);
+            photoService.savePhoto(photo);
         }
 
         map.put("url", "/haiwan/backend/product/toPictures");
