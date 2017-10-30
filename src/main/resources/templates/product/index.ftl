@@ -80,8 +80,8 @@
                             <div class="col-sm-4">
                                 <select name="categoryType" class="form-control">
                                 <#list categoryList as category>
-                                    <option value="${category.categoryType}"
-                                        <#if (product.categoryType)?? && product.categoryType == category.categoryType>
+                                    <option value="${category.categoryId}"
+                                        <#if (product.categoryId)?? && product.categoryId == category.categoryId>
                                             selected
                                         </#if>
                                     >
