@@ -34,8 +34,8 @@ public class OrderViewController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
-                             @RequestParam(value = "buyerPhone") String buyerPhone,
-                             @RequestParam(value = "orderStatus") Integer orderStatus,
+                             @RequestParam(value = "buyerPhone", required = false) String buyerPhone,
+                             @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
                              Map<String, Object> map){
         Sort sort =new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size,sort);
