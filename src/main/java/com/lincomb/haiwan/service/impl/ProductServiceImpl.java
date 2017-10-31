@@ -196,7 +196,7 @@ public class ProductServiceImpl implements ProductService {
                 vo.setProductName(StringUtil.null2String(o[1]));
                 vo.setProductAddress(StringUtil.null2String(o[2]));
                 vo.setProductPrice(new BigDecimal(StringUtil.null2String(o[3])));
-                vo.setProductPic(StringUtil.null2String(o[4]));
+                vo.setProductPic(StringUtil.null2String(o[4]) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + o[4].toString());
                 vo.setProductType(StringUtil.null2String(o[5]) == "" ? "" : EnumUtil.getByCode(
                         Integer.valueOf(StringUtil.null2String(o[5])), ProductTypeEnum.class).getMessage());
 
@@ -275,6 +275,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Item> findByProductId(String productId) {
         return itemRepository.findByProductId(productId);
+    }
+
+    @Override
+    public Item findOneItem(String itemId) {
+        return itemRepository.findOne(itemId);
     }
 
 

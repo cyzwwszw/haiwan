@@ -77,4 +77,6 @@ public interface ProductService {
      * @return
      */
     List<Item> findByProductId(String productId);
+
+    Item findOneItem(String itemId);
 }
