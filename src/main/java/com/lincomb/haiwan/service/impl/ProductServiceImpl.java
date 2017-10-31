@@ -115,7 +115,8 @@ public class ProductServiceImpl implements ProductService {
             detailsVO.setProductDescription(product.getProductDescription());
             detailsVO.setProductAddress(product.getProductAddress());
             detailsVO.setProductPrice(product.getProductPrice());
-            detailsVO.setProductPic(FastDFSUtil.DOWNLOAD_PATH + product.getProductPic());
+
+            detailsVO.setProductPic(StringUtil.null2String(product.getProductPic()) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + product.getProductPic());
             List<Map<String, String>> maps = new ArrayList<>();
 
             if (product.getIsHaveYard() == 0) {
@@ -308,8 +309,8 @@ public class ProductServiceImpl implements ProductService {
                     break;
                 case "3":
                     Map<String, String> map3 = new HashMap<>();
-                    map3.put("text", ServicesEnum.FRIG.getText());
-                    map3.put("src", ServicesEnum.FRIG.getSrc());
+                    map3.put("text", ServicesEnum.PC.getText());
+                    map3.put("src", ServicesEnum.PC.getSrc());
                     maps.add(map3);
                     break;
                 case "4":

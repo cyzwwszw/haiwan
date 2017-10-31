@@ -36,9 +36,9 @@ public class OrderViewController {
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                              @RequestParam(value = "buyerPhone", required = false) String buyerPhone,
                              @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
-                             Map<String, Object> map){
-        Sort sort =new Sort(Sort.Direction.DESC, "createTime");
-        PageRequest request = new PageRequest(page - 1, size,sort);
+                             Map<String, Object> map) {
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        PageRequest request = new PageRequest(page - 1, size, sort);
         Page<Order_view> orderPage = orderViewService.findAll(request, buyerPhone, orderStatus);
         map.put("buyerPhone", buyerPhone);
         map.put("orderStatus", orderStatus);
@@ -50,8 +50,8 @@ public class OrderViewController {
 
 
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "orderId") String orderId, Map<String, Object> map){
-        if(!StringUtils.isEmpty(orderId)){
+    public ModelAndView index(@RequestParam(value = "orderId") String orderId, Map<String, Object> map) {
+        if (!StringUtils.isEmpty(orderId)) {
         }
         return new ModelAndView("order/index", map);
     }
