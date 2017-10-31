@@ -98,7 +98,7 @@
                             <th>支付金额（元）</th>
                             <th>下单时间</th>
                             <th>产品状态</th>
-                            <th>操作</th>
+                            <th colspan="2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -116,6 +116,11 @@
                             <td>${orderDTO.getOrderStatusEnum().message}</td>
                             <td>
                                 <a href="/haiwan/backend/order/index?orderId=${orderDTO.orderId}">详情</a>
+                            </td>
+                            <td>
+                                <#if orderDTO.getOrderStatusEnum().message == '待使用'>
+                                    <a href="/haiwan/backend/order/finish?orderId=${orderDTO.orderId}">使用</a>
+                                </#if>
                             </td>
                         </tr>
                         </#list>
