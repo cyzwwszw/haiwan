@@ -21,20 +21,20 @@
                 <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <tr>
-                            <td class="info">昵称</td>
-                            <td>${(buyer.buyerWechatname )!''}</td>
-                            <td class="info">联系电话</td>
-                            <td>${(buyer.buyerMobile )!''}</td>
-                            <td class="info">头像</td>
-                            <td><img height="80" src="${(buyer.buyerWechatpic )!''}"></td>
+                            <td class="info col-md-2">昵称</td>
+                            <td class="col-md-2">${(buyer.buyerWechatname )!''}</td>
+                            <td class="info col-md-2">联系电话</td>
+                            <td class="col-md-2">${(buyer.buyerMobile )!''}</td>
+                            <td class="info col-md-2">头像</td>
+                            <td class="col-md-2"><img height="80" src="${(buyer.buyerWechatpic )!''}"></td>
                         </tr>
                         <tr>
-                            <td class="info">实名</td>
-                            <td>${(buyer.buyerName )!''}</td>
-                            <td class="info">居住地址</td>
-                            <td>${(buyer.buyerAddress )!''}</td>
-                            <td class="info">微信号</td>
-                            <td>${(buyer.openId )!''}</td>
+                            <td class="info col-md-2">实名</td>
+                            <td class="col-md-2">${(buyer.buyerName )!''}</td>
+                            <td class="info col-md-2">居住地址</td>
+                            <td class="col-md-2">${(buyer.buyerAddress )!''}</td>
+                            <td class="info col-md-2">微信号</td>
+                            <td class="col-md-2">${(buyer.openId )!''}</td>
                         </tr>
                     </table>
                 </div>
@@ -44,20 +44,20 @@
                 <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <tr>
-                            <td class="info">账户号</td>
-                            <td>${(buyer.buyerId )!''}</td>
-                            <td class="info">身份证绑定</td>
-                            <td>${(buyer.isIdentity )!''}</td>
-                            <td class="info">身份证号</td>
-                            <td>${(buyer.identityNo )!''}</td>
+                            <td class="info col-md-2">账户号</td>
+                            <td class="col-md-2">${(buyer.buyerId )!''}</td>
+                            <td class="info col-md-2">身份证绑定</td>
+                            <td class="col-md-2">${(buyer.isIdentity )!''}</td>
+                            <td class="info col-md-2">身份证号</td>
+                            <td class="col-md-2">${(buyer.identityNo )!''}</td>
                         </tr>
                         <tr>
-                            <td class="info">注册日期</td>
-                            <td>${(buyer.createTime )!''}</td>
-                            <td class="info">注册渠道</td>
-                            <td>微信</td>
-                            <td class="info">注册方式</td>
-                            <td>微信</td>
+                            <td class="info col-md-2">注册日期</td>
+                            <td class="col-md-2">${(buyer.createTime )!''}</td>
+                            <td class="info col-md-2">注册渠道</td>
+                            <td class="col-md-2">微信</td>
+                            <td class="info col-md-2">注册方式</td>
+                            <td class="col-md-2">微信</td>
                         </tr>
                     </table>
                 </div>

@@ -1,10 +1,7 @@
 package com.lincomb.haiwan.controller.backend;
 
-import com.lincomb.haiwan.domain.Buyer;
-import com.lincomb.haiwan.domain.Order_view;
-import com.lincomb.haiwan.service.BuyerService;
-import com.lincomb.haiwan.service.OrderService;
-import com.lincomb.haiwan.service.OrderViewService;
+import com.lincomb.haiwan.domain.*;
+import com.lincomb.haiwan.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,12 @@ public class OrderViewController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private RoomUserService roomUserService;
+
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -56,6 +59,12 @@ public class OrderViewController {
     @GetMapping("/index")
     public ModelAndView index(@RequestParam(value = "orderId") String orderId, Map<String, Object> map) {
         if (!StringUtils.isEmpty(orderId)) {
+            RoomUser roomUser = roomUserService.findOne(orderId);
+            Order_t order_t = orderService.findOne(orderId);
+            Product product = productService.findOne(order_t.getProductId());
+            map.put("product", product);
+            map.put("roomUser", roomUser);
+            map.put("order", order_t);
         }
         return new ModelAndView("order/index", map);
     }
