@@ -16,8 +16,9 @@ public class TransactionServiceImpl implements TransactionService{
     private TransactionRepository transactionRepository;
 
     @Override
-    public Transaction findOne(String transactionId) {
-        return transactionRepository.findOne(transactionId);
+    public Transaction findOne(String orderId) {
+
+        return transactionRepository.findOne(orderId);
     }
 
     @Override

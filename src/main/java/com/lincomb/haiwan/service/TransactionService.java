@@ -7,7 +7,7 @@ import com.lincomb.haiwan.domain.Transaction;
  */
 public interface TransactionService {
 
-    Transaction findOne(String transactionId);
+    Transaction findOne(String orderId);
 
     Transaction save(Transaction transaction);
 }
