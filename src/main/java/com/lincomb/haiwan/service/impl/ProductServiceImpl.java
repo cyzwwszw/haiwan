@@ -233,6 +233,10 @@ public class ProductServiceImpl implements ProductService {
             map1.put("productVOList", productVOList);
             map1.put("isLast", page1.isLast());
             map1.put("isFirst", page1.isFirst());
+
+            log.info("当前页码：" + page + "，一页显示几条数据：" + size + "，总页数：" + page1.getTotalPages() +
+                    "，总条数：" + page1.getTotalElements() + "第一页：" + page1.isFirst() + "最后一页：" + page1.isLast());
+
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);

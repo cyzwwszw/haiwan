@@ -11,6 +11,7 @@ import com.lincomb.haiwan.service.OrderViewService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.service.RefundRuleService;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.OrderDetailsVO;
 import com.lincomb.haiwan.vo.OrderVO;
@@ -44,10 +45,10 @@ public class OrderViewServiceImpl implements OrderViewService {
     @Override
     public Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus) {
         Order_view order_view = new Order_view();
-        if (!StringUtil.isEmpty(buyerPhone)){
+        if (!StringUtil.isEmpty(buyerPhone)) {
             order_view.setBuyerMobile(buyerPhone);
         }
-        if(orderStatus != null){
+        if (orderStatus != null) {
             order_view.setOrderStatus(orderStatus);
         }
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("buyerMobile", ExampleMatcher.GenericPropertyMatchers.contains())
@@ -55,7 +56,7 @@ public class OrderViewServiceImpl implements OrderViewService {
 
         Example<Order_view> example = Example.of(order_view, matcher);
 
-        return orderViewRepository.findAll(example,pageable);
+        return orderViewRepository.findAll(example, pageable);
     }
 
     /**
@@ -89,13 +90,8 @@ public class OrderViewServiceImpl implements OrderViewService {
                 OrderVO vo = new OrderVO();
 
                 if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                    Date date = new Date();
-                    System.out.println("当前日期：" + date);
-                    System.out.println("订单日期：" + view.getCreateTime());
-                    long diff = date.getTime() - view.getCreateTime().getTime();
-                    System.out.println("相差毫秒数：" + diff);
+                    long diff = new Date().getTime() - view.getCreateTime().getTime();
                     if (diff >= (1000 * 60 * 10)) {
-                        log.info("查询我的订单的取消订单");
                         Order_t order_t = orderRepository.findOne(view.getOrderId());
                         order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
                         orderRepository.save(order_t);
@@ -107,7 +103,7 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setProductId(view.getProductId());
                 vo.setProductName(view.getProductName());
                 vo.setProductType(view.getProductTypeEnum().getMessage());
-                vo.setProductPic(view.getProductPic());
+                vo.setProductPic(StringUtil.null2String(view.getProductPic()) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + view.getProductPic());
                 vo.setOrderAmount(view.getOrderAmount());
                 vo.setProductPrice(view.getProductPrice());
                 vo.setOrderCount(view.getOrderCount());
@@ -159,7 +155,7 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setProductId(view.getProductId());
             vo.setProductName(view.getProductName());
             vo.setProductType(view.getProductTypeEnum().getMessage());
-            vo.setProductPic(view.getProductPic());
+            vo.setProductPic(StringUtil.null2String(view.getProductPic()) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + view.getProductPic());
             vo.setOrderAmount(view.getOrderAmount());
             vo.setProductPrice(view.getProductPrice());
             vo.setOrderCount(view.getOrderCount());

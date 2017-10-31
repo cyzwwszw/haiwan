@@ -256,11 +256,11 @@ public class OrderServiceImpl implements OrderService {
             Order_t order_t = orderRepository.findOne(orderId);
             order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
             orderRepository.save(order_t);
-            log.info("取消订单里的取消订单");
         } catch (Exception e) {
             log.error("cancel() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
+        System.out.println();
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
     }
 
