@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
                 return resultVO;
             }
             String strRandomCode = SendMsgsUtil.getAuthCode(6);
-            String msgsTemplate = SmsEnum.CONTENT_TEMPLATE_REGISTER.getValue();
-            String msgsContent = msgsTemplate.replace("AUTH_CODE", strRandomCode);
+            String msgsTemplate = SmsEnum.QUICK_LOGIN_TEMPLATE.getValue();
+            String msgsContent = msgsTemplate.replace("{code}", strRandomCode);
 
             String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
                 SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
+                log.error("发送验证码失败！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
             }
         } catch (Exception e) {
