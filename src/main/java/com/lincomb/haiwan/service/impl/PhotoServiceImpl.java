@@ -5,6 +5,7 @@ import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.repository.PhotoRepository;
 import com.lincomb.haiwan.service.PhotoService;
+import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,7 @@ public class PhotoServiceImpl implements PhotoService {
             PageRequest request = new PageRequest(page - 1, size, sort);
             Page<Photo> photoPage = photoRepository.findAll(ex, request);
             photoPage.getContent().forEach(
-                    p -> list.add(p.getPhotoUrl()));
-//            FastDFSUtil.DOWNLOAD_PATH +
+                    p -> list.add(FastDFSUtil.DOWNLOAD_PATH + p.getPhotoUrl()));
             map.put("photoUrlList", list);
             map.put("isLast", photoPage.isLast());
             map.put("isFirst", photoPage.isFirst());
