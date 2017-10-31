@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface OrderViewService {
 
-    Page<Order_view> findAll(Pageable pageable);
+    Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus);
 
     /**
      * 查询我的订单

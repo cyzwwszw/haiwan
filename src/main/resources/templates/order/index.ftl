@@ -13,6 +13,12 @@
                     <h3 class="page-header">订单详情</h3>
                 </div>
             </div>
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <h3 class="page-header">订单详情</h3>
+                </div>
+            </div>
+
 
             <div class="row clearfix">
                 <div class="col-md-12 column">
