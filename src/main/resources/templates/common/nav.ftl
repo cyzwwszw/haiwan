@@ -62,7 +62,7 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">--------------------</li>
-                <li><a href="/haiwan/backend/accountInfo/list">对账查询</a></li>
+                <li><a href="/haiwan/backend/transaction/list">对账查询</a></li>
             </ul>
         </li>
     <#--<li>-->
