@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,11 +21,11 @@ public class Transaction {
 
     private String payTime;
 
-    private String payAmount;
+    private BigDecimal payAmount;
 
     private String refundTime;
 
-    private String refundAmount;
+    private BigDecimal refundAmount;
 
     private Date createTime;
 
