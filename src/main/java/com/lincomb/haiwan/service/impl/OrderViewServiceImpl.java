@@ -42,8 +42,16 @@ public class OrderViewServiceImpl implements OrderViewService {
     private RefundRuleService refundRuleService;
 
     @Override
-    public Page<Order_view> findAll(Pageable pageable) {
-        return orderViewRepository.findAll(pageable);
+    public Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus) {
+        Order_view order_view = new Order_view();
+        order_view.setBuyerMobile(buyerPhone);
+
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("buyerMobile", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("focus");
+
+        Example<Order_view> example = Example.of(order_view, matcher);
+
+        return orderViewRepository.findAll(example,pageable);
     }
 
     /**

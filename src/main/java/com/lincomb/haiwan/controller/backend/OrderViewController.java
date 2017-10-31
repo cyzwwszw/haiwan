@@ -4,6 +4,7 @@ import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.Order_view;
 import com.lincomb.haiwan.service.BuyerService;
 import com.lincomb.haiwan.service.OrderViewService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/backend/order")
+@Slf4j
 public class OrderViewController {
 
     @Autowired
@@ -32,11 +34,14 @@ public class OrderViewController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                             @RequestParam(value = "buyerPhone") String buyerPhone,
+                             @RequestParam(value = "orderStatus") Integer orderStatus,
                              Map<String, Object> map){
         Sort sort =new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size,sort);
-        Page<Order_view> orderPage = orderViewService.findAll(request);
-
+        Page<Order_view> orderPage = orderViewService.findAll(request, buyerPhone, orderStatus);
+        map.put("buyerPhone", buyerPhone);
+        map.put("orderStatus", orderStatus);
         map.put("orderPage", orderPage);
         map.put("currentPage", page);
         map.put("size", size);
