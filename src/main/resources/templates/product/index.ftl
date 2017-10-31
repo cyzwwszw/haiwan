@@ -31,7 +31,7 @@
                 <div class="col-md-12 column">
                     <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
                         <div class="col-md-12 column">
-                            <h4 class="page-header">基本信息</h4>
+                            <h3 class="page-header">基本信息</h4>
                         </div>
 
                         <div class="form-group">
@@ -337,7 +337,7 @@
 
                         <input hidden type="text" name="productId" value="${(product.productId)!''}">
                         <div class="col-sm-offset-2 col-sm-4">
-                            <button type="submit" class="btn btn-default">保存，下一步</button>
+                            <button type="submit" class="btn btn-primary">保存，下一步</button>
                         </div>
                     </form>
                 </div>

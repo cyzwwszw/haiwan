@@ -19,7 +19,7 @@
             <div class="row clearfix">
                 <div class="col-md-12 column">
                     <div class="col-md-12 column">
-                        <h1 class="page-header">图片上传</h1>
+                        <h3 class="page-header">图片上传</h3>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12 column">
@@ -31,10 +31,10 @@
                     <div class="col-md-12 column">
                         <form role="form" class="form-horizontal" method="post"
                               action="/haiwan/backend/product/savePictures">
-                        <input hidden type="text" id="productId" name="productId" value="${(product.productId)!''}">
-                            <#--<input hidden type="text" id="productId" name="productId" value="123456">-->
+                            <input hidden type="text" id="productId" name="productId" value="${(productId)!''}">
                             <input hidden type="text" id="fileStr" name="fileStr" value="">
-                            <button type="submit" class="btn btn-primary" id="save" disabled onclick="save()">保存，下一步
+                        <#--disabled-->
+                            <button type="submit" class="btn btn-primary">保存，下一步
                             </button>
                         </form>
                     </div>
