@@ -56,12 +56,11 @@
         }).on("fileuploaded", function (event, data, previewId, index) {
             var data = data.response;
             if (data.path !== null || data.path !== undefined || data.path !== '') {
-                if ($("#fileStr").val() !== null || $("#fileStr").val() !== undefined || $("#fileStr").val() !== '') {
-                    $("#fileStr").attr('value', $("#fileStr").val() + "," + data.path);
-                } else {
+                if ($("#fileStr").attr('value') == null || $("#fileStr").attr('value') == undefined || $("#fileStr").attr('value') == "") {
                     $("#fileStr").attr('value', data.path);
+                } else {
+                    $("#fileStr").attr('value', $("#fileStr").val() + "," + data.path);
                 }
-                console.info($("#fileStr").val());
                 $("#save").removeAttr("disabled");
             }
         });
