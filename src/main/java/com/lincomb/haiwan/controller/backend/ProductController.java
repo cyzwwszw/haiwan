@@ -41,10 +41,10 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
-    
+
     @Autowired
     CategoryService categoryService;
-    
+
     @Autowired
     RefundRuleService refundRuleService;
     @Autowired
@@ -53,9 +53,9 @@ public class ProductController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
-                             Map<String, Object> map){
-        Sort sort =new Sort(Sort.Direction.DESC, "createTime");
-        PageRequest request = new PageRequest(page - 1, size,sort);
+                             Map<String, Object> map) {
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        PageRequest request = new PageRequest(page - 1, size, sort);
         Page<Product> productPage = productService.findAll(request);
         map.put("productList", Product2ProductDTOConverter.convert(productPage.getContent(), categoryService.findAll()));
         map.put("productPage", productPage);
@@ -66,8 +66,8 @@ public class ProductController {
 
 
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "productId", required = false) String productId, Map<String, Object> map){
-        if(!StringUtil.isEmpty(productId)){
+    public ModelAndView index(@RequestParam(value = "productId", required = false) String productId, Map<String, Object> map) {
+        if (!StringUtil.isEmpty(productId)) {
             Product product = productService.findOne(productId);
             map.put("product", product);
         }
@@ -75,13 +75,15 @@ public class ProductController {
         //查询所有的类目
         List<Category> categoryList = categoryService.findAll();
         List<RefundRule> refundRuleList = refundRuleService.findAll();
+        map.put("path", FastDFSUtil.DOWNLOAD_PATH);
         map.put("categoryList", categoryList);
-        map.put("refundRuleList",refundRuleList);
+        map.put("refundRuleList", refundRuleList);
         return new ModelAndView("product/index", map);
     }
 
     /**
      * 保存更新
+     *
      * @param productForm
      * @param bindingResult
      * @param map
@@ -90,27 +92,27 @@ public class ProductController {
     @PostMapping("/save")
     public ModelAndView save(@Valid ProductForm productForm,
                              BindingResult bindingResult,
-                             Map<String,Object> map,
-                             HttpServletRequest httpServletRequest){
+                             Map<String, Object> map,
+                             HttpServletRequest httpServletRequest) {
         String url = UploadUtil.upload(httpServletRequest);
         if (!StringUtil.isEmpty(url)) {
             productForm.setProductPic(url);
         }
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
             map.put("url", "/haiwan/backend/product/index");
             return new ModelAndView("common/error", map);
         }
         Product product = new Product();
-        try{
-            if(!StringUtil.isEmpty(productForm.getProductId())){
-                 product= productService.findOne(productForm.getProductId());
-            }else{
+        try {
+            if (!StringUtil.isEmpty(productForm.getProductId())) {
+                product = productService.findOne(productForm.getProductId());
+            } else {
                 productForm.setProductId(KeyUtil.genUniqueKey());
             }
             BeanUtils.copyProperties(productForm, product);
             productService.save(product);
-        }catch(HaiwanException e){
+        } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/haiwan/backend/product/index");
             return new ModelAndView("common/error", map);
@@ -121,41 +123,41 @@ public class ProductController {
     }
 
     @GetMapping("/on_sale")
-    public ModelAndView onSale(@RequestParam("productId") String productId, Map<String, Object> map){
-        try{
+    public ModelAndView onSale(@RequestParam("productId") String productId, Map<String, Object> map) {
+        try {
             productService.onSale(productId);
-        }catch (HaiwanException e){
+        } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/haiwan/backend/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url","/haiwan/backend/product/list");
+        map.put("url", "/haiwan/backend/product/list");
         return new ModelAndView("common/success", map);
     }
 
     @GetMapping("/off_sale")
-    public ModelAndView offSale(@RequestParam("productId") String productId, Map<String, Object> map){
-        try{
+    public ModelAndView offSale(@RequestParam("productId") String productId, Map<String, Object> map) {
+        try {
             productService.offSale(productId);
-        }catch (HaiwanException e){
+        } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/haiwan/backend/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url","/haiwan/backend/product/list");
+        map.put("url", "/haiwan/backend/product/list");
         return new ModelAndView("common/success", map);
     }
 
     @GetMapping("/delete")
-    public ModelAndView delete(@RequestParam("productId") String productId, Map<String, Object> map){
-        try{
+    public ModelAndView delete(@RequestParam("productId") String productId, Map<String, Object> map) {
+        try {
             productService.delete(productId);
-        }catch (HaiwanException e){
+        } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/haiwan/backend/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url","/haiwan/backend/product/list");
+        map.put("url", "/haiwan/backend/product/list");
         return new ModelAndView("common/success", map);
     }
 

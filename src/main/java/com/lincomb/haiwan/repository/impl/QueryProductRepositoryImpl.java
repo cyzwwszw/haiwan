@@ -71,7 +71,7 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
             sql1.append(" AND p.product_type=" + map.get("productType"));
         }
 
-        sql.append(" ORDER BY p.create_time,p.product_name DESC ");
+        sql.append(" ORDER BY p.create_time DESC,p.product_name ASC ");
 
         sql1.append(" ) AS b");
 
