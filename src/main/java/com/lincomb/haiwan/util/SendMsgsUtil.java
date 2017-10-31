@@ -31,7 +31,7 @@ public class SendMsgsUtil {
         // 通道用户名
         smsParams.put("u", SmsEnum.SMS_CHANNEL_U_NAME.getValue());
         // 通道密码
-        smsParams.put("p", SmsEnum.SMS_CHANNEL_PWD.getValue());
+        smsParams.put("p", MD5Tools.MD5(SmsEnum.SMS_CHANNEL_PWD.getValue()));
         // 接收短信的手机号码
         smsParams.put("m", mobileNo);
         // 短信内容

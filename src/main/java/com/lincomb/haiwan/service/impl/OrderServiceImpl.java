@@ -127,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
             Integer orderCount = Integer.valueOf(map.get("orderCount"));
 
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
+                log.error("时间验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 
@@ -139,9 +140,11 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
 
             if (order_t.getOrderDateIn().getTime() == orderDateIn.getTime() && order_t.getOrderDateOut().getTime() == orderDateOut.getTime()) {
+                log.info("修改订单时时间未修改");
                 residualQuantity = residualQuantity.add(new BigDecimal(order_t.getOrderCount()));
             }
             if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+                log.error("产品数量验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 
@@ -150,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
             if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
+                log.error("总金额验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 
