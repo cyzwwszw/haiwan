@@ -98,7 +98,7 @@
                             <th>支付金额（元）</th>
                             <th>下单时间</th>
                             <th>产品状态</th>
-                            <th>操作</th>
+                            <th colspan="2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -117,6 +117,11 @@
                             <td>
                                 <a href="/haiwan/backend/order/index?orderId=${orderDTO.orderId}">详情</a>
                             </td>
+                            <td>
+                                <#if orderDTO.getOrderStatusEnum().message == '待使用'>
+                                    <a href="/haiwan/backend/order/finish?orderId=${orderDTO.orderId}">使用</a>
+                                </#if>
+                            </td>
                         </tr>
                         </#list>
 
@@ -128,7 +133,7 @@
                         <#if currentPage lte 1>
                             <li class="disabled"><a href="#">上一页</a></li>
                         <#else>
-                            <li><a href="/haiwan/backend/order/list?page=${currentPage - 1}&size=${size}">上一页</a></li>
+                            <li><a href="/haiwan/backend/order/list?page=${currentPage - 1}&size=${size}&buyerPhone=${(buyerPhone)!''}&orderStatus=${(orderStatus)!''}">上一页</a></li>
                         </#if>
                         <#list 1..orderPage.getTotalPages() as index>
                             <#if currentPage == index>
@@ -142,15 +147,15 @@
                             <#else>
                                 <#if index &lt; 6 || index &gt;= orderPage.getTotalPages() -4 >
                                     <#if index ==5 && currentPage &lt; 6 && orderPage.getTotalPages() &gt; 10>
-                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a>
+                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}&buyerPhone=${(buyerPhone)!''}&orderStatus=${(orderStatus)!''}">${index}</a>
                                         </li>
                                         <li><a>...</a></li>
                                     <#elseif index == orderPage.getTotalPages()-4 && currentPage &gt; orderPage.getTotalPages()-5&& orderPage.getTotalPages() &gt; 10>
                                         <li><a>...</a></li>
-                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a>
+                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}&buyerPhone=${(buyerPhone)!''}&orderStatus=${(orderStatus)!''}">${index}</a>
                                         </li>
                                     <#else>
-                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a>
+                                        <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}&buyerPhone=${(buyerPhone)!''}&orderStatus=${(orderStatus)!''}">${index}</a>
                                         </li>
                                     </#if>
                                 </#if>
@@ -161,7 +166,7 @@
                         <#if currentPage gte orderPage.getTotalPages()>
                             <li class="disabled"><a href="#">下一页</a></li>
                         <#else>
-                            <li><a href="/haiwan/backend/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
+                            <li><a href="/haiwan/backend/order/list?page=${currentPage + 1}&size=${size}&buyerPhone=${(buyerPhone)!''}&orderStatus=${(orderStatus)!''}">下一页</a></li>
                         </#if>
                         </ul>
                     </div>

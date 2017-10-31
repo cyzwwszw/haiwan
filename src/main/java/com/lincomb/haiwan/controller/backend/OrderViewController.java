@@ -3,6 +3,7 @@ package com.lincomb.haiwan.controller.backend;
 import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.Order_view;
 import com.lincomb.haiwan.service.BuyerService;
+import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.service.OrderViewService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,9 @@ public class OrderViewController {
     @Autowired
     private OrderViewService orderViewService;
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -54,6 +58,14 @@ public class OrderViewController {
         if (!StringUtils.isEmpty(orderId)) {
         }
         return new ModelAndView("order/index", map);
+    }
+
+    @GetMapping("/finish")
+    public ModelAndView use(@RequestParam(value="orderId") String orderId, Map<String, Object> map){
+
+        orderService.finishOrder(orderId);
+        map.put("url", "/haiwan/backend/order/list");
+        return new ModelAndView("common/success", map);
     }
 
 
