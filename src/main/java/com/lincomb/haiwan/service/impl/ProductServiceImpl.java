@@ -308,8 +308,8 @@ public class ProductServiceImpl implements ProductService {
                     break;
                 case "3":
                     Map<String, String> map3 = new HashMap<>();
-                    map3.put("text", ServicesEnum.FRIG.getText());
-                    map3.put("src", ServicesEnum.FRIG.getSrc());
+                    map3.put("text", ServicesEnum.PC.getText());
+                    map3.put("src", ServicesEnum.PC.getSrc());
                     maps.add(map3);
                     break;
                 case "4":
