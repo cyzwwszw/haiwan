@@ -40,12 +40,36 @@
                             <div class="col-sm-2">
                                 <select name="orderStatus" class="form-control">
                                     <option value="">请选择</option>
-                                    <option value="0">新订单</option>
-                                    <option value="1">已取消</option>
-                                    <option value="3">待使用</option>
-                                    <option value="4">已完成</option>
-                                    <option value="5">已过期</option>
-                                    <option value="7">已退款</option>
+                                    <option value="0"
+                                    <#if (orderStatus)?? && orderStatus == 0>
+                                            selected
+                                    </#if>
+                                    >新订单</option>
+                                    <option value="1"
+                                    <#if (orderStatus)?? && orderStatus == 1>
+                                            selected
+                                    </#if>
+                                    >已取消</option>
+                                    <option value="3"
+                                    <#if (orderStatus)?? && orderStatus == 3>
+                                            selected
+                                    </#if>
+                                    >待使用</option>
+                                    <option value="4"
+                                    <#if (orderStatus)?? && orderStatus == 4>
+                                            selected
+                                    </#if>
+                                    >已完成</option>
+                                    <option value="5"
+                                    <#if (orderStatus)?? && orderStatus == 5>
+                                            selected
+                                    </#if>
+                                    >已过期</option>
+                                    <option value="7"
+                                    <#if (orderStatus)?? && orderStatus == 7>
+                                            selected
+                                    </#if>
+                                    >已退款</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -108,20 +132,20 @@
                         </#if>
                         <#list 1..orderPage.getTotalPages() as index>
                             <#if currentPage == index>
-                                <#if index &gt; 6 && index &lt;= orderPage.getTotalPages() -4 >
+                                <#if index &gt; 6 && index &lt;= orderPage.getTotalPages() -4 && orderPage.getTotalPages() &gt; 10>
                                     <li><a>...</a></li>
                                 </#if>
                                 <li class="active"><a href="#">${index}</a></li>
-                                <#if index &gt;= 5 && index &lt;= orderPage.getTotalPages() -6 >
+                                <#if index &gt;= 5 && index &lt;= orderPage.getTotalPages() -6 && orderPage.getTotalPages() &gt; 10>
                                     <li><a>...</a></li>
                                 </#if>
                             <#else>
                                 <#if index &lt; 6 || index &gt;= orderPage.getTotalPages() -4 >
-                                    <#if index ==5 && currentPage &lt; 6>
+                                    <#if index ==5 && currentPage &lt; 6 && orderPage.getTotalPages() &gt; 10>
                                         <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a>
                                         </li>
                                         <li><a>...</a></li>
-                                    <#elseif index == orderPage.getTotalPages()-4 && currentPage &gt; orderPage.getTotalPages()-5>
+                                    <#elseif index == orderPage.getTotalPages()-4 && currentPage &gt; orderPage.getTotalPages()-5&& orderPage.getTotalPages() &gt; 10>
                                         <li><a>...</a></li>
                                         <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a>
                                         </li>

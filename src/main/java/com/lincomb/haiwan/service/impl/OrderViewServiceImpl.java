@@ -44,8 +44,12 @@ public class OrderViewServiceImpl implements OrderViewService {
     @Override
     public Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus) {
         Order_view order_view = new Order_view();
-        order_view.setBuyerMobile(buyerPhone);
-
+        if (!StringUtil.isEmpty(buyerPhone)){
+            order_view.setBuyerMobile(buyerPhone);
+        }
+        if(orderStatus != null){
+            order_view.setOrderStatus(orderStatus);
+        }
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("buyerMobile", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withIgnorePaths("focus");
 
