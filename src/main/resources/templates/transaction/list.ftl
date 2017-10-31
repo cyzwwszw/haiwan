@@ -31,12 +31,12 @@
 
                             <#list transactionPage.getContent() as transaction>
                             <tr>
-                                <td>${transaction.transactionId}</td>
-                                <td>${transaction.orderId}</td>
-                                <td>${transaction.payAmount}</td>
-                                <td>${transaction.payTime}</td>
-                                <td>${transaction.refundAmount}</td>
-                                <td>${transaction.refundTime}</td>
+                                <td>${(transaction.transactionId)!''}</td>
+                                <td>${(transaction.orderId)!''}</td>
+                                <td>${(transaction.payAmount)!''}</td>
+                                <td>${(transaction.payTime)!''}</td>
+                                <td>${(transaction.refundAmount)!''}</td>
+                                <td>${(transaction.refundTime)!''}</td>
                                 <td>
                                     <a href="/haiwan/backend/transaction/index?transactionId=${transaction.transactionId}">详情</a>
                                 </td>
