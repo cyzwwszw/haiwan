@@ -46,7 +46,7 @@
                             <label class="col-sm-2 control-label">图片展现</label>
                             <div class="col-sm-6">
                             <#if (product.productPic)??&&(product.productPic) != ''>
-                                <img src="${(product.productPic)!''}" height="200">
+                                <img src="${(path)!''}${(product.productPic)!''}" height="200">
                             </#if>
                             </div>
                         </div>

@@ -33,8 +33,7 @@
                               action="/haiwan/backend/product/savePictures">
                             <input hidden type="text" id="productId" name="productId" value="${(productId)!''}">
                             <input hidden type="text" id="fileStr" name="fileStr" value="">
-                        <#--disabled-->
-                            <button type="submit" class="btn btn-primary">保存，下一步
+                            <button type="submit" class="btn btn-primary" id="save" disabled>保存，下一步
                             </button>
                         </form>
                     </div>
@@ -57,13 +56,11 @@
         }).on("fileuploaded", function (event, data, previewId, index) {
             var data = data.response;
             if (data.path !== null || data.path !== undefined || data.path !== '') {
-                if ($("#fileStr").val() !== null || $("#fileStr").val() !== undefined || $("#fileStr").val() !== '') {
-
-                    $("#fileStr").attr('value', $("#fileStr").val() + "," + data.path);
+                if ($("#fileStr").attr('value') == null || $("#fileStr").attr('value') == undefined || $("#fileStr").attr('value') == "") {
+                    $("#fileStr").attr('value', data.path);
                 } else {
-                    $("#fileStr").val(data.path);
+                    $("#fileStr").attr('value', $("#fileStr").val() + "," + data.path);
                 }
-                console.info($("#fileStr").val());
                 $("#save").removeAttr("disabled");
             }
         });

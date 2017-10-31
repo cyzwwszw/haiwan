@@ -129,13 +129,22 @@ public class OrderServiceImpl implements OrderService {
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
+
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+
+            Order_t order_t = orderRepository.findOne(map.get("orderId"));
+
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
+
+            if (order_t.getOrderDateIn().getTime() == orderDateIn.getTime() && order_t.getOrderDateOut().getTime() == orderDateOut.getTime()) {
+                residualQuantity = residualQuantity.add(new BigDecimal(order_t.getOrderCount()));
+            }
             if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+
             long days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
 
             Product product = productRepository.findOne(map.get("productId"));
@@ -144,7 +153,6 @@ public class OrderServiceImpl implements OrderService {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 
-            Order_t order_t = orderRepository.findOne(map.get("orderId"));
             order_t.setOrderDateIn(orderDateIn);
             order_t.setOrderDateOut(orderDateOut);
             order_t.setOrderAmount(new BigDecimal(map.get("orderAmount")));
