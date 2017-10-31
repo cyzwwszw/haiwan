@@ -64,7 +64,7 @@ public class PayServiceImpl implements PayService {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(payResponse.getOutTradeNo());
         transaction.setOrderId(order.getOrderId());
-        transaction.setPayAmount(payResponse.getOrderAmount().toString());
+        transaction.setPayAmount(order.getOrderAmount().toString());
         transaction.setPayTime(payResponse.getTimeStamp());
         transactionService.save(transaction);
         return payResponse;
