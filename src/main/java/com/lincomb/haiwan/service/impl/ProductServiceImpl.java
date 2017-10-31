@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
             detailsVO.setProductDescription(product.getProductDescription());
             detailsVO.setProductAddress(product.getProductAddress());
             detailsVO.setProductPrice(product.getProductPrice());
-            detailsVO.setProductPic(product.getProductPic());
+            detailsVO.setProductPic(FastDFSUtil.DOWNLOAD_PATH + product.getProductPic());
             List<Map<String, String>> maps = new ArrayList<>();
 
             if (product.getIsHaveYard() == 0) {
