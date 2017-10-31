@@ -51,7 +51,7 @@
                             </#if>
                             <#list 1..buyerPage.getTotalPages() as index>
                                 <#if currentPage == index>
-                                    <li class="disabled"><a href="#">${index}</a></li>
+                                    <li class="active"><a href="#">${index}</a></li>
                                 <#else>
                                     <li><a href="/haiwan/backend/buyer/list?page=${index}&size=${size}">${index}</a></li>
                                 </#if>

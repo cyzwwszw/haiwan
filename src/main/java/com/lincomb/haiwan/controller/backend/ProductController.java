@@ -1,5 +1,6 @@
 package com.lincomb.haiwan.controller.backend;
 
+import com.lincomb.haiwan.converter.Product2ProductDTOConverter;
 import com.lincomb.haiwan.domain.Category;
 import com.lincomb.haiwan.domain.Photo;
 import com.lincomb.haiwan.domain.Product;
@@ -62,6 +63,7 @@ public class ProductController {
         Sort sort =new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size,sort);
         Page<Product> productPage = productService.findAll(request);
+        map.put("productList", Product2ProductDTOConverter.convert(productPage.getContent(), categoryService.findAll()));
         map.put("productPage", productPage);
         map.put("currentPage", page);
         map.put("size", size);

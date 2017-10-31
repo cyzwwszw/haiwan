@@ -61,11 +61,29 @@
                             </#if>
                             <#list 1..orderPage.getTotalPages() as index>
                                 <#if currentPage == index>
-                                    <li class="disabled"><a href="#">${index}</a></li>
+                                    <#if index &gt; 6 && index &lt;= orderPage.getTotalPages() -4 >
+                                        <li><a>...</a></li>
+                                    </#if>
+                                    <li class="active"><a href="#">${index}</a></li>
+                                    <#if index &gt;= 5 && index &lt;= orderPage.getTotalPages() -6 >
+                                        <li><a>...</a></li>
+                                    </#if>
                                 <#else>
-                                    <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a></li>
+                                    <#if index &lt; 6 || index &gt;= orderPage.getTotalPages() -4 >
+                                        <#if index ==5 && currentPage &lt; 6>
+                                            <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a></li>
+                                            <li><a>...</a></li>
+                                        <#elseif index == orderPage.getTotalPages()-4 && currentPage &gt; orderPage.getTotalPages()-5>
+                                            <li><a>...</a></li>
+                                            <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a></li>
+                                        <#else>
+                                            <li><a href="/haiwan/backend/order/list?page=${index}&size=${size}">${index}</a></li>
+                                        </#if>
+                                    </#if>
                                 </#if>
+
                             </#list>
+
                             <#if currentPage gte orderPage.getTotalPages()>
                                 <li class="disabled"><a href="#">下一页</a></li>
                             <#else>
