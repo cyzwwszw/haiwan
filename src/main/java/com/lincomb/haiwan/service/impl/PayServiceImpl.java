@@ -90,7 +90,7 @@ public class PayServiceImpl implements PayService {
         transaction.setTransactionId(payResponse.getOutTradeNo());
         transaction.setOrderId(order_t.getOrderId());
         transaction.setPayAmount(order_t.getOrderAmount());
-        transaction.setPayTime(new Date().toString());
+        transaction.setPayTime(new Date());
         transaction.setCreateTime(new Date());
         transaction.setUpdateTime(new Date());
         transactionService.save(transaction);
@@ -139,7 +139,7 @@ public class PayServiceImpl implements PayService {
         orderService.refundOrder(order.getOrderId());
         Transaction transaction =transactionService.findOne(refundResponse.getOutTradeNo());
         transaction.setRefundAmount(new BigDecimal(refundResponse.getOrderAmount()));
-        transaction.setRefundTime(new Date().toString());
+        transaction.setRefundTime(new Date());
         transaction.setUpdateTime(new Date());
         transactionService.save(transaction);
         return refundResponse;

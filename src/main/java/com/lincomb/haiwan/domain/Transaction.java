@@ -19,11 +19,11 @@ public class Transaction {
 
     private String orderId;
 
-    private String payTime;
+    private Date payTime;
 
     private BigDecimal payAmount;
 
-    private String refundTime;
+    private Date refundTime;
 
     private BigDecimal refundAmount;
 
