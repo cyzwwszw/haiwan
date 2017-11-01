@@ -8,6 +8,7 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/haiwan/static/css/login.css">
+
     <script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
     <script>window.jQuery || document.write('<script src="/haiwan/fileinput/js/jquery-1.11.0.min.js"><\/script>')</script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -93,6 +94,5 @@
         console.info(falg);
         return falg;
     }
-
 </script>
 </html>

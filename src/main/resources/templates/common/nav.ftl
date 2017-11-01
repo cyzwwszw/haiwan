@@ -1,9 +1,19 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
     <ul class="nav sidebar-nav">
         <li class="sidebar-brand">
-            <a href="#">后台管理系统</a>
+            <a href="/haiwan/backend/adminUser/toIndex">后台管理系统</a>
         </li>
         <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <i class="fa fa-fw fa-plus"></i>欢迎&nbsp;&nbsp;<#if Session.admin?exists>${Session.admin.name}</#if>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">--------------------</li>
+                <li><a href="/haiwan/backend/adminUser/logout"><i class="fa fa-fw fa-list-alt"></i>登出</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-fw fa-plus"></i> 产品 <span class="caret"></span>
             </a>
@@ -65,8 +75,5 @@
                 <li><a href="/haiwan/backend/transaction/list">对账查询</a></li>
             </ul>
         </li>
-    <#--<li>-->
-    <#--<a href="/haiwan/backend/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>-->
-    <#--</li>-->
     </ul>
 </nav>

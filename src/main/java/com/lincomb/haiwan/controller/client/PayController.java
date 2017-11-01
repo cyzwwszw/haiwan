@@ -1,4 +1,4 @@
-package com.lincomb.haiwan.controller.backend;
+package com.lincomb.haiwan.controller.client;
 
 import com.lincomb.haiwan.config.WechatAccountConfig;
 import com.lincomb.haiwan.domain.Order_t;

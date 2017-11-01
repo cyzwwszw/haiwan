@@ -65,6 +65,21 @@ public class AdminUserController {
     }
 
     /**
+     * 注销
+     *
+     * @param session
+     * @param map
+     * @return
+     */
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpSession session, Map<String, Object> map) {
+
+        session.removeAttribute("admin");
+        map.put("url", "/haiwan/backend/adminUser/toIndex");
+        return new ModelAndView("common/success", map);
+    }
+
+    /**
      * 跳转到首页
      *
      * @return

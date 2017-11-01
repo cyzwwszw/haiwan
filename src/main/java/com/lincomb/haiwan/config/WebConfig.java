@@ -44,7 +44,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截规则：除了login，其他都拦截判断
+        //拦截规则：拦截/backend/下面的所有URL，除了login，其他都拦截判断
         registry.addInterceptor(new LogonInterceptor()).addPathPatterns("/backend/**").excludePathPatterns("/backend/adminUser/toLogin", "/backend/adminUser/doLogin");
         super.addInterceptors(registry);
     }
