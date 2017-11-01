@@ -54,6 +54,8 @@ body {
     font-weight: 500;
     font-size: 1.05em;
     font-family: "Microsoft YaHei", "Segoe UI", "Lucida Grande", Helvetica, Arial, sans-serif;
+	background: url(../fileinput/img/12.jpg) no-repeat;
+    color: #555;
 }
 
 a {
@@ -145,10 +147,10 @@ a:hover, a:focus {
 
 /* Header */
 .htmleaf-header {
-    padding: 1em 190px 1em;
+    padding: 6em 190px 1em;
     letter-spacing: -1px;
     text-align: center;
-    background: #66677c;
+    /*background: #66677c;*/
 }
 
 .htmleaf-header h1 {
@@ -157,6 +159,7 @@ a:hover, a:focus {
     font-size: 2em;
     line-height: 1;
     margin-bottom: 0;
+	letter-spacing:4px;
 }
 
 .htmleaf-header h1 span {
@@ -392,12 +395,12 @@ a:hover, a:focus {
     }
 }
 
-.form-bg {
+/*.form-bg {
     background: #00b4ef;
-}
+}*/
 
 .form-horizontal {
-    background: #fff;
+    background: #ffffff8f;
     padding-bottom: 40px;
     border-radius: 15px;
     text-align: center;
@@ -405,11 +408,12 @@ a:hover, a:focus {
 
 .form-horizontal .heading {
     display: block;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 700;
     padding: 35px 0;
     border-bottom: 1px solid #f0f0f0;
     margin-bottom: 30px;
+	letter-spacing:4px;
 }
 
 .form-horizontal .form-group {

@@ -13,5 +13,5 @@ public interface TransactionService {
 
     Transaction save(Transaction transaction);
 
-    Page<Transaction> findAll(Pageable pageable);
+    Page<Transaction> findAll(Pageable pageable, String orderId);
 }

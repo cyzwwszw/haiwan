@@ -23,7 +23,7 @@
                            <td class="info col-md-2">订单号</td>
                             <td class="col-md-2">${(order.orderId )!''}</td>
                            <td class="info col-md-2">订单状态</td>
-                            <td class="col-md-2">${(order.orderStatus )!''}</td>
+                            <td class="col-md-2">${(order.getOrderStatusEnum().message )!''}</td>
                            <td class="info col-md-2">订单入口</td>
                             <td class="col-md-2">微信</td>
                         </tr>
@@ -50,7 +50,7 @@
                            <td class="info col-md-2">编号</td>
                             <td class="col-md-2">${(product.productId )!''}</td>
                            <td class="info col-md-2">类型</td>
-                            <td class="col-md-2">${(product.categoryId )!''}</td>
+                            <td class="col-md-2">${(category.categoryName )!''}</td>
                         </tr>
                         <tr>
                            <td class="info col-md-2">位置</td>
@@ -58,7 +58,7 @@
                            <td class="info col-md-2">面积</td>
                             <td class="col-md-2">${(product.productArea )!''}</td>
                            <td class="info col-md-2">规格</td>
-                            <td class="col-md-2">${(product.productType )!''}</td>
+                            <td class="col-md-2">${(product.getProductTypeEnum().message )!''}</td>
                         </tr>
                         <tr>
                             <td class="info col-md-2">退房时间</td>
@@ -67,19 +67,7 @@
                             <td class="col-md-2">${(product.productQuantity )!''}</td>
                             <td class="info col-md-2">标准价格</td>
                             <td class="col-md-2">${(product.productPrice )!''}</td>
-                            <#--<td class="info">早餐</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">卫浴</td>-->
-                            <#--<td class="col-md-2"></td>-->
                         </tr>
-                        <#--<tr>-->
-                            <#--<td class="info">宽带</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">庭院</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">电器</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                        <#--</tr>-->
                     </table>
                 </div>
 

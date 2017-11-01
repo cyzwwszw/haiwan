@@ -13,11 +13,4 @@
             color: red;
         }
     </style>
-
-<#--<script>-->
-<#--$.validator.setDefaults({-->
-<#--submitHandler: function() {-->
-<#--alert("提交事件!");-->
-<#--}-->
-<#--});</script>-->
 </head>
