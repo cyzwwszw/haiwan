@@ -154,8 +154,8 @@
     </div>
 </div>
 </div>
-<script src="/haiwan/js/jquery.autosize.min.js" type="text/javascript"></script>
-<script src="/haiwan/js/jquery.inputlimiter.1.3.1.min.js"></script>
+<script src="/haiwan/static/js/jquery.autosize.min.js" type="text/javascript"></script>
+<script src="/haiwan/static/js/jquery.inputlimiter.1.3.1.min.js"></script>
 <script>
     $('textarea[class*=autosize]').autosize({append: "\n"});
     $('textarea.limited-1').inputlimiter({

@@ -1,8 +1,8 @@
 <html>
 <meta charset="UTF-8"/>
 <#include "../common/header.ftl">
-<link rel="stylesheet" type="text/css" href="/haiwan/fileinput/css/default.css">
-<link href="/haiwan/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="/haiwan/static/fileinput/css/default.css">
+<link href="/haiwan/static/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 <body>
 <div id="wrapper" class="toggled">
 
@@ -43,8 +43,8 @@
     </div>
 </div>
 
-<script src="/haiwan/fileinput/js/fileinput.js" type="text/javascript"></script>
-<script src="/haiwan/fileinput/js/locales/zh.js" type="text/javascript"></script>
+<script src="/haiwan/static/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/haiwan/static/fileinput/js/locales/zh.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         $('#file-zh').fileinput({
