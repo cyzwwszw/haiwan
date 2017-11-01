@@ -1,7 +1,9 @@
 package com.lincomb.haiwan.controller.backend;
 
 import com.lincomb.haiwan.domain.Buyer;
+import com.lincomb.haiwan.domain.WechatInfo;
 import com.lincomb.haiwan.service.BuyerService;
+import com.lincomb.haiwan.service.WechatInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,9 @@ public class BuyerController {
     @Autowired
     private BuyerService buyerService;
 
+    @Autowired
+    private WechatInfoService wechatInfoService;
+
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -47,6 +52,8 @@ public class BuyerController {
         if(!StringUtils.isEmpty(buyerId)){
             Buyer buyer = buyerService.findOne(buyerId);
             map.put("buyer", buyer);
+            WechatInfo wechatInfo = wechatInfoService.findByBuyerId(buyer.getBuyerId());
+            map.put("wechatInfo", wechatInfo);
         }
         return new ModelAndView("buyer/index", map);
     }

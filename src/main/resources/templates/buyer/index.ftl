@@ -22,11 +22,11 @@
                     <table class="table table-bordered table-condensed">
                         <tr>
                             <td class="info col-md-2">昵称</td>
-                            <td class="col-md-2">${(buyer.buyerWechatname )!''}</td>
+                            <td class="col-md-2">${(wechatInfo.nickName )!''}</td>
                             <td class="info col-md-2">联系电话</td>
                             <td class="col-md-2">${(buyer.buyerMobile )!''}</td>
                             <td class="info col-md-2">头像</td>
-                            <td class="col-md-2"><img height="80" src="${(buyer.buyerWechatpic )!''}"></td>
+                            <td class="col-md-2"><img height="80" src="${(wechatInfo.headimgUrl )!''}"></td>
                         </tr>
                         <tr>
                             <td class="info col-md-2">实名</td>
@@ -34,7 +34,7 @@
                             <td class="info col-md-2">居住地址</td>
                             <td class="col-md-2">${(buyer.buyerAddress )!''}</td>
                             <td class="info col-md-2">微信号</td>
-                            <td class="col-md-2">${(buyer.openId )!''}</td>
+                            <td class="col-md-2">${(wechatInfo.openId )!''}</td>
                         </tr>
                     </table>
                 </div>

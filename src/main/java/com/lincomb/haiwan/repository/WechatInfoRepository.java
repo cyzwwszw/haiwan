@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface WechatInfoRepository extends JpaRepository<WechatInfo,String>{
 
+    WechatInfo findByBuyerId(String buyerId);
+
 }

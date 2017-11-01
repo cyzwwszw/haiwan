@@ -12,4 +12,6 @@ public interface WechatInfoService {
     WechatInfo findOne(String openId);
 
     WechatInfo save(WechatInfo wechatInfo);
+
+    WechatInfo findByBuyerId(String buyerId);
 }

@@ -26,4 +26,9 @@ public class WechatInfoServiceImpl implements WechatInfoService{
     public WechatInfo save(WechatInfo wechatInfo) {
         return wechatInfoRepository.save(wechatInfo);
     }
+
+    @Override
+    public WechatInfo findByBuyerId(String buyerId) {
+        return wechatInfoRepository.findByBuyerId(buyerId);
+    }
 }
