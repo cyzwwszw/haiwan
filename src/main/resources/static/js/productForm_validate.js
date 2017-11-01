@@ -17,7 +17,7 @@ $().ready(function() {
             productName:{required:true,maxlength:30},
             productDescription:{required:true,maxlength:100},
             categoryType:{required:true},
-            productArea:{min:0.01},
+            productArea:{min:0.01, digits:true},
             productAddress:{required:true, maxlength:40},
             productType:{required:true},
             productPayType:{required:true},

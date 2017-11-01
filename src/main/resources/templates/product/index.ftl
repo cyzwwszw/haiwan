@@ -107,10 +107,26 @@
                             <label class="col-sm-2 control-label">规格</label>
                             <div class="col-sm-4">
                                 <select name="productType" class="form-control">
-                                    <option value="0">单人间</option>
-                                    <option value="1">标准间</option>
-                                    <option value="2">家庭间</option>
-                                    <option value="3">VIP间</option>
+                                    <option value="0"
+<#if (product.productType)?? && product.productType == 0>
+selected
+</#if>
+                                    >单人间</option>
+                                    <option value="1"
+<#if (product.productType)?? && product.productType == 1>
+selected
+</#if>
+        >标准间</option>
+                                    <option value="2"
+<#if (product.productType)?? && product.productType == 2>
+selected
+</#if>
+        >家庭间</option>
+                                    <option value="3"
+<#if (product.productType)?? && product.productType == 3>
+selected
+</#if>
+        >VIP间</option>
                                 </select>
                             </div>
                         </div>
