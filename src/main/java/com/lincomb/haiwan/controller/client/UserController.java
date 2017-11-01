@@ -31,11 +31,12 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ResultVO<Object> login(@RequestParam String mobile, @RequestParam String code) {
+    public ResultVO<Object> login(@RequestParam String mobile, @RequestParam String code,
+    @RequestParam String openId) {
         if (StringUtil.isEmpty(mobile) || StringUtil.isEmpty(code)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
-        ResultVO<Object> result = userService.login(mobile, code);
+        ResultVO<Object> result = userService.login(mobile, code, openId);
         return result;
     }
 

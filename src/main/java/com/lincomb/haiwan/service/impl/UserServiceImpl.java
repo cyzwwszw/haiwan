@@ -3,6 +3,7 @@ package com.lincomb.haiwan.service.impl;
 import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.SendMessageRecord;
 import com.lincomb.haiwan.domain.SystemSetting;
+import com.lincomb.haiwan.domain.WechatInfo;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.enums.SmsEnum;
@@ -10,6 +11,7 @@ import com.lincomb.haiwan.repository.BuyerRepository;
 import com.lincomb.haiwan.repository.SendMessageRecordRepository;
 import com.lincomb.haiwan.repository.SystemSettingRepository;
 import com.lincomb.haiwan.service.UserService;
+import com.lincomb.haiwan.service.WechatInfoService;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.KeyUtil;
 import com.lincomb.haiwan.util.SendMsgsUtil;
@@ -40,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private SendMessageRecordRepository sendMessageRecordRepository;
     @Autowired
     private BuyerRepository buyerRepository;
+    @Autowired
+    private WechatInfoService wechatInfoService;
 
 
     /**
@@ -50,16 +54,17 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public ResultVO<Object> login(String mobile, String code) {
+    public ResultVO<Object> login(String mobile, String code, String openId) {
         ResultVO<Object> resultVO;
         Map<String, Object> map = new HashMap<>();
+        Buyer buyer = new Buyer();
         try {
             resultVO = validateCode(mobile, code);
             if (!RespCode.SUCCESS.equals(resultVO.getCode())) {
                 return resultVO;
             }
 
-            Buyer buyer = buyerRepository.findTopByBuyerMobile(mobile);
+             buyer = buyerRepository.findTopByBuyerMobile(mobile);
             if (buyer == null) {
                 Buyer buyer1 = new Buyer();
                 buyer1.setBuyerId(KeyUtil.genUniqueKey());
@@ -70,6 +75,13 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             log.error("login() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+        }
+        WechatInfo wechatInfo = wechatInfoService.findOne(openId);
+        if(null != wechatInfo){
+            wechatInfo.setBuyerId(buyer.getBuyerId());
+            wechatInfoService.save(wechatInfo);
+        }else{
+            return new ResultVO<Object>(RespCode.FAIL, "该用户未经授权");
         }
         resultVO.setCode(RespCode.SUCCESS);
         resultVO.setMsg(RespMsg.SUCCESS);
