@@ -1,5 +1,8 @@
 package com.lincomb.haiwan.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lincomb.haiwan.enums.OrderStatusEnum;
+import com.lincomb.haiwan.util.EnumUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -49,4 +52,10 @@ public class Order_t {
 
     public Order_t() {
     }
+
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+
 }

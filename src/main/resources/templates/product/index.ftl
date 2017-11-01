@@ -47,6 +47,7 @@
                             <div class="col-sm-6">
                             <#if (product.productPic)??&&(product.productPic) != ''>
                                 <img src="${(path)!''}${(product.productPic)!''}" height="200">
+                                    <input hidden type="text" name="productPic" value="${(product.productPic)!''}">
                             </#if>
                             </div>
                         </div>
