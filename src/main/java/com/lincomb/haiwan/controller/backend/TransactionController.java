@@ -1,14 +1,8 @@
 package com.lincomb.haiwan.controller.backend;
 
 import com.lincomb.haiwan.converter.Product2ProductDTOConverter;
-import com.lincomb.haiwan.domain.Order_t;
-import com.lincomb.haiwan.domain.Product;
-import com.lincomb.haiwan.domain.RoomUser;
-import com.lincomb.haiwan.domain.Transaction;
-import com.lincomb.haiwan.service.OrderService;
-import com.lincomb.haiwan.service.ProductService;
-import com.lincomb.haiwan.service.RoomUserService;
-import com.lincomb.haiwan.service.TransactionService;
+import com.lincomb.haiwan.domain.*;
+import com.lincomb.haiwan.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +39,12 @@ public class TransactionController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private BuyerService buyerService;
+
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -65,10 +65,13 @@ public class TransactionController {
             RoomUser roomUser = roomUserService.findOne(transaction.getOrderId());
             Order_t order_t = orderService.findOne(transaction.getOrderId());
             Product product = productService.findOne(order_t.getProductId());
+            Buyer buyer = buyerService.findOne(order_t.getBuyerId());
             map.put("transaction", transaction);
             map.put("product", product);
             map.put("roomUser", roomUser);
+            map.put("category", categoryService.findOne(product.getCategoryId()));
             map.put("order", order_t);
+            map.put("buyer", buyer);
         }
         return new ModelAndView("transaction/index", map);
     }
