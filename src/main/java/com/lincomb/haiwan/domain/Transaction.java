@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by QianYunlong on 26
@@ -15,11 +17,19 @@ public class Transaction {
     @Id
     private String transactionId;
 
-    private String transactionType;
-
-    private String transactionTime;
-
     private String orderId;
+
+    private Date payTime;
+
+    private BigDecimal payAmount;
+
+    private Date refundTime;
+
+    private BigDecimal refundAmount;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Transaction() {
     }

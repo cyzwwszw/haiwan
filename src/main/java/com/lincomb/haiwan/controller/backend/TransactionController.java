@@ -1,7 +1,14 @@
 package com.lincomb.haiwan.controller.backend;
 
-import com.lincomb.haiwan.domain.*;
-import com.lincomb.haiwan.service.*;
+import com.lincomb.haiwan.converter.Product2ProductDTOConverter;
+import com.lincomb.haiwan.domain.Order_t;
+import com.lincomb.haiwan.domain.Product;
+import com.lincomb.haiwan.domain.RoomUser;
+import com.lincomb.haiwan.domain.Transaction;
+import com.lincomb.haiwan.service.OrderService;
+import com.lincomb.haiwan.service.ProductService;
+import com.lincomb.haiwan.service.RoomUserService;
+import com.lincomb.haiwan.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +26,15 @@ import java.util.Map;
 /**
  * @Author: shylqian
  * @Description:
- * @Date: created on 下午7:40 17/10/23
+ * @Date: created on 下午7:36 17/10/31
  */
 @Controller
-@RequestMapping("/backend/order")
 @Slf4j
-public class OrderViewController {
+@RequestMapping("/backend/transaction")
+public class TransactionController {
 
     @Autowired
-    private OrderViewService orderViewService;
+    private TransactionService transactionService;
 
     @Autowired
     private OrderService orderService;
@@ -41,41 +48,28 @@ public class OrderViewController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
-                             @RequestParam(value = "buyerPhone", required = false) String buyerPhone,
-                             @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
                              Map<String, Object> map) {
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size, sort);
-        Page<Order_view> orderPage = orderViewService.findAll(request, buyerPhone, orderStatus);
-        map.put("buyerPhone", buyerPhone);
-        map.put("orderStatus", orderStatus);
-        map.put("orderPage", orderPage);
+        Page<Transaction> transactionPage = transactionService.findAll(request);
+        map.put("transactionPage", transactionPage);
         map.put("currentPage", page);
         map.put("size", size);
-        return new ModelAndView("order/list", map);
+        return new ModelAndView("transaction/list", map);
     }
 
-
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "orderId") String orderId, Map<String, Object> map) {
-        if (!StringUtils.isEmpty(orderId)) {
-            RoomUser roomUser = roomUserService.findOne(orderId);
-            Order_t order_t = orderService.findOne(orderId);
+    public ModelAndView index(@RequestParam(value = "transactionId") String transactionId, Map<String, Object> map) {
+        if (!StringUtils.isEmpty(transactionId)) {
+            Transaction transaction = transactionService.findOne(transactionId);
+            RoomUser roomUser = roomUserService.findOne(transaction.getOrderId());
+            Order_t order_t = orderService.findOne(transaction.getOrderId());
             Product product = productService.findOne(order_t.getProductId());
+            map.put("transaction", transaction);
             map.put("product", product);
             map.put("roomUser", roomUser);
             map.put("order", order_t);
         }
-        return new ModelAndView("order/index", map);
+        return new ModelAndView("transaction/index", map);
     }
-
-    @GetMapping("/finish")
-    public ModelAndView use(@RequestParam(value="orderId") String orderId, Map<String, Object> map){
-
-        orderService.finishOrder(orderId);
-        map.put("url", "/haiwan/backend/order/list");
-        return new ModelAndView("common/success", map);
-    }
-
-
 }

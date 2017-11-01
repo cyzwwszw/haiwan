@@ -63,7 +63,10 @@ public class PayServiceImpl implements PayService {
         log.info("微信支付响应 response={}", JsonUtil.toJson(payResponse));
 //        Transaction transaction = new Transaction();
 //        transaction.setTransactionId(payResponse.getOutTradeNo());
-//        transaction.setOrderId();
+//        transaction.setOrderId(order.getOrderId());
+//        transaction.setPayAmount(order.getOrderAmount().toString());
+//        transaction.setPayTime(payResponse.getTimeStamp());
+//        transactionService.save(transaction);
         return payResponse;
     }
 
@@ -83,6 +86,14 @@ public class PayServiceImpl implements PayService {
         }
         //修改订单状态
         orderService.payOrder(payResponse.getOrderId());
+        Transaction transaction = new Transaction();
+        transaction.setTransactionId(payResponse.getOutTradeNo());
+        transaction.setOrderId(order_t.getOrderId());
+        transaction.setPayAmount(order_t.getOrderAmount());
+        transaction.setPayTime(new Date());
+        transaction.setCreateTime(new Date());
+        transaction.setUpdateTime(new Date());
+        transactionService.save(transaction);
         return payResponse;
     }
 
@@ -126,6 +137,11 @@ public class PayServiceImpl implements PayService {
         RefundResponse refundResponse = bestPayService.refund(refundRequest);
         log.info("微信支付响应 response={}", JsonUtil.toJson(refundResponse));
         orderService.refundOrder(order.getOrderId());
+        Transaction transaction =transactionService.findOne(refundResponse.getOutTradeNo());
+        transaction.setRefundAmount(new BigDecimal(refundResponse.getOrderAmount()));
+        transaction.setRefundTime(new Date());
+        transaction.setUpdateTime(new Date());
+        transactionService.save(transaction);
         return refundResponse;
     }
 }

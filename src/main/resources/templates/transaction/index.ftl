@@ -17,24 +17,20 @@
                 <div class="col-md-12 column">
                     <h4 class="page-header">订单信息</h4>
                 </div>
-                <div class="col-md-12 column">
+                <div class="col-md-4 column">
                     <table class="table table-bordered table-condensed">
                         <tr>
                            <td class="info col-md-2">订单号</td>
-                            <td class="col-md-2">${(order.orderId )!''}</td>
-                           <td class="info col-md-2">订单状态</td>
-                            <td class="col-md-2">${(order.orderStatus )!''}</td>
-                           <td class="info col-md-2">订单入口</td>
-                            <td class="col-md-2">微信</td>
+                            <td class="col-md-2">${(transaction.orderId )!''}</td>
                         </tr>
                         <tr>
                            <td class="info col-md-2">下单时间</td>
                             <td class="col-md-2">${(order.createTime )!''}</td>
-                           <td class="info col-md-2">支付金额</td>
-                            <td class="col-md-2">${(order.orderAmount )!''}</td>
-                           <td class="info col-md-2">预约时间</td>
-                            <td class="col-md-2">${(order.orderDateIn?substring(0,10))!''}
-                            ~${(order.orderDateOut?substring(0,10) )!''}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="info col-md-2">支付平台</td>
+                            <td class="col-md-2">微信</td>
                             </td>
                         </tr>
                     </table>
@@ -67,24 +63,12 @@
                             <td class="col-md-2">${(product.productQuantity )!''}</td>
                             <td class="info col-md-2">标准价格</td>
                             <td class="col-md-2">${(product.productPrice )!''}</td>
-                            <#--<td class="info">早餐</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">卫浴</td>-->
-                            <#--<td class="col-md-2"></td>-->
                         </tr>
-                        <#--<tr>-->
-                            <#--<td class="info">宽带</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">庭院</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                            <#--<td class="info">电器</td>-->
-                            <#--<td class="col-md-2"></td>-->
-                        <#--</tr>-->
                     </table>
                 </div>
 
                 <div class="col-md-12 column">
-                    <h4 class="page-header">用户信息</h4>
+                    <h4 class="page-header">游客信息</h4>
                 </div>
                 <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
