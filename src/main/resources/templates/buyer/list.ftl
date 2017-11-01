@@ -13,7 +13,34 @@
                         <h3 class="page-header">产品查询</h3>
                     </div>
                 </div>
+
                 <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <h4 class="page-header">查询选项</h4>
+                    </div>
+                    <div class="col-md-12 column">
+                        <form id="orderQueryForm" role="form" class="form-horizontal" method="get"
+                              action="/haiwan/backend/buyer/list?page=0&size=10">
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">手机号</label>
+                                <div class="col-sm-2">
+                                    <input name="buyerMobile" type="text" class="form-control"
+                                           value="${(buyerMobile )!''}"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary">查询</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <h4 class="page-header">查询结果</h4>
+                    </div>
                     <div class="col-md-12 column">
                         <table class="table table-bordered table-condensed">
                             <thead>
@@ -47,19 +74,19 @@
                             <#if currentPage lte 1>
                                 <li class="disabled"><a href="#">上一页</a></li>
                             <#else>
-                                <li><a href="/haiwan/backend/buyer/list?page=${currentPage - 1}&size=${size}">上一页</a></li>
+                                <li><a href="/haiwan/backend/buyer/list?page=${currentPage - 1}&size=${size}&buyerMobile=${(buyerMobile)!''}">上一页</a></li>
                             </#if>
                             <#list 1..buyerPage.getTotalPages() as index>
                                 <#if currentPage == index>
                                     <li class="active"><a href="#">${index}</a></li>
                                 <#else>
-                                    <li><a href="/haiwan/backend/buyer/list?page=${index}&size=${size}">${index}</a></li>
+                                    <li><a href="/haiwan/backend/buyer/list?page=${index}&size=${size}&buyerMobile=${(buyerMobile)!''}">${index}</a></li>
                                 </#if>
                             </#list>
                             <#if currentPage gte buyerPage.getTotalPages()>
                                 <li class="disabled"><a href="#">下一页</a></li>
                             <#else>
-                                <li><a href="/haiwan/backend/buyer/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
+                                <li><a href="/haiwan/backend/buyer/list?page=${currentPage + 1}&size=${size}&buyerMobile=${(buyerMobile)!''}">下一页</a></li>
                             </#if>
                             </ul>
                         </div>
