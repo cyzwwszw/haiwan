@@ -34,7 +34,7 @@ $().ready(function() {
             productName:{required:"请输入产品名称",maxlength:"最大长度30"},
             productDescription:{required:"请输入产品描述",maxlength:"最大长度100"},
             categoryType:{required:"请选择类目"},
-            productArea:{min:"请输入面积"},
+            productArea:{min:"请输入面积", digits:"只能输入整数"},
             productAddress:{required:"请输入地址", maxlength:"最大长度40"},
             productType:{required:"请选择产品类型"},
             productPayType:{required:"请选择支付方式"},

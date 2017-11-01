@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Date: created on 上午9:47 17/11/1
  */
 public interface WechatInfoRepository extends JpaRepository<WechatInfo,String>{
+
 }
