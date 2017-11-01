@@ -12,12 +12,14 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
@@ -71,7 +73,11 @@ class WechatController {
         if (wechatInfoService.findOne(openId) == null){
             WechatInfo wechatInfo = new WechatInfo();
             wechatInfo.setOpenId(openId);
-            wechatInfo.setNickName(wxMpUser.getNickname());
+            try {
+                wechatInfo.setNickName(Base64.encodeBase64String(wxMpUser.getNickname().getBytes("utf-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             wechatInfo.setSex(wxMpUser.getSex());
             wechatInfo.setCountry(wxMpUser.getCountry());
             wechatInfo.setProvince(wxMpUser.getProvince());
