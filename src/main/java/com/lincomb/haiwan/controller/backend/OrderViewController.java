@@ -38,6 +38,9 @@ public class OrderViewController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -62,6 +65,8 @@ public class OrderViewController {
             RoomUser roomUser = roomUserService.findOne(orderId);
             Order_t order_t = orderService.findOne(orderId);
             Product product = productService.findOne(order_t.getProductId());
+            Category category = categoryService.findOne(product.getCategoryId());
+            map.put("category", category);
             map.put("product", product);
             map.put("roomUser", roomUser);
             map.put("order", order_t);

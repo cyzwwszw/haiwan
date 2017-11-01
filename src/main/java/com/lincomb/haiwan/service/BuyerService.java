@@ -14,5 +14,5 @@ public interface BuyerService {
 
     Buyer findOne(String buyerId);
 
-    Page<Buyer> findAll(Pageable pageable);
+    Page<Buyer> findAll(Pageable pageable, String buyerMobile);
 }

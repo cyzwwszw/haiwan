@@ -48,10 +48,11 @@ public class TransactionController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                             @RequestParam(value = "orderId", required = false) String orderId,
                              Map<String, Object> map) {
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size, sort);
-        Page<Transaction> transactionPage = transactionService.findAll(request);
+        Page<Transaction> transactionPage = transactionService.findAll(request, orderId);
         map.put("transactionPage", transactionPage);
         map.put("currentPage", page);
         map.put("size", size);

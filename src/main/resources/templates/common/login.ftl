@@ -27,7 +27,7 @@
                 <div class="col-md-offset-3 col-md-6">
                     <form role="form" class="form-horizontal" method="post"
                           action="/haiwan/backend/adminUser/doLogin" onsubmit="return check()">
-                        <span class="heading">用户登录</span>
+                        <span class="heading"></span>
                         <div class="form-group">
                             <input type="text" class="form-control" id="name" name="name"
                                    placeholder="用户名" title="请输入用户名" value="">

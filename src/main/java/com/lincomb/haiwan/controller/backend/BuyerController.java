@@ -36,10 +36,12 @@ public class BuyerController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                             @RequestParam(value = "buyerMobile", required = false) String buyerMobile,
                              Map<String, Object> map){
         Sort sort =new Sort(Sort.Direction.DESC, "createTime");
         PageRequest request = new PageRequest(page - 1, size,sort);
-        Page<Buyer> buyerPage = buyerService.findAll(request);
+        Page<Buyer> buyerPage = buyerService.findAll(request, buyerMobile);
+        map.put("buyerMobile", buyerMobile);
         map.put("buyerPage", buyerPage);
         map.put("currentPage", page);
         map.put("size", size);

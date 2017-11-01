@@ -48,7 +48,7 @@
                     <table class="table table-bordered table-condensed">
                         <tr>
                             <td class="info col-md-2">用户</td>
-                            <td class="col-md-2">${(buyer.buyerName )!''}</td>
+                            <td class="col-md-2">${(buyer.buyerId )!''}</td>
                             <td class="info col-md-2">用户电话</td>
                             <td class="col-md-2">${(buyer.buyerMobile )!''}</td>
                             <td class="info col-md-2">订单数量</td>

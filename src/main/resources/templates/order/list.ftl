@@ -29,13 +29,6 @@
                                 <input name="buyerPhone" type="text" class="form-control"
                                        value="${(buyerPhone )!''}"/>
                             </div>
-                            <#--NEW(0, "新订单"),-->
-                            <#--CANCEL(1, "已取消"),-->
-                            <#--WAIT(3, "待使用"),-->
-                            <#--FINISH(4, "已完成"),-->
-                            <#--OVERTIME(5, "已过期"),-->
-                            <#--REFUND_ING(6, "退款中"),-->
-                            <#--REFUND(7, "已退款");-->
                             <label class="col-sm-1 control-label">订单状态</label>
                             <div class="col-sm-2">
                                 <select name="orderStatus" class="form-control">

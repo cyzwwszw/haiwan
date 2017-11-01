@@ -31,7 +31,7 @@
                 <div class="col-md-12 column">
                     <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
                         <div class="col-md-12 column">
-                            <h3 class="page-header">基本信息</h4>
+                            <h4 class="page-header">基本信息</h4>
                         </div>
 
                         <div class="form-group">
