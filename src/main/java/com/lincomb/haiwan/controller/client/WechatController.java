@@ -3,6 +3,8 @@ package com.lincomb.haiwan.controller.client;
 import com.lincomb.haiwan.config.WechatAccountConfig;
 import com.lincomb.haiwan.enums.ResultEnum;
 import com.lincomb.haiwan.exception.HaiwanException;
+import com.lincomb.haiwan.service.WechatInfoService;
+import com.lincomb.haiwan.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -31,6 +33,9 @@ class WechatController {
     @Autowired
     private WechatAccountConfig wechatAccountConfig;
 
+    @Autowired
+    private WechatInfoService wechatInfoService;
+
     @GetMapping("/authorize")
     public String authorize(@RequestParam("returnUrl")String returnUrl){
         String url = wechatAccountConfig.getAuthorizeUrl();
@@ -50,6 +55,7 @@ class WechatController {
             log.error("微信网页授权{}",e);
             throw new HaiwanException(ResultEnum.PRODUCT_NOT_EXIST.WX_MP_ERROR.getCode(),e.getError().getErrorMsg());
         }
+        log.info("微信支付响应 wxMpOAuth2AccessToken={}", JsonUtil.toJson(wxMpOAuth2AccessToken));
         String openId = wxMpOAuth2AccessToken.getOpenId();
         log.info("微信Id {}"+openId);
         return "redirect:" + returnUrl + "?openid="+openId;
