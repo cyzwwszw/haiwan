@@ -110,6 +110,11 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
                 vo.setOrderDate(DateUtil.toDateTimeString(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
+                RoomUser user = roomUserRepository.findTopByOrderId(view.getOrderId());
+                if (user != null) {
+                    vo.setUserId(user.getUserId());
+                }
+
                 if (view.getOrderStatus() == OrderStatusEnum.WAIT.getCode()) {
                     Map<String, String> map1 = new HashMap<>();
                     RefundRule refundRule = refundRuleService.findByRuleNo(view.getRuleNo());
