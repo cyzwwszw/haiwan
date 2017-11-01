@@ -1,6 +1,6 @@
 <html>
 <#include "../common/header.ftl">
-<script src="/haiwan/js/productForm_validate.js"></script>
+<script src="/haiwan/static/js/productForm_validate.js"></script>
 <script>
     function clearNoNum(obj){
         obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
