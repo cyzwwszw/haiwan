@@ -70,6 +70,7 @@ class WechatController {
         String openId = wxMpOAuth2AccessToken.getOpenId();
         if (wechatInfoService.findOne(openId) == null){
             WechatInfo wechatInfo = new WechatInfo();
+            wechatInfo.setOpenId(openId);
             wechatInfo.setNickName(wxMpUser.getNickname());
             wechatInfo.setSex(wxMpUser.getSex());
             wechatInfo.setCountry(wxMpUser.getCountry());
