@@ -36,8 +36,8 @@ public class TimedTasksServiceImpl implements TimedTasksService {
         List<Order_t> list = orderRepository.findAllByOrderStatus(OrderStatusEnum.NEW.getCode());
         log.info("集合长度为：" + list.size());
         list.forEach(o -> {
-            Long minute = DateUtil.dateDiffMinute(o.getCreateTime(), new Date());
-            if (minute >= 10) {
+            long diff = new Date().getTime() - o.getCreateTime().getTime();
+            if (diff >= (1000 * 60 * 10)) {
                 log.info("订单号为‘" + o.getOrderId() + "’的订单，已超过10分钟未支付！");
                 orderService.cancelOrder(o.getOrderId());
             }
