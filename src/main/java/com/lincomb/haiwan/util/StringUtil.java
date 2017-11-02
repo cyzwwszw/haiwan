@@ -98,7 +98,7 @@ public class StringUtil {
                         "(([1|2][0-9]{3}[0|1][0-9][0-3][0-9][0-9]{3}" +
                         "[Xx0-9])|([0-9]{2}[0|1][0-9][0-3][0-9][0-9]{3}))";
                 Pattern p1 = Pattern.compile(IDCARD);
-                Matcher m1 = p1.matcher(IDCARD);
+                Matcher m1 = p1.matcher(idcard);
                 if (!m1.matches()) {
                     return false;
                 }
