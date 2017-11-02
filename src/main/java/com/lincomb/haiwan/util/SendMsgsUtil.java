@@ -1,12 +1,17 @@
 package com.lincomb.haiwan.util;
 
+import com.lincomb.haiwan.enums.RespCode;
+import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.enums.SmsEnum;
 import com.lincomb.haiwan.util.HttpConnectionUtil;
+import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 发送短信Util
@@ -22,7 +27,7 @@ public class SendMsgsUtil {
      * @return
      */
     public static String sendSmsDirectly(String mobileNo, String content) {
-        if (!validMobileNo(mobileNo)) {
+        if (!StringUtil.validMobileNo(mobileNo)) {
             return SmsEnum.PHONE_ERROR.getValue();
         }
 
@@ -69,28 +74,5 @@ public class SendMsgsUtil {
             code.append(random.nextInt(10) % (11) + 0);
         }
         return code.toString();
-    }
-
-    /**
-     * 验证手机号
-     *
-     * @param mobileNo
-     * @return
-     */
-    public static boolean validMobileNo(String mobileNo) {
-        if (mobileNo != null) {
-            try {
-                long mobile = Long.parseLong(mobileNo.trim());
-                if ((mobile >= 13000000000L && mobile <= 13999999999L)
-                        || (mobile >= 15000000000L && mobile <= 15999999999L)
-                        || (mobile >= 17000000000L && mobile <= 17999999999L)
-                        || (mobile >= 18000000000L && mobile <= 18999999999L)) {
-                    return true;
-                }
-            } catch (Exception e) {
-                log.info("手机号码格式有误！");
-            }
-        }
-        return false;
     }
 }
