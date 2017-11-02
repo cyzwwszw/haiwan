@@ -54,6 +54,6 @@ public class Test {
 //
 //        System.out.println();
 
-        System.out.println(StringUtil.validMobileNo(""));
+        System.out.println(StringUtil.validIdcard("410326199505126715"));
     }
 }
