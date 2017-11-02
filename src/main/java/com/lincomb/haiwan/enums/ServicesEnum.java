@@ -9,15 +9,15 @@ import com.lincomb.haiwan.util.FastDFSUtil;
  */
 public enum ServicesEnum {
 
-    WIFI("宽带", "group1/M00/00/4B/rBBr1Vnv73qAZ0R9AAAHLF-KMiI035.png"),
-    BREAKFAST("早餐", "group1/M00/00/4B/rBBr1lppqkuAab6uAAAIOQdubxI143.png"),
-    BATHROOM("卫浴", "group1/M00/00/4B/rBBr1Vnv7_SAA4epAAAGLfb2bNw237.png"),
-    YARD("庭院", "group1/M00/00/4B/rBBr1lppqfWAUMSnAAAGAHBvy0s082.png"),
-    TV("电视", "group1/M00/00/4B/rBBr1lppqU-ALOM8AAAGEMxzh14322.png"),
-    FRIG("冰箱", "group1/M00/00/4B/rBBr1Vnv7oeAG7XgAAAFOBfdQes402.png"),
-    PC("电脑", "group1/M00/00/4B/rBBr1lppqSGAQW7DAAAFBVkp6PM734.png"),
-    BBQ("烧烤", "group1/M00/00/4B/rBBr1lppqcyAa7l0AAAHBlNDLHs137.png"),
-    AIRCONDITIONING("空调", "group1/M00/00/4B/rBBr1Vnv71KACcLrAAAGEp2G8xQ365.png");
+    WIFI("宽带", "group1/M00/05/29/wKgthln5ykKAJgpBAAAHLF-KMiI862.png"),
+    BREAKFAST("早餐", "group1/M00/05/29/wKgthln5yqOAEsFFAAAIOQdubxI076.png"),
+    BATHROOM("卫浴", "group1/M00/05/69/wKgthVn5yo-ARKWmAAAGLfb2bNw057.png"),
+    YARD("庭院", "group1/M00/05/69/wKgthVn5ynCANoszAAAGAHBvy0s376.png"),
+    TV("电视", "group1/M00/05/29/wKgthln5yhCAX0A9AAAGEMxzh14347.png"),
+    FRIG("冰箱", "group1/M00/05/29/wKgthln5ybqAeQEYAAAFOBfdQes845.png"),
+    PC("电脑", "group1/M00/05/69/wKgthVn5yfCAZ4jGAAAFBVkp6PM575.png"),
+    BBQ("烧烤", "group1/M00/05/69/wKgthVn5ylqAN3cnAAAHBlNDLHs940.png"),
+    AIRCONDITIONING("空调", "group1/M00/05/69/wKgthVn5yiyAcAxlAAAGEp2G8xQ003.png");
 
     private String text;
 
