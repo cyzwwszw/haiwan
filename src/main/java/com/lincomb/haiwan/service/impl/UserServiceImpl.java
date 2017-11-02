@@ -15,6 +15,7 @@ import com.lincomb.haiwan.service.WechatInfoService;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.KeyUtil;
 import com.lincomb.haiwan.util.SendMsgsUtil;
+import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author yongsheng.he
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
                 return resultVO;
             }
 
-             buyer = buyerRepository.findTopByBuyerMobile(mobile);
+            buyer = buyerRepository.findTopByBuyerMobile(mobile);
             if (buyer == null) {
                 Buyer buyer1 = new Buyer();
                 buyer1.setBuyerId(KeyUtil.genUniqueKey());
@@ -77,10 +76,10 @@ public class UserServiceImpl implements UserService {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
         }
         WechatInfo wechatInfo = wechatInfoService.findOne(openId);
-        if(null != wechatInfo){
+        if (null != wechatInfo) {
             wechatInfo.setBuyerId(buyer.getBuyerId());
             wechatInfoService.save(wechatInfo);
-        }else{
+        } else {
             return new ResultVO<Object>(RespCode.FAIL, "该用户未经授权");
         }
         resultVO.setCode(RespCode.SUCCESS);
@@ -133,9 +132,7 @@ public class UserServiceImpl implements UserService {
      */
     private ResultVO<Object> validateMsg(String mobile) {
 
-        Pattern p = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
-        Matcher m = p.matcher(mobile);
-        if (!m.matches()) {
+        if (!StringUtil.validMobileNo(mobile)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
         }
         try {
@@ -172,9 +169,8 @@ public class UserServiceImpl implements UserService {
      */
     private ResultVO<Object> validateCode(String mobile, String code) {
         try {
-            Pattern p = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
-            Matcher m = p.matcher(mobile);
-            if (!m.matches()) {
+
+            if (!StringUtil.validMobileNo(mobile)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
             }
 

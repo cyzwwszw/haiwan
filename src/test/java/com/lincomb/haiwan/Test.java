@@ -3,6 +3,7 @@ package com.lincomb.haiwan;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
 import com.lincomb.haiwan.util.DateUtil;
+import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
 import sun.rmi.runtime.Log;
 
@@ -42,15 +43,17 @@ public class Test {
 //        }else {
 //            System.out.println(2);
 //        }
-        long a=318629;
-        long diff =(10*60*1000)-a;
-        long day = diff / (24 * 60 * 60 * 1000);
-        long hour = (diff / (60 * 60 * 1000) - day * 24);
-        long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
-        long sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-        System.out.println("day:" + day + ",hour:" + hour +
-                ",min:" + min + ",sec:" + sec);
+//        long a=318629;
+//        long diff =(10*60*1000)-a;
+//        long day = diff / (24 * 60 * 60 * 1000);
+//        long hour = (diff / (60 * 60 * 1000) - day * 24);
+//        long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+//        long sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+//        System.out.println("day:" + day + ",hour:" + hour +
+//                ",min:" + min + ",sec:" + sec);
+//
+//        System.out.println();
 
-        System.out.println();
+        System.out.println(StringUtil.validMobileNo(""));
     }
 }
