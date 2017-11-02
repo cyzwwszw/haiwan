@@ -22,7 +22,8 @@ public enum  ResultEnum {
 
 
     WX_MP_ERROR(51,"微信异常"),
-    WX_PAY_MONEY_ERROR(52,"金额不一致")
+    WX_PAY_MONEY_ERROR(52,"金额不一致"),
+    WX_REFUND_MONEY_ERROR(53,"微信退款异常")
     ;
 
     private Integer code;

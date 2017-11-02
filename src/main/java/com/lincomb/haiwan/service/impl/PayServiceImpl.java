@@ -128,7 +128,12 @@ public class PayServiceImpl implements PayService {
 
         refundRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
         log.info("微信支付请求 request={}", JsonUtil.toJson(refundRequest));
-        RefundResponse refundResponse = bestPayService.refund(refundRequest);
+        RefundResponse refundResponse = new RefundResponse();
+        try{
+             refundResponse = bestPayService.refund(refundRequest);
+        }catch (Exception e){
+            throw new  HaiwanException(ResultEnum.WX_REFUND_MONEY_ERROR);
+        }
         log.info("微信支付响应 response={}", JsonUtil.toJson(refundResponse));
         orderService.refundOrder(order.getOrderId());
         Transaction transaction =transactionService.findOne(refundResponse.getOutTradeNo());

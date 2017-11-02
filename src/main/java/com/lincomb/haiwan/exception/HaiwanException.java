@@ -2,9 +2,9 @@ package com.lincomb.haiwan.exception;
 
 
 import com.lincomb.haiwan.enums.ResultEnum;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class HaiwanException extends RuntimeException {
 
     private Integer code;

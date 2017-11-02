@@ -19,7 +19,7 @@ public class FastDFSUtil {
 
     private final static Logger log = LoggerFactory.getLogger(FastDFSUtil.class);
 
-    private static String CONFIG_NAME = "fileUpload_prod.properties";//配置文件名
+    private static String CONFIG_NAME = "fileUpload.properties";//配置文件名
 
     public static String GROUP_NAME; //组名
     public static String ALIAS; //前缀
