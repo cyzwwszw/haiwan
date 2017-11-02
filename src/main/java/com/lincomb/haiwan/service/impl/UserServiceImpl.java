@@ -20,6 +20,7 @@ import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @Transactional
     public ResultVO<Object> login(String mobile, String code, String openId) {
         ResultVO<Object> resultVO;
         Map<String, Object> map = new HashMap<>();

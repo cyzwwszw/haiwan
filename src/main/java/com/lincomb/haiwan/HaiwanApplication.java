@@ -6,8 +6,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@PropertySource("file:/data/config/haiwan/haiwan.properties")
-//@PropertySource("file:D:/haiwan/haiwan.properties")
+//@PropertySource("file:/data/config/haiwan/haiwan.properties")
+@PropertySource("file:D:/haiwan/haiwan.properties")
 public class HaiwanApplication {
 
 	public static void main(String[] args) {

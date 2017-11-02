@@ -16,6 +16,7 @@ $().ready(function() {
         rules: {
             productName:{required:true,maxlength:30},
             productDescription:{required:true,maxlength:100},
+            productPic:{required:true},
             categoryType:{required:true},
             productArea:{min:0.01, digits:true},
             productAddress:{required:true, maxlength:40},
@@ -33,6 +34,7 @@ $().ready(function() {
         messages: {
             productName:{required:"请输入产品名称",maxlength:"最大长度30"},
             productDescription:{required:"请输入产品描述",maxlength:"最大长度100"},
+            productPic:{required:"请上传图片"},
             categoryType:{required:"请选择类目"},
             productArea:{min:"请输入面积", digits:"只能输入整数"},
             productAddress:{required:"请输入地址", maxlength:"最大长度40"},

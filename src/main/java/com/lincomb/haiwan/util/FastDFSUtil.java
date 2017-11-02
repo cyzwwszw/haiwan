@@ -93,7 +93,7 @@ public class FastDFSUtil {
         }
         try {
             //获取项目路径下的配置文件的路径
-            String configPath = FastDFSUtil.class.getClassLoader().getResource("fileUpload_prod.properties").getPath();
+            String configPath = FastDFSUtil.class.getClassLoader().getResource(CONFIG_NAME).getPath();
 
         /*初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
          如果不执行，在允许的过程中会报空指针异常。*/
@@ -121,7 +121,7 @@ public class FastDFSUtil {
     public static int deleteFile(String fileName) throws Exception {
 
         //获取项目路径下的配置文件的路径
-        String configPath = FastDFSUtil.class.getClassLoader().getResource("fileUpload_prod.properties").getPath();
+        String configPath = FastDFSUtil.class.getClassLoader().getResource(CONFIG_NAME).getPath();
 
         /*初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
          如果不执行，在允许的过程中会报空指针异常。*/
@@ -146,7 +146,7 @@ public class FastDFSUtil {
 
         try {
             //获取项目路径下的配置文件的路径
-            String configPath = FastDFSUtil.class.getClassLoader().getResource("fileUpload_prod.properties").getPath();
+            String configPath = FastDFSUtil.class.getClassLoader().getResource(CONFIG_NAME).getPath();
 
         /*初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
          如果不执行，在允许的过程中会报空指针异常。*/
@@ -184,7 +184,7 @@ public class FastDFSUtil {
             return "";
         }
         //获取项目路径下的配置文件的路径
-        String configPath = FastDFSUtil.class.getClassLoader().getResource("fileUpload_prod.properties").getPath();
+        String configPath = FastDFSUtil.class.getClassLoader().getResource(CONFIG_NAME).getPath();
 
         /*初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
          如果不执行，在允许的过程中会报空指针异常。*/

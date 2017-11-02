@@ -1,5 +1,7 @@
 <html>
 <#include "../common/header.ftl">
+<#--<link rel="stylesheet" type="text/css" href="/haiwan/static/fileinput/css/default.css">-->
+<link href="/haiwan/static/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 <script src="/haiwan/static/js/productForm_validate.js"></script>
 <script>
     function clearNoNum(obj){
@@ -42,31 +44,24 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">图片展现</label>
-                            <div class="col-sm-6">
-                            <#if (product.productPic)??&&(product.productPic) != ''>
-                                <img src="${(path)!''}${(product.productPic)!''}" height="200">
-                                    <input hidden type="text" name="productPic" value="${(product.productPic)!''}">
-                            </#if>
-                            </div>
-                        </div>
+                        <#--<div class="form-group">-->
+                            <#--<label class="col-sm-2 control-label">图片展现</label>-->
+                            <#--<div class="col-sm-6">-->
+                            <#--<#if (product.productPic)??&&(product.productPic) != ''>-->
+                                <#--<img src="${(path)!''}${(product.productPic)!''}" height="200">-->
+                                    <#--<input hidden type="text" name="productPic" value="${(product.productPic)!''}">-->
+                            <#--</#if>-->
+                            <#--</div>-->
+                        <#--</div>-->
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label"></label>
                             <div class="col-sm-4">
-                                <input name="fileUpload" type="file">
+                                <input id="fileUpload" name="fileUpload" type="file">
+                                <input hidden type="text" name="productPic" value="${(product.productPic)!''}" id="productPic">
+                                <input hidden type="text" name="path" value="${(path)!''}" id="path">
                             </div>
                         </div>
-
-                        <#--<div class="form-group">-->
-                            <#--<label class="col-sm-2 control-label">图片路径</label>-->
-                            <#--<div class="col-sm-10">-->
-                                <#--<input name="productPic" type="text" class="form-control"-->
-                                       <#--value="${(product.productPic)!''}"/>-->
-                            <#--</div>-->
-                        <#--</div>-->
-
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">描述说明</label>
@@ -363,5 +358,26 @@ selected
     </div>
 </div>
 
+
+<script src="/haiwan/static/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/haiwan/static/fileinput/js/locales/zh.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        var url1 = ""
+        if($("#productPic").val() !== ""){
+             url1 = $("#path").val() + $("#productPic").val();
+        }
+
+        $('#fileUpload').fileinput({
+            initialPreview: url1,
+            initialPreviewAsData: true,
+            language: 'zh',
+            allowedFileExtensions: ['jpg', 'png'],
+            maxFileSize: 1000,
+            textEncoding: 'UTF-8',
+            showUpload:false
+        })
+    });
+</script>
 </body>
 </html>
