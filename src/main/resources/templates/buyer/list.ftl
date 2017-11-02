@@ -10,7 +10,7 @@
             <div class="container-fluid">
                 <div class="row clearfix">
                     <div class="col-md-12 column">
-                        <h3 class="page-header">产品查询</h3>
+                        <h3 class="page-header">用户查询</h3>
                     </div>
                 </div>
 

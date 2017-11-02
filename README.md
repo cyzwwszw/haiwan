@@ -11,3 +11,8 @@ created by qyl
 ALTER TABLE product MODIFY product_checkout_time VARCHAR(64) COMMENT '退房时间';
 ALTER TABLE product MODIFY rule_no VARCHAR(16) COMMENT '退票类型';
 
+
+上线需要更改
+1 更改 application中的source 指向
+2 更改 对应的file_upload.properties
+
