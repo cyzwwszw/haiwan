@@ -4,17 +4,15 @@
 <link href="/haiwan/static/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 <script src="/haiwan/static/js/productForm_validate.js"></script>
 <script>
-    function clearNoNum(obj){
-        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
-        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
-        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
-        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
-        if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-            obj.value= parseFloat(obj.value);
+    function clearNoNum(obj) {
+        obj.value = obj.value.replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符
+        obj.value = obj.value.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的
+        obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');//只能输入两个小数
+        if (obj.value.indexOf(".") < 0 && obj.value != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+            obj.value = parseFloat(obj.value);
         }
     }
-</script>
-
 </script>
 <body>
 <div id="wrapper" class="toggled">
@@ -31,7 +29,8 @@
             </div>
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/backend/product/save">
+                    <form id="productForm" role="form" class="form-horizontal" method="post"
+                          enctype="multipart/form-data" action="/haiwan/backend/product/save">
                         <div class="col-md-12 column">
                             <h4 class="page-header">基本信息</h4>
                         </div>
@@ -43,22 +42,12 @@
                                        value="${(product.productName )!''}"/>
                             </div>
                         </div>
-
-                        <#--<div class="form-group">-->
-                            <#--<label class="col-sm-2 control-label">图片展现</label>-->
-                            <#--<div class="col-sm-6">-->
-                            <#--<#if (product.productPic)??&&(product.productPic) != ''>-->
-                                <#--<img src="${(path)!''}${(product.productPic)!''}" height="200">-->
-                                    <#--<input hidden type="text" name="productPic" value="${(product.productPic)!''}">-->
-                            <#--</#if>-->
-                            <#--</div>-->
-                        <#--</div>-->
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label"></label>
                             <div class="col-sm-4">
                                 <input id="fileUpload" name="fileUpload" type="file">
-                                <input hidden type="text" name="productPic" value="${(product.productPic)!''}" id="productPic">
+                                <input hidden type="text" name="productPic" value="${(product.productPic)!''}"
+                                       id="productPic">
                                 <input hidden type="text" name="path" value="${(path)!''}" id="path">
                             </div>
                         </div>
@@ -103,25 +92,29 @@
                             <div class="col-sm-4">
                                 <select name="productType" class="form-control">
                                     <option value="0"
-<#if (product.productType)?? && product.productType == 0>
-selected
-</#if>
-                                    >单人间</option>
+                                    <#if (product.productType)?? && product.productType == 0>
+                                            selected
+                                    </#if>
+                                    >单人间
+                                    </option>
                                     <option value="1"
-<#if (product.productType)?? && product.productType == 1>
-selected
-</#if>
-        >标准间</option>
+                                    <#if (product.productType)?? && product.productType == 1>
+                                            selected
+                                    </#if>
+                                    >标准间
+                                    </option>
                                     <option value="2"
-<#if (product.productType)?? && product.productType == 2>
-selected
-</#if>
-        >家庭间</option>
+                                    <#if (product.productType)?? && product.productType == 2>
+                                            selected
+                                    </#if>
+                                    >家庭间
+                                    </option>
                                     <option value="3"
-<#if (product.productType)?? && product.productType == 3>
-selected
-</#if>
-        >VIP间</option>
+                                    <#if (product.productType)?? && product.productType == 3>
+                                            selected
+                                    </#if>
+                                    >VIP间
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -219,7 +212,8 @@ selected
                                     </#if>>无
                                 </label>
                             </div>
-
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">卫浴</label>
                             <div class="col-sm-4">
                                 <label class="radio-inline">
@@ -235,7 +229,6 @@ selected
                                     </#if>>无
                                 </label>
                             </div>
-
                         </div>
 
                         <div class="form-group">
@@ -254,7 +247,6 @@ selected
                                     </#if>>无
                                 </label>
                             </div>
-
                         </div>
 
                         <div class="form-group">
@@ -346,10 +338,18 @@ selected
                                 </select>
                             </div>
                         </div>
-
-                        <input hidden type="text" name="productId" value="${(product.productId)!''}">
-                        <div class="col-sm-offset-2 col-sm-4">
-                            <button type="submit" class="btn btn-primary">保存，下一步</button>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <input hidden type="text" name="productId" value="${(product.productId)!''}">
+                            <div class="col-sm-offset-2 col-sm-1">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                            </div>
+                            <div class="col-sm-offset-1 col-sm-1">
+                                <button type="button" class="btn btn-primary"
+                                        onclick='location.href="/haiwan/backend/product/toPeictures?productId=${(product.productId)!''}"'>
+                                    下一步
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -358,14 +358,13 @@ selected
     </div>
 </div>
 
-
 <script src="/haiwan/static/fileinput/js/fileinput.js" type="text/javascript"></script>
 <script src="/haiwan/static/fileinput/js/locales/zh.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         var url1 = ""
-        if($("#productPic").val() !== ""){
-             url1 = $("#path").val() + $("#productPic").val();
+        if ($("#productPic").val() !== "") {
+            url1 = $("#path").val() + $("#productPic").val();
         }
 
         $('#fileUpload').fileinput({
@@ -375,7 +374,7 @@ selected
             allowedFileExtensions: ['jpg', 'png'],
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
-            showUpload:false
+            showUpload: false
         })
     });
 </script>

@@ -78,5 +78,16 @@ public interface ProductService {
      */
     List<Item> findByProductId(String productId);
 
+    /**
+     * 根据itemId查询
+     *
+     * @param itemId
+     * @return
+     */
     Item findOneItem(String itemId);
+
+    /**
+     * 删除产品须知
+     */
+    void deleteItem(String itemId);
 }

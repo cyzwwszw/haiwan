@@ -78,14 +78,13 @@ public class UploadUtil {
                     MultipartFile mFile = entry.getValue();
                     log.info("第" + (i + 1) + "次进入上传图片方法里");
                     if (!mFile.isEmpty()) {
-                        System.out.println(mFile.getName());
                         // 返回文件保存路径
-//                        String path = FastDFSUtil.upload(mFile);
-//                        if (!StringUtil.isEmpty(path)) {
-//                            list.add(path);
-//                        } else {
-//                            log.info("图片上传失败");
-//                        }
+                        String path = FastDFSUtil.upload(mFile);
+                        if (!StringUtil.isEmpty(path)) {
+                            list.add(path);
+                        } else {
+                            log.info("图片上传失败");
+                        }
                     }
                     i++;
                 }
