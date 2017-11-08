@@ -118,8 +118,8 @@ public class ProductController {
             return new ModelAndView("common/error", map);
         }
 
-        map.put("productId", product.getProductId());
-        return new ModelAndView("product/Pictures", map);
+        map.put("url", "/haiwan/backend/product/index?productId=" + product.getProductId());
+        return new ModelAndView("common/success", map);
     }
 
     @GetMapping("/on_sale")
@@ -164,139 +164,110 @@ public class ProductController {
     @RequestMapping("/saveItem")
     public ModelAndView saveItem(ItemForm itemForm, Map<String, Object> map) {
         try {
-            if (!StringUtil.isEmpty(itemForm.getItemName_1()) && !StringUtil.isEmpty(itemForm.getItemDescription_1())) {
-                Item item1 = new Item();
-                if (!StringUtil.isEmpty(itemForm.getItemId_1())) {
-                    item1 = productService.findOneItem(itemForm.getItemId_1());
-                } else {
-                    item1.setItemId(KeyUtil.genUniqueKey());
-                }
-                item1.setItemName(itemForm.getItemName_1());
-                item1.setItemDescription(itemForm.getItemDescription_1());
-                item1.setProductId(itemForm.getProductId());
-                productService.saveItem(item1);
+            Item item = new Item();
+            if (!StringUtil.isEmpty(itemForm.getItemId())) {
+                item = productService.findOneItem(itemForm.getItemId());
+            } else {
+                itemForm.setItemId(KeyUtil.genUniqueKey());
             }
-
-            if (!StringUtil.isEmpty(itemForm.getItemName_2()) && !StringUtil.isEmpty(itemForm.getItemDescription_2())) {
-                Item item2 = new Item();
-                if (!StringUtil.isEmpty(itemForm.getItemId_2())) {
-                    item2 = productService.findOneItem(itemForm.getItemId_2());
-                } else {
-                    item2.setItemId(KeyUtil.genUniqueKey());
-                }
-                item2.setItemName(itemForm.getItemName_2());
-                item2.setItemDescription(itemForm.getItemDescription_2());
-                item2.setProductId(itemForm.getProductId());
-                productService.saveItem(item2);
-            }
-
-            if (!StringUtil.isEmpty(itemForm.getItemName_3()) && !StringUtil.isEmpty(itemForm.getItemDescription_3())) {
-                Item item3 = new Item();
-                if (!StringUtil.isEmpty(itemForm.getItemId_3())) {
-                    item3 = productService.findOneItem(itemForm.getItemId_3());
-                } else {
-                    item3.setItemId(KeyUtil.genUniqueKey());
-                }
-                item3.setItemName(itemForm.getItemName_3());
-                item3.setItemDescription(itemForm.getItemDescription_3());
-                item3.setProductId(itemForm.getProductId());
-                productService.saveItem(item3);
-            }
-
-            if (!StringUtil.isEmpty(itemForm.getItemName_4()) && !StringUtil.isEmpty(itemForm.getItemDescription_4())) {
-                Item item4 = new Item();
-                if (!StringUtil.isEmpty(itemForm.getItemId_4())) {
-                    item4 = productService.findOneItem(itemForm.getItemId_4());
-                } else {
-                    item4.setItemId(KeyUtil.genUniqueKey());
-                }
-                item4.setItemName(itemForm.getItemName_4());
-                item4.setItemDescription(itemForm.getItemDescription_4());
-                item4.setProductId(itemForm.getProductId());
-                productService.saveItem(item4);
-            }
-
+            BeanUtils.copyProperties(itemForm, item);
+            productService.saveItem(item);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-        map.put("url", "/haiwan/backend/product/list");
+        map.put("url", "/haiwan/backend/product/toItemList?productId=" + itemForm.getProductId());
         return new ModelAndView("common/success", map);
     }
 
-    @RequestMapping("/savePictures")
-    public ModelAndView savePeictures(HttpServletRequest request, Map<String, Object> map) {
-        try {
-            String productId = request.getParameter("productId");
-            String fileStr = request.getParameter("fileStr");
-            if (!StringUtil.isEmpty(fileStr)) {
-                List<Photo> photos = photoService.findByProductId(productId);
-                photos.forEach(photo -> {
-                    photoService.delete(photo.getPhotoId());
-                });
+    @RequestMapping("/toItem")
+    public ModelAndView toItem(@RequestParam(value = "itemId", required = false) String itemId,
+                               @RequestParam(value = "productId", required = false) String productId,
+                               Map<String, Object> map) {
 
-                String[] paths = fileStr.split(",");
-                for (int i = 0; i < paths.length; i++) {
-                    Photo photo = new Photo();
-                    photo.setPhotoId(KeyUtil.genUniqueKey());
-                    photo.setProductId(productId);
-                    photo.setPhotoUrl(paths[i]);
-                    photoService.savePhoto(photo);
-                }
-            }
-
-            if (!StringUtil.isEmpty(productId)) {
-                List<Item> items = productService.findByProductId(productId);
-                ItemForm itemForm = new ItemForm();
-                itemForm.setProductId(productId);
-                for (int i = 0; i < items.size(); i++) {
-                    if (i == 0) {
-                        itemForm.setItemId_1(items.get(i).getItemId());
-                        itemForm.setItemName_1(items.get(i).getItemName());
-                        itemForm.setItemDescription_1(items.get(i).getItemDescription());
-                    }
-                    if (i == 1) {
-                        itemForm.setItemId_2(items.get(i).getItemId());
-                        itemForm.setItemName_2(items.get(i).getItemName());
-                        itemForm.setItemDescription_2(items.get(i).getItemDescription());
-                    }
-                    if (i == 2) {
-                        itemForm.setItemId_3(items.get(i).getItemId());
-                        itemForm.setItemName_3(items.get(i).getItemName());
-                        itemForm.setItemDescription_3(items.get(i).getItemDescription());
-                    }
-                    if (i == 3) {
-                        itemForm.setItemId_4(items.get(i).getItemId());
-                        itemForm.setItemName_4(items.get(i).getItemName());
-                        itemForm.setItemDescription_4(items.get(i).getItemDescription());
-                    }
-                }
-                map.put("itemForm", itemForm);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Item item = new Item();
+        if (!StringUtil.isEmpty(itemId)) {
+            item = productService.findOneItem(itemId);
         }
-        return new ModelAndView("product/Item", map);
+        ItemForm itemForm = new ItemForm();
+        BeanUtils.copyProperties(item, itemForm);
+        itemForm.setProductId(productId);
+        map.put("itemForm", itemForm);
+        return new ModelAndView("product/item", map);
     }
 
-    @RequestMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam MultipartFile files) {
-        String path = "";
+    @RequestMapping("/toItemList")
+    public ModelAndView toItemList(@RequestParam(value = "productId", required = false) String productId, Map<String, Object> map) {
+
+        if (!StringUtil.isEmpty(productId)) {
+            List<Item> items = productService.findByProductId(productId);
+            map.put("items", items);
+            map.put("itemsSize", items.size());
+        }
+        map.put("productId", productId);
+        return new ModelAndView("product/itemList", map);
+    }
+
+    @RequestMapping("/deleteItem")
+    public ModelAndView deleteItem(@RequestParam String itemId, @RequestParam String productId, Map<String, Object> map) {
         try {
-            if (!files.isEmpty()) {
-                // 返回文件保存路径
-                path = FastDFSUtil.upload(files);
-                if (StringUtil.isEmpty(path)) {
-                    log.info("图片上传失败");
-                }
-            }
+            productService.deleteItem(itemId);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+        map.put("url", "/haiwan/backend/product/toItemList?productId=" + productId);
+        return new ModelAndView("common/success", map);
+    }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("path", path);
+    @RequestMapping("/toPeictures")
+    public ModelAndView toPeictures(@RequestParam(value = "productId", required = false) String productId, Map<String, Object> map) {
+
+        if (!StringUtil.isEmpty(productId)) {
+            map.put("productId", productId);
+            List<Photo> photos = photoService.findByProductId(productId);
+            map.put("photos", photos);
+            map.put("path", FastDFSUtil.DOWNLOAD_PATH);
+        }
+        return new ModelAndView("product/pictures", map);
+    }
+
+    @RequestMapping("/savePeictures")
+    public ModelAndView savePeictures(@RequestParam MultipartFile[] files, @RequestParam String productId, Map<String, Object> map) {
+        try {
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                if (!file.isEmpty()) {
+                    // 返回文件保存路径
+                    String path = FastDFSUtil.upload(file);
+                    if (StringUtil.isEmpty(path)) {
+                        log.info("图片上传失败");
+                    } else {
+                        Photo photo = new Photo();
+                        photo.setPhotoId(KeyUtil.genUniqueKey());
+                        photo.setProductId(productId);
+                        photo.setPhotoUrl(path);
+                        photoService.savePhoto(photo);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            map.put("msg", e.getMessage());
+            map.put("url", "/haiwan/backend/product/toPeictures?productId=" + productId);
+            return new ModelAndView("common/error", map);
+        }
+        map.put("url", "/haiwan/backend/product/toPeictures?productId=" + productId);
+        return new ModelAndView("common/success", map);
+    }
+
+    @RequestMapping("/deletePeictures")
+    @ResponseBody
+    public String deletePeictures(@RequestParam String id, Map<String, Object> map) {
+        try {
+            photoService.delete(id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        map.put("success", "{}");
         return JsonUtil.toJSonString(map);
     }
 }

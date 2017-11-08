@@ -284,6 +284,11 @@ public class ProductServiceImpl implements ProductService {
         return itemRepository.findOne(itemId);
     }
 
+    @Override
+    public void deleteItem(String itemId) {
+        itemRepository.delete(itemId);
+    }
+
 
     /**
      * 私有方法
