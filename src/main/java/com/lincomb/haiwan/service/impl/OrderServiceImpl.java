@@ -1,16 +1,15 @@
 package com.lincomb.haiwan.service.impl;
 
 
+import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.Order_t;
 import com.lincomb.haiwan.domain.Product;
 import com.lincomb.haiwan.domain.RoomUser;
 import com.lincomb.haiwan.enums.OrderStatusEnum;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
-import com.lincomb.haiwan.repository.OrderRepository;
-import com.lincomb.haiwan.repository.ProductRepository;
-import com.lincomb.haiwan.repository.QueryProductRepository;
-import com.lincomb.haiwan.repository.RoomUserRepository;
+import com.lincomb.haiwan.enums.YESNOEnum;
+import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.OrderService;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.KeyUtil;
@@ -38,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private BuyerRepository buyerRepository;
+    @Autowired
     private RoomUserRepository roomUserRepository;
     @Autowired
     private QueryProductRepository queryProductRepository;
@@ -60,6 +61,11 @@ public class OrderServiceImpl implements OrderService {
         Map<String, String> map1 = new HashMap<>();
         try {
 
+            Buyer buyer = buyerRepository.findOne(map.get("buyerId"));
+            if (StringUtil.isNull(buyer)) {
+                log.error("用户不存在！");
+                return new ResultVO<Object>(RespCode.USER_DOES_NOT_EXIST, RespMsg.USER_DOES_NOT_EXIST);
+            }
             Date inDate = DateUtil.stringToUtilDate(map.get("orderDateIn") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
             Date outDate = DateUtil.stringToUtilDate(map.get("orderDateOut") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
             BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
@@ -101,9 +107,16 @@ public class OrderServiceImpl implements OrderService {
             order_t = orderRepository.save(order_t);
 
             map1.put("orderId", order_t.getOrderId());
+
+            RoomUser roomUser = roomUserRepository.findDistinctTopByBuyerIdOrderByCreateTimeDesc(map.get("buyerId"));
+            if (roomUser == null) {
+                map1.put("isHaveRoomUser", YESNOEnum.NO.getCode().toString());
+            } else {
+                map1.put("isHaveRoomUser", YESNOEnum.YES.getCode().toString());
+            }
         } catch (Exception e) {
             log.error("reserve() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
     }
@@ -165,7 +178,7 @@ public class OrderServiceImpl implements OrderService {
             map1.put("orderId", order_t.getOrderId());
         } catch (Exception e) {
             log.error("updateOrder() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
     }
@@ -207,7 +220,7 @@ public class OrderServiceImpl implements OrderService {
             map1.put("userId", user.getUserId());
         } catch (Exception e) {
             log.error("saveRoomUser() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
     }
@@ -229,7 +242,29 @@ public class OrderServiceImpl implements OrderService {
             map.put("userName", user.getUserName());
         } catch (Exception e) {
             log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
+        }
+        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
+    }
+
+    /**
+     * 根据用户ID查询入住人信息
+     * @param buyerId
+     * @return
+     */
+    @Override
+    public ResultVO<Object> queryByBuyerIdRoomUser(String buyerId) {
+
+        Map<String, Object> map = new HashMap<>();
+        try {
+            RoomUser user = roomUserRepository.findDistinctTopByBuyerIdOrderByCreateTimeDesc(buyerId);
+            map.put("userId", user.getUserId());
+            map.put("userIdentityNo", user.getUserIdentityNo());
+            map.put("userMobile", user.getUserMobile());
+            map.put("userName", user.getUserName());
+        } catch (Exception e) {
+            log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }
@@ -249,7 +284,7 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order_t);
         } catch (Exception e) {
             log.error("cancel() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         System.out.println();
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
