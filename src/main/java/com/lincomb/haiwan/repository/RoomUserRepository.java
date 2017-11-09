@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @describe
  * @date 2017/10/24 19:30
  */
-public interface RoomUserRepository extends JpaRepository<RoomUser,String> {
+public interface RoomUserRepository extends JpaRepository<RoomUser, String> {
 
     RoomUser findTopByOrderId(String orderId);
+
+    RoomUser findDistinctTopByBuyerIdOrderByCreateTimeDesc(String buyerId);
 }

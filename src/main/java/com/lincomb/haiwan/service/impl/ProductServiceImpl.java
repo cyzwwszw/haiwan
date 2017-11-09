@@ -163,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (Exception e) {
             log.error("queryProductDetails() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, detailsVO);
     }
@@ -236,7 +236,7 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
     }
@@ -257,7 +257,7 @@ public class ProductServiceImpl implements ProductService {
             map.put("residualQuantity", residualQuantity);
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }

@@ -60,6 +60,14 @@ public interface OrderService {
     ResultVO<Object> queryRoomUser(String userId);
 
     /**
+     * 根据用户ID查询入住人信息
+     *
+     * @param buyerId
+     * @return
+     */
+    ResultVO<Object> queryByBuyerIdRoomUser(String buyerId);
+
+    /**
      * 取消订单
      *
      * @param orderId

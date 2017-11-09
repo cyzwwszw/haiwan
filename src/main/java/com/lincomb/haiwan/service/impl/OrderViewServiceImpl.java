@@ -3,6 +3,7 @@ package com.lincomb.haiwan.service.impl;
 import com.lincomb.haiwan.domain.*;
 import com.lincomb.haiwan.enums.*;
 import com.lincomb.haiwan.exception.HaiwanException;
+import com.lincomb.haiwan.repository.BuyerRepository;
 import com.lincomb.haiwan.repository.OrderRepository;
 import com.lincomb.haiwan.repository.OrderViewRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
@@ -41,6 +42,8 @@ public class OrderViewServiceImpl implements OrderViewService {
     private OrderRepository orderRepository;
     @Autowired
     private RefundRuleService refundRuleService;
+    @Autowired
+    private BuyerRepository buyerRepository;
 
     @Override
     public Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus) {
@@ -72,6 +75,13 @@ public class OrderViewServiceImpl implements OrderViewService {
 
         Map<String, Object> map = new HashMap<>();
         try {
+
+            Buyer buyer = buyerRepository.findOne(buyerId);
+            if (StringUtil.isNull(buyer)) {
+                log.error("用户不存在！");
+                return new ResultVO<Object>(RespCode.USER_DOES_NOT_EXIST, RespMsg.USER_DOES_NOT_EXIST);
+            }
+
             Order_view orderView = new Order_view();
             orderView.setBuyerId(buyerId);
             if (!StringUtil.isEmpty(status)) {
@@ -138,7 +148,7 @@ public class OrderViewServiceImpl implements OrderViewService {
             map.put("isFirst", orderViewPage.isFirst());
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }
@@ -178,7 +188,7 @@ public class OrderViewServiceImpl implements OrderViewService {
             }
         } catch (Exception e) {
             log.error("queryOrderDetails() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, vo);
     }
