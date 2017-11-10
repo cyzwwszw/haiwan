@@ -6,6 +6,8 @@ import com.lincomb.haiwan.service.WechatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author: shylqian
  * @Description:
@@ -30,5 +32,10 @@ public class WechatInfoServiceImpl implements WechatInfoService{
     @Override
     public WechatInfo findByBuyerId(String buyerId) {
         return wechatInfoRepository.findByBuyerId(buyerId);
+    }
+
+    @Override
+    public List<WechatInfo> findAllByBuyerId(String buyerId) {
+        return wechatInfoRepository.findAllByBuyerId(buyerId);
     }
 }

@@ -129,7 +129,13 @@ public class PayServiceImpl implements PayService {
             }
         }
         refundRequest.setOrderId(order.getOrderId());
-        refundRequest.setOrderAmount(order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+        refundRequest.setOrderAmount(order.getOrderAmount().doubleValue());
+        if(order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_DOWN).doubleValue() < 0.01){
+            refundRequest.setRefundAmount(0.01);
+        }else{
+
+            refundRequest.setRefundAmount(order.getOrderAmount().multiply(new BigDecimal(refundRule.getRuleDiscount().intValue()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+        }
 
         refundRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
         log.info("微信支付请求 request={}", JsonUtil.toJson(refundRequest));
@@ -142,7 +148,7 @@ public class PayServiceImpl implements PayService {
         log.info("微信支付响应 response={}", JsonUtil.toJson(refundResponse));
         orderService.refundOrder(order.getOrderId());
         Transaction transaction =transactionService.findOne(refundResponse.getOutTradeNo());
-        transaction.setRefundAmount(new BigDecimal(refundResponse.getOrderAmount()));
+        transaction.setRefundAmount(new BigDecimal(refundRequest.getRefundAmount()));
         transaction.setRefundTime(new Date());
         transaction.setUpdateTime(new Date());
         transactionService.save(transaction);

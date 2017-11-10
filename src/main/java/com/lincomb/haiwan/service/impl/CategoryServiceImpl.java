@@ -41,4 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
     public Category save(Category Category) {
         return categoryRepository.save(Category);
     }
+
+
+    @Override
+    public List<Category> findByParentId(Integer categoryId) {
+        return categoryRepository.findByParentIdOrderByCategoryType(categoryId);
+    }
 }

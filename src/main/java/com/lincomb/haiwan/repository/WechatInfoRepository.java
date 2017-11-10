@@ -3,6 +3,8 @@ package com.lincomb.haiwan.repository;
 import com.lincomb.haiwan.domain.WechatInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @Author: shylqian
  * @Description:
@@ -11,5 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface WechatInfoRepository extends JpaRepository<WechatInfo,String>{
 
     WechatInfo findByBuyerId(String buyerId);
+
+    List<WechatInfo> findAllByBuyerId(String buyerId);
 
 }

@@ -14,4 +14,6 @@ public interface CategoryService {
     List<Category> findByCategoryTypeIn(List<Integer> categoryTypeList);
 
     Category save(Category category);
+
+    List<Category> findByParentId(Integer categoryId);
 }

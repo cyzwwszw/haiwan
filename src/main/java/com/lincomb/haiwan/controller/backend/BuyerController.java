@@ -54,8 +54,8 @@ public class BuyerController {
         if(!StringUtils.isEmpty(buyerId)){
             Buyer buyer = buyerService.findOne(buyerId);
             map.put("buyer", buyer);
-            WechatInfo wechatInfo = wechatInfoService.findByBuyerId(buyer.getBuyerId());
-            map.put("wechatInfo", wechatInfo);
+            List<WechatInfo> wechatInfo = wechatInfoService.findAllByBuyerId(buyer.getBuyerId());
+            map.put("wechatInfo", wechatInfo.get(0));
         }
         return new ModelAndView("buyer/index", map);
     }

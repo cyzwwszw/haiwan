@@ -2,6 +2,8 @@ package com.lincomb.haiwan.service;
 
 import com.lincomb.haiwan.domain.WechatInfo;
 
+import java.util.List;
+
 /**
  * @Author: shylqian
  * @Description:
@@ -14,4 +16,6 @@ public interface WechatInfoService {
     WechatInfo save(WechatInfo wechatInfo);
 
     WechatInfo findByBuyerId(String buyerId);
+
+    List<WechatInfo> findAllByBuyerId(String buyerId);
 }

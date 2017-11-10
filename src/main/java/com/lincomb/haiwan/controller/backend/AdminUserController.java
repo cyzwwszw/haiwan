@@ -88,4 +88,5 @@ public class AdminUserController {
     public String toIndex() {
         return "common/index";
     }
+
 }
