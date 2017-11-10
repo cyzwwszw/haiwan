@@ -32,6 +32,8 @@ public class Category {
 
     private Date updateTime;
 
+    private Integer parentId;
+
     public Category() {
     }
 
