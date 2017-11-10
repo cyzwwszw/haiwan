@@ -8,6 +8,7 @@ import com.lincomb.haiwan.service.PhotoService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,7 +133,7 @@ public class ClientProductController {
      * @return
      */
     @PostMapping("/queryType")
-    public ResultVO<Object> queryType(@RequestParam(required = false) Integer categoryId) {
+    public ResultVO<Object> queryType(@RequestParam(value = "categoryId",required = false) String categoryId) {
 
         ResultVO<Object> result = categoryService.queryType(categoryId);
         return result;

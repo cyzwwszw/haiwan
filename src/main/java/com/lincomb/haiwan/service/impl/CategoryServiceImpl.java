@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResultVO<Object> queryType(Integer categoryId) {
+    public ResultVO<Object> queryType(String categoryId) {
 
         List<Map<String, Object>> mapList = new ArrayList<>();
         try {
@@ -89,20 +89,20 @@ public class CategoryServiceImpl implements CategoryService {
                 mapList.add(map);
             });
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("serviceId", 1);
-            map1.put("serviceName", "早餐");
+            map1.put("typeId", 1);
+            map1.put("typeName", "早餐");
             mapList.add(map1);
             Map<String, Object> map2 = new HashMap<>();
-            map2.put("serviceId", 2);
-            map2.put("serviceName", "宽带");
+            map2.put("typeId", 2);
+            map2.put("typeName", "宽带");
             mapList.add(map2);
             Map<String, Object> map3 = new HashMap<>();
-            map3.put("serviceId", 3);
-            map3.put("serviceName", "卫浴");
+            map3.put("typeId", 3);
+            map3.put("typeName", "卫浴");
             mapList.add(map3);
             Map<String, Object> map4 = new HashMap<>();
-            map4.put("serviceId", 4);
-            map4.put("serviceName", "庭院");
+            map4.put("typeId", 4);
+            map4.put("typeName", "庭院");
             mapList.add(map4);
 
         } catch (Exception e) {
