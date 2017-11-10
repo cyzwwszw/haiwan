@@ -29,5 +29,5 @@ public interface CategoryService {
      * @param categoryId
      * @return
      */
-    ResultVO<Object> queryType(Integer categoryId);
+    ResultVO<Object> queryType(String categoryId);
 }
