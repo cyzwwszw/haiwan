@@ -43,14 +43,14 @@ public interface ProductService {
     ResultVO<Object> queryProductDetails(String productId);
 
     /**
-     * 根据入住时间，结束时间，类目，类型查询
+     * 根据入住时间，结束时间，类目，类型，服务查询
      *
      * @param map
      * @param page
      * @param size
      * @return
      */
-    ResultVO<Object> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, Integer page, Integer size);
+    ResultVO<Object> findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(Map<String, String> map, Integer page, Integer size);
 
     /**
      * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
@@ -60,7 +60,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId);
+    ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId);
 
     /**
      * 添加/修改产品须知

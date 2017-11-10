@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
             //验证产品数量
-            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
+            BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
             if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
                 log.error("产品数量验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
             Order_t order_t = orderRepository.findOne(map.get("orderId"));
 
             //验证产品数量
-            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
+            BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
 
             if (order_t.getOrderDateIn().getTime() == orderDateIn.getTime() && order_t.getOrderDateOut().getTime() == orderDateOut.getTime()) {
                 log.info("修改订单时时间未修改");
