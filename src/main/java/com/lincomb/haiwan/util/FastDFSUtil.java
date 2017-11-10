@@ -1,10 +1,13 @@
 package com.lincomb.haiwan.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,9 +18,8 @@ import java.util.Properties;
 /**
  * FastDFS工具类
  */
+@Slf4j
 public class FastDFSUtil {
-
-    private final static Logger log = LoggerFactory.getLogger(FastDFSUtil.class);
 
     private static String CONFIG_NAME = "fileUpload.properties";//配置文件名
 
@@ -30,7 +32,7 @@ public class FastDFSUtil {
         try {
             props = PropertiesLoaderUtils.loadAllProperties(CONFIG_NAME);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         ALIAS = props.getProperty("alias");
         GROUP_NAME = props.getProperty("group_name");
@@ -52,7 +54,7 @@ public class FastDFSUtil {
     /**
      * 文件上传
      *
-     * @param  file:上传文件
+     * @param file:上传文件
      * @param fileName:上传文件的文件名,例"test.jpg"
      * @return 返回文件的服务器路径(该路径直接复制, 可用来下载)
      * @throws Exception
@@ -95,7 +97,7 @@ public class FastDFSUtil {
             //获取项目路径下的配置文件的路径
             String configPath = FastDFSUtil.class.getClassLoader().getResource(CONFIG_NAME).getPath();
 
-        /*初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
+        /**初始化ClientGlobal的配置属性，因为ClientGlobal存放着所有的配置信息，所以这个方法必须要执行，
          如果不执行，在允许的过程中会报空指针异常。*/
             // 建立连接
             ClientGlobal.init(configPath);
@@ -139,6 +141,7 @@ public class FastDFSUtil {
 
     /**
      * 获取文件信息
+     *
      * @param fileName:文件在服务器的位置: 例"group1/M00/00/00/rBEiZlNcwJ6x0hyuAABTb_F6UwE363.jpg"
      * @return
      */
@@ -213,7 +216,7 @@ public class FastDFSUtil {
         if (!StringUtil.isEmpty(filePath)) {
             if (ALIAS != null && ALIAS.equals("")) {
                 log.info("------" + ALIAS + "------");
-                filePath= ALIAS + filePath;
+                filePath = ALIAS + filePath;
             }
             log.info("文件上传成功");
             log.info("------文件路径:" + filePath + "------");

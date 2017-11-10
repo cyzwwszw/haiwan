@@ -29,7 +29,7 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
     protected EntityManager em;
 
     /**
-     * 根据入住时间，结束时间，类目，类型查询
+     * 根据入住时间，结束时间，类目，类型，服务查询
      *
      * @param map
      * @param pageNo
@@ -37,50 +37,77 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
      * @return
      */
     @Override
-    public Page<T> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, int pageNo, int pageSize) {
+    public Page<T> findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(Map<String, String> map, int pageNo, int pageSize) {
 
-        StringBuffer sql = new StringBuffer("SELECT p.product_id,p.product_name,p.product_address,p.product_price," +
-                "p.product_pic,p.product_type,p.is_have_wifi,p.is_have_breakfast,p.is_have_bathroom,p.is_have_yard," +
-                "p.product_quantity,p.product_quantity-( SELECT SUM(o.order_count) FROM order_t o " +
-                " WHERE o.product_id=p.product_id AND o.order_status IN (0, 2, 3) " +
-                " AND ((STR_TO_DATE('" + map.get("orderDateIn") + "','%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
+        StringBuffer querySql = new StringBuffer("SELECT a.product_id,a.product_name,a.product_address,a.product_price,a.product_pic,a.type, " +
+                " a.is_have_wifi,a.is_have_breakfast,a.is_have_bathroom,a.is_have_yard, " +
+                " IF(ISNULL(a.r),a.pq,a.r) AS residualQuantity " +
+                " FROM " +
+                " ( SELECT p.product_id,p.product_name,p.product_address,p.product_price,p.product_pic, " +
+                "   (SELECT c.category_name FROM category c WHERE c.category_id=p.product_type) as type, " +
+                "   p.is_have_wifi,p.is_have_breakfast,p.is_have_bathroom,p.is_have_yard,p.product_quantity AS pq, " +
+                "   p.product_quantity-( " +
+                "     SELECT SUM(o.order_count) FROM order_t o " +
+                "     WHERE o.order_status IN (0, 2, 3) " +
+                "     AND o.product_id=p.product_id " +
+                "     AND ((STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
 
-        StringBuffer sql1 = new StringBuffer("SELECT COUNT(*) FROM( " +
-                "SELECT p.product_id,p.product_name,p.product_address,p.product_price," +
-                "p.product_pic,p.product_type,p.is_have_wifi,p.is_have_breakfast,p.is_have_bathroom,p.is_have_yard," +
-                "p.product_quantity,p.product_quantity-( SELECT SUM(o.order_count) FROM order_t o " +
-                " WHERE o.product_id=p.product_id AND o.order_status IN (0, 2, 3) " +
-                " AND ((STR_TO_DATE('" + map.get("orderDateIn") + "','%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
+
+        StringBuffer countSql = new StringBuffer("SELECT COUNT(b.product_id) AS count FROM " +
+                " (SELECT a.product_id,IF(ISNULL(a.r),a.pq,a.r) AS residualQuantity " +
+                " FROM " +
+                " ( SELECT p.product_id,p.product_quantity AS pq, " +
+                "   p.product_quantity-( " +
+                "     SELECT SUM(o.order_count) FROM order_t o " +
+                "     WHERE o.order_status IN (0, 2, 3) " +
+                "     AND o.product_id=p.product_id " +
+                "     AND ((STR_TO_DATE('" + map.get("orderDateIn") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
 
         if (!StringUtil.isEmpty(map.get("orderDateOut"))) {
-            sql.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
-            sql1.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
+            querySql.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
+            countSql.append(" OR (STR_TO_DATE('" + map.get("orderDateOut") + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) ");
         }
 
-        sql.append(" ) GROUP BY o.product_id) as residualQuantity " +
-                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE p.product_status=0 ");
-        sql1.append(" ) GROUP BY o.product_id) as residualQuantity " +
-                " FROM product p LEFT JOIN category c ON p.category_id=c.category_id WHERE p.product_status=0 ");
+        querySql.append(" ) GROUP BY o.product_id) as r FROM product p WHERE p.product_status =0 ");
+        countSql.append(" ) GROUP BY o.product_id) as r FROM product p WHERE p.product_status =0 ");
 
-        if (!StringUtil.isEmpty(map.get("categoryType"))) {
-            sql.append(" AND c.category_type =" + map.get("categoryType"));
-            sql1.append(" AND c.category_type =" + map.get("categoryType"));
+        if (!StringUtil.isEmpty(map.get("categoryId"))) {
+            querySql.append(" AND p.category_id =" + map.get("categoryId"));
+            countSql.append(" AND p.category_id =" + map.get("categoryId"));
         }
-        if (!StringUtil.isEmpty(map.get("productType"))) {
-            sql.append(" AND p.product_type=" + map.get("productType"));
-            sql1.append(" AND p.product_type=" + map.get("productType"));
+        if (!StringUtil.isEmpty(map.get("typeId"))) {
+            querySql.append(" AND p.product_type=" + map.get("typeId"));
+            countSql.append(" AND p.product_type=" + map.get("typeId"));
+        }
+        if (!StringUtil.isEmpty(map.get("serviceId"))) {
+            if (map.get("serviceId").equals("1")) {
+                querySql.append(" AND p.is_have_breakfast=0 ");
+                countSql.append(" AND p.is_have_breakfast=0 ");
+            }
+            if (map.get("serviceId").equals("2")) {
+                querySql.append(" AND p.is_have_wifi=0 ");
+                countSql.append(" AND p.is_have_wifi=0 ");
+            }
+            if (map.get("serviceId").equals("3")) {
+                querySql.append(" AND p.is_have_bathroom=0 ");
+                countSql.append(" AND p.is_have_bathroom=0 ");
+            }
+            if (map.get("serviceId").equals("4")) {
+                querySql.append(" AND p.is_have_yard=0 ");
+                countSql.append(" AND p.is_have_yard=0 ");
+            }
         }
 
-        sql.append(" ORDER BY p.create_time DESC,p.product_name ASC ");
+        querySql.append(" ORDER BY p.create_time DESC,p.product_name ASC ) AS a HAVING residualQuantity <> 0 ");
 
-        sql1.append(" ) AS b");
+        countSql.append(" ORDER BY p.create_time DESC,p.product_name ASC ) AS a HAVING residualQuantity <> 0 ) AS b");
 
-        Query query = em.createNativeQuery(sql.toString());
+        Query query = em.createNativeQuery(querySql.toString());
         query.setFirstResult((pageNo - 1) * pageSize);
         query.setMaxResults(pageSize);
         List<Object[]> list = query.getResultList();
 
-        List<BigInteger> totals = em.createNativeQuery(sql1.toString()).getResultList();
+        List<BigInteger> totals = em.createNativeQuery(countSql.toString()).getResultList();
         BigInteger total = new BigInteger("0");
         for (BigInteger integer : totals) {
             total = total.add(integer);
@@ -94,17 +121,23 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
     }
 
     @Override
-    public BigDecimal findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId) {
+    public BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId) {
 
-        String sql = "SELECT IF (isnull(p.product_quantity - (SELECT SUM(o.order_count) FROM order_t o WHERE o.product_id = p.product_id AND o.order_status IN (0, 2, 3) " +
-                " AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
-                "  OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) GROUP BY o.product_id) " +
-                " ),p.product_quantity,p.product_quantity - (SELECT SUM(o.order_count) FROM order_t o WHERE o.product_id = p.product_id AND o.order_status IN (0, 2, 3) " +
-                " AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
-                "  OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) GROUP BY o.product_id) " +
-                " )AS residualQuantity FROM product p LEFT JOIN category c ON p.category_id = c.category_id " +
-                "WHERE p.product_id = '" + productId + "' ";
-        List<BigDecimal> residualQuantitys = em.createNativeQuery(sql).getResultList();
+        StringBuffer sql = new StringBuffer("SELECT IF(ISNULL(b.r),b.pq,b.r) AS residualQuantity FROM " +
+                "( SELECT p.product_quantity AS pq,p.product_quantity-( " +
+                "      SELECT SUM(o.order_count) FROM order_t o " +
+                "      WHERE o.order_status IN (0, 2, 3) " +
+                "      AND o.product_id=p.product_id " +
+                "      AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
+                "             OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) " +
+                "      GROUP BY o.product_id " +
+                "      ) as r " +
+                " FROM product p " +
+                " WHERE p.product_status=0 " +
+                " AND p.product_id ='" + productId + "'" +
+                ") AS b ");
+
+        List<BigDecimal> residualQuantitys = em.createNativeQuery(sql.toString()).getResultList();
 
         if (residualQuantitys != null && !residualQuantitys.isEmpty()) {
             if (residualQuantitys.size() == 1) {

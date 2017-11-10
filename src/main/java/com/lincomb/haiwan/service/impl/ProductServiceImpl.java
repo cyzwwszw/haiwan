@@ -163,13 +163,13 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (Exception e) {
             log.error("queryProductDetails() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, detailsVO);
     }
 
     /**
-     * 根据入住时间，结束时间，类目，类型查询
+     * 根据入住时间，结束时间，类目，类型，服务查询
      *
      * @param map
      * @param page
@@ -177,29 +177,20 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ResultVO<Object> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, Integer page, Integer size) {
+    public ResultVO<Object> findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(Map<String, String> map, Integer page, Integer size) {
 
         Map<String, Object> map1 = new HashMap<>();
         try {
             List<ProductVO> productVOList = new ArrayList<>();
-            Page<Object[]> page1 = queryProductRepository.findByTimeOrCategoryTypeOrproductType(map, page, size);
+            Page<Object[]> page1 = queryProductRepository.findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(map, page, size);
             for (Object[] o : page1.getContent()) {
                 ProductVO vo = new ProductVO();
-                if (o[11] != null) {
-                    if (new BigDecimal(StringUtil.null2String(o[11])).intValue() == 0) {
-                        continue;
-                    }
-                    vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[11])));
-                } else {
-                    vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[10])));
-                }
                 vo.setProductId(StringUtil.null2String(o[0]));
                 vo.setProductName(StringUtil.null2String(o[1]));
                 vo.setProductAddress(StringUtil.null2String(o[2]));
                 vo.setProductPrice(new BigDecimal(StringUtil.null2String(o[3])));
                 vo.setProductPic(StringUtil.null2String(o[4]) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + o[4].toString());
-                vo.setProductType(StringUtil.null2String(o[5]) == "" ? "" : EnumUtil.getByCode(
-                        Integer.valueOf(StringUtil.null2String(o[5])), ProductTypeEnum.class).getMessage());
+                vo.setProductType(StringUtil.null2String(o[5]));
 
                 List<String> list = new ArrayList<>();
                 if (StringUtil.null2String(o[6]).equals("0")) {
@@ -215,6 +206,7 @@ public class ProductServiceImpl implements ProductService {
                     list.add(ServicesEnum.YARD.getText());
                 }
                 vo.setServicesList(list);
+                vo.setResidualQuantity(new BigDecimal(StringUtil.null2String(o[10])));
 
                 if (!StringUtil.isEmpty(map.get("orderDateIn"))) {
                     Date date2 = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
@@ -236,7 +228,7 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
     }
@@ -250,14 +242,14 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ResultVO<Object> findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId) {
+    public ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId) {
         Map<String, Object> map = new HashMap<>();
         try {
-            BigDecimal residualQuantity = queryProductRepository.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
+            BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId);
             map.put("residualQuantity", residualQuantity);
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }

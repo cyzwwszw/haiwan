@@ -8,6 +8,7 @@ import com.lincomb.haiwan.service.PhotoService;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ResultVO;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,8 +43,8 @@ public class ClientProductController {
      *
      * @return
      */
-    @PostMapping("/findByTimeAndproductId")
-    public ResultVO<Object> findByTimeAndproductId(
+    @PostMapping("/findByStartDateAndEndDateAndProductId")
+    public ResultVO<Object> findByStartDateAndEndDateAndProductId(
             @RequestParam String orderDateIn,
             @RequestParam String orderDateOut,
             @RequestParam String productId
@@ -52,31 +53,33 @@ public class ClientProductController {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
 
-        ResultVO<Object> resultVO = productService.findByTimeAndproductId(orderDateIn, orderDateOut, productId);
+        ResultVO<Object> resultVO = productService.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId);
         return resultVO;
     }
 
     /**
-     * 根据入住时间，结束时间，类目，类型查询
+     * 根据入住时间，结束时间，类目，类型，服务查询
      *
      * @return
      */
-    @PostMapping("/findByTimeOrCategoryTypeOrproductType")
-    public ResultVO<Object> findByTimeOrCategoryTypeOrproductType(
+    @PostMapping("/findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId")
+    public ResultVO<Object> findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam() String orderDateIn,
             @RequestParam(value = "orderDateOut", required = false) String orderDateOut,
-            @RequestParam(value = "productType", required = false) String productType,
-            @RequestParam(value = "categoryType", required = false) String categoryType,
-            @RequestParam() String orderDateIn
+            @RequestParam(value = "categoryId", required = false) String categoryId,
+            @RequestParam(value = "typeId", required = false) String typeId,
+            @RequestParam(value = "serviceId", required = false) String serviceId
     ) {
         Map<String, String> map = new HashMap<>();
         map.put("orderDateIn", orderDateIn);
         map.put("orderDateOut", orderDateOut);
-        map.put("productType", productType);
-        map.put("categoryType", categoryType);
+        map.put("categoryId", categoryId);
+        map.put("typeId", typeId);
+        map.put("serviceId", serviceId);
 
-        ResultVO<Object> resultVO = productService.findByTimeOrCategoryTypeOrproductType(map, page, size);
+        ResultVO<Object> resultVO = productService.findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(map, page, size);
         return resultVO;
     }
 
@@ -113,27 +116,27 @@ public class ClientProductController {
     }
 
     /**
-     * 查询类目
+     * 查询类别
      *
      * @return
      */
     @PostMapping("/queryCategory")
     public ResultVO<Object> queryCategory() {
 
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        try {
-            List<Category> list = categoryService.findAll();
-            list.forEach(category -> {
-                Map<String, Object> map = new HashMap<>();
-                map.put("categoryName", category.getCategoryName());
-                map.put("categoryType", category.getCategoryType());
-                mapList.add(map);
-            });
-        } catch (Exception e) {
-            log.error("queryCategory() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
-        }
-        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, mapList);
+        ResultVO<Object> result = categoryService.queryCategory();
+        return result;
+    }
+
+    /**
+     * 查询类型
+     * @param categoryId
+     * @return
+     */
+    @PostMapping("/queryType")
+    public ResultVO<Object> queryType(@RequestParam(value = "categoryId",required = false) String categoryId) {
+
+        ResultVO<Object> result = categoryService.queryType(categoryId);
+        return result;
     }
 
 }

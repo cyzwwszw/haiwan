@@ -1,7 +1,6 @@
 package com.lincomb.haiwan.repository;
 
 import com.lincomb.haiwan.domain.Buyer;
-import com.lincomb.haiwan.domain.SystemSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

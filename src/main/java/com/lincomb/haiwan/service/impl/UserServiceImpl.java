@@ -1,15 +1,13 @@
 package com.lincomb.haiwan.service.impl;
 
+import com.lincomb.haiwan.config.SmsAccountConfig;
 import com.lincomb.haiwan.domain.Buyer;
 import com.lincomb.haiwan.domain.SendMessageRecord;
-import com.lincomb.haiwan.domain.SystemSetting;
 import com.lincomb.haiwan.domain.WechatInfo;
 import com.lincomb.haiwan.enums.RespCode;
 import com.lincomb.haiwan.enums.RespMsg;
-import com.lincomb.haiwan.enums.SmsEnum;
 import com.lincomb.haiwan.repository.BuyerRepository;
 import com.lincomb.haiwan.repository.SendMessageRecordRepository;
-import com.lincomb.haiwan.repository.SystemSettingRepository;
 import com.lincomb.haiwan.service.UserService;
 import com.lincomb.haiwan.service.WechatInfoService;
 import com.lincomb.haiwan.util.DateUtil;
@@ -35,15 +33,14 @@ import java.util.Map;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private SystemSettingRepository systemSettingRepository;
     @Autowired
     private SendMessageRecordRepository sendMessageRecordRepository;
     @Autowired
     private BuyerRepository buyerRepository;
     @Autowired
     private WechatInfoService wechatInfoService;
+    @Autowired
+    private SmsAccountConfig smsAccountConfig;
 
 
     /**
@@ -75,7 +72,7 @@ public class UserServiceImpl implements UserService {
             map.put("buyerId", buyer.getBuyerId());
         } catch (Exception e) {
             log.error("login() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         WechatInfo wechatInfo = wechatInfoService.findOne(openId);
         if (null != wechatInfo) {
@@ -104,22 +101,25 @@ public class UserServiceImpl implements UserService {
             if (!RespCode.SUCCESS.equals(resultVO.getCode())) {
                 return resultVO;
             }
-            String strRandomCode = SendMsgsUtil.getAuthCode(6);
-            String msgsTemplate = SmsEnum.QUICK_LOGIN_TEMPLATE.getValue();
+
+            SendMsgsUtil sendMsgsUtil = new SendMsgsUtil(smsAccountConfig);
+
+            String strRandomCode = sendMsgsUtil.getAuthCode(6);
+            String msgsTemplate = new String(smsAccountConfig.getSmsTemplate().getBytes("ISO-8859-1"), "UTF-8");
             String msgsContent = msgsTemplate.replace("{code}", strRandomCode);
 
-            String str = SendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
+            String str = sendMsgsUtil.sendSmsDirectly(mobile, msgsContent);
             if (str.equals("0")) {
-                log.error(msgsContent);
+                log.info(msgsContent);
                 SendMessageRecord sendMessageRecord = new SendMessageRecord(mobile, new Date(), strRandomCode, 0, msgsContent, new Date(), new Date());
                 sendMessageRecordRepository.save(sendMessageRecord);
             } else {
                 log.error("发送验证码失败！");
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.SEND_AUTHENTICATION_CODE_FAILED);
             }
         } catch (Exception e) {
             log.error("sendMsg() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         resultVO.setCode(RespCode.SUCCESS);
         resultVO.setMsg(RespMsg.SUCCESS);
@@ -134,30 +134,26 @@ public class UserServiceImpl implements UserService {
      */
     private ResultVO<Object> validateMsg(String mobile) {
 
-        if (!StringUtil.validMobileNo(mobile)) {
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
-        }
         try {
-            SystemSetting betweenMinLimit = systemSettingRepository.findTopByName(SmsEnum.BETWEEN_MIN_LIMIT.getValue());
-            if (betweenMinLimit == null) {
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_BETWEEN_LIMIT);
+
+            if (!StringUtil.validMobileNo(mobile)) {
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
             }
-            SystemSetting dailyMaxLimit = systemSettingRepository.findTopByName(SmsEnum.DAILY_MAX_LIMIT.getValue());
-            if (dailyMaxLimit == null) {
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_DAILY_LIMIT);
-            }
+
             Long dailyCount = sendMessageRecordRepository.queryCountIn24HOURs(mobile);
-            if (dailyCount > Integer.valueOf(dailyMaxLimit.getValue())) {
+            if (dailyCount.intValue() > smsAccountConfig.getDailyMaxLimit()) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.OUT_OF_DAILY_LIMIT);
             }
-            SendMessageRecord sendMsgRecord = sendMessageRecordRepository.findTopByMobileOrderByEndSetupTimeDesc(mobile);
-            if (sendMsgRecord != null && (System.currentTimeMillis() - Integer.valueOf(betweenMinLimit.getValue()) * 60L * 1000L) < sendMsgRecord.getEndSetupTime().getTime()) {
+            SendMessageRecord sendMsgRecord = sendMessageRecordRepository.findDistinctTopByMobileOrderByEndSetupTimeDesc(mobile);
+            if (sendMsgRecord != null &&
+                    (System.currentTimeMillis() - (smsAccountConfig.getBetweenMinLimit() * 60L * 1000L))
+                            < sendMsgRecord.getEndSetupTime().getTime()) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.LESS_THAN_LIMIT);
             }
 
         } catch (Exception e) {
             log.error("method validateMsg() error, cause:[" + e.getMessage() + "]", e);
-            return new ResultVO<>(RespCode.FAIL, RespMsg.FAIL);
+            return new ResultVO<>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
     }
@@ -175,14 +171,8 @@ public class UserServiceImpl implements UserService {
             if (!StringUtil.validMobileNo(mobile)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.PHONE_ERROR);
             }
-
-            SystemSetting effectiveTime = systemSettingRepository.findTopByName(SmsEnum.EFFECTIVE_TIME_LIMIT.getValue());
-            if (effectiveTime == null) {
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.CANT_FIND_SETTING_EFFECTIVE_LIMIT);
-            }
-
             SendMessageRecord sendMessageRecord = sendMessageRecordRepository.
-                    findTopByMobileAndInvalidFlagOrderByEndSetupTimeDesc(mobile, 0);
+                    findDistinctTopByMobileAndInvalidFlagOrderByEndSetupTimeDesc(mobile, 0);
             if (sendMessageRecord == null) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CODE_INVALID);
             }
@@ -191,10 +181,10 @@ public class UserServiceImpl implements UserService {
 
             Calendar sendCalendar = Calendar.getInstance();
             sendCalendar.setTime(sendMessageRecord.getEndSetupTime());
-            sendCalendar.add(Calendar.MINUTE, Integer.valueOf(effectiveTime.getValue()));
+            sendCalendar.add(Calendar.MINUTE, smsAccountConfig.getEffectiveTimeLimit());
 
             log.info("当前时间：" + DateUtil.toDateTimeString(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
-            log.info("发送短信时间：" + DateUtil.toDateTimeString(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("发送短信时间：" + DateUtil.toDateTimeString(sendMessageRecord.getEndSetupTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
             if (curCalendar.after(sendCalendar)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.MSG_INVALID);
@@ -203,14 +193,14 @@ public class UserServiceImpl implements UserService {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.CODE_INVALID);
             }
             if (!code.equals(sendMessageRecord.getValicode())) {
-                return new ResultVO<Object>(RespCode.FAIL, "验证码错误");
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.CODE_INVALID);
             }
             sendMessageRecord.setInvalidFlag(1);
             sendMessageRecordRepository.save(sendMessageRecord);
 
         } catch (Exception e) {
             log.error("validateCode Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
     }

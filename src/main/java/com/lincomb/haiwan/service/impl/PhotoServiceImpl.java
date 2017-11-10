@@ -50,7 +50,7 @@ public class PhotoServiceImpl implements PhotoService {
             map.put("isFirst", photoPage.isFirst());
         } catch (Exception e) {
             log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.SYS_ERROR);
+            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
     }

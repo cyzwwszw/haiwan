@@ -16,14 +16,14 @@ import java.util.Map;
 public interface QueryProductRepository<T, ID extends Serializable> {
 
     /**
-     * 根据入住时间，结束时间，类目，类型查询
+     * 根据入住时间，结束时间，类目，类型，服务查询
      *
      * @param map
      * @param pageNo
      * @param pageSize
      * @return
      */
-    Page<T> findByTimeOrCategoryTypeOrproductType(Map<String, String> map, int pageNo, int pageSize);
+    Page<T> findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId(Map<String, String> map, int pageNo, int pageSize);
 
     /**
      * 根据入住时间，结束时间,产品ID查询当前产品的所剩数量
@@ -33,5 +33,5 @@ public interface QueryProductRepository<T, ID extends Serializable> {
      * @param productId
      * @return
      */
-    BigDecimal findByTimeAndproductId(String orderDateIn, String orderDateOut, String productId);
+    BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId);
 }
