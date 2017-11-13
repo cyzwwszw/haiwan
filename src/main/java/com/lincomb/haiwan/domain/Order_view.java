@@ -25,29 +25,26 @@ public class Order_view {
     private String orderId;
     private Integer orderCount;
     private BigDecimal orderAmount;
-    private BigDecimal productPrice;
     private Integer orderStatus;
     private Integer payType;
     private Integer orderChannel;
     private Date orderDateOut;
     private Date orderDateIn;
     private Date createTime;
+
     private String productId;
     private String productName;
     private Integer productType;
-    private String buyerId;
-    private String buyerMobile;
+    private String  productTypeName;
+    private String productPic;
     private Integer categoryId;
     private String categoryName;
-    private String productPic;
+    private BigDecimal productPrice;
+    private Integer productQuantity;
+    private  String productAddress;
     private String ruleNo;
-
-
-
-    @JsonIgnore
-    public ProductTypeEnum getProductTypeEnum() {
-        return EnumUtil.getByCode(productType, ProductTypeEnum.class);
-    }
+    private String buyerId;
+    private String buyerMobile;
 
     @JsonIgnore
     public OrderStatusEnum getOrderStatusEnum() {
