@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
             }
 
             Long dailyCount = sendMessageRecordRepository.queryCountIn24HOURs(mobile);
-            if (dailyCount.intValue() > smsAccountConfig.getDailyMaxLimit()) {
+            if (dailyCount.intValue() >= smsAccountConfig.getDailyMaxLimit()) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.OUT_OF_DAILY_LIMIT);
             }
             SendMessageRecord sendMsgRecord = sendMessageRecordRepository.findDistinctTopByMobileOrderByEndSetupTimeDesc(mobile);
@@ -183,8 +183,9 @@ public class UserServiceImpl implements UserService {
             sendCalendar.setTime(sendMessageRecord.getEndSetupTime());
             sendCalendar.add(Calendar.MINUTE, smsAccountConfig.getEffectiveTimeLimit());
 
-            log.info("当前时间：" + DateUtil.toDateTimeString(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
-            log.info("发送短信时间：" + DateUtil.toDateTimeString(sendMessageRecord.getEndSetupTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("当前的时间：" + DateUtil.toDateTimeString(curCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("发送短信的时间：" + DateUtil.toDateTimeString(sendMessageRecord.getEndSetupTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
+            log.info("10分钟后的时间：" + DateUtil.toDateTimeString(sendCalendar.getTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
             if (curCalendar.after(sendCalendar)) {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.MSG_INVALID);
