@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 log.error("时间验证未通过！");
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.TIME_VALIDATION_DOES_NOT_PASS);
             }
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
@@ -139,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
 
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 log.error("时间验证未通过！");
-                return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
+                return new ResultVO<Object>(RespCode.FAIL, RespMsg.TIME_VALIDATION_DOES_NOT_PASS);
             }
 
             Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);

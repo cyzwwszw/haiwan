@@ -2,10 +2,6 @@
 package com.lincomb.haiwan.util;
 
 
-import com.lincomb.haiwan.enums.ProductTypeEnum;
-import com.lincomb.haiwan.enums.RespCode;
-import com.lincomb.haiwan.enums.RespMsg;
-import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.NumberFormat;

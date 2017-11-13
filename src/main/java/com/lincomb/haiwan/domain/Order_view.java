@@ -2,8 +2,6 @@ package com.lincomb.haiwan.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lincomb.haiwan.enums.OrderStatusEnum;
-import com.lincomb.haiwan.enums.ProductStatusEnum;
-import com.lincomb.haiwan.enums.ProductTypeEnum;
 import com.lincomb.haiwan.util.EnumUtil;
 import lombok.Data;
 

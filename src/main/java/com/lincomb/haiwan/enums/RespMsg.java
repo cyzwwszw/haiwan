@@ -32,4 +32,6 @@ public class RespMsg {
     public static String IDCARD_ERROR = "身份证格式错误";
 
     public static String INSUFFICIENT_STOCK = "库存不足";
+
+    public  static  String TIME_VALIDATION_DOES_NOT_PASS="您选择的时间不正确，请更改后重试";
 }
