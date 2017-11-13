@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findByParentId(Integer categoryId) {
-        return categoryRepository.findByParentIdOrderByCategoryType(categoryId);
+        return categoryRepository.findByParentIdAndCategoryStatusOrderByCategoryType(categoryId,CategoryStatusEnum.NOMARL.getCode());
     }
 
     @Override

@@ -20,5 +20,7 @@ public class CategoryForm {
     @NotNull(message = "类目编号不能为空")
     private Integer categoryType;
 
+    private Integer parentId;
+
     private Integer categoryStatus = CategoryStatusEnum.NOMARL.getCode();
 }

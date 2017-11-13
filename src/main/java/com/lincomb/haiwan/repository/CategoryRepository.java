@@ -2,6 +2,8 @@ package com.lincomb.haiwan.repository;
 
 import com.lincomb.haiwan.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     List<Category> findByCategoryTypeIn(List<Integer> categoryTypeList);
 
-    List<Category> findByParentIdOrderByCategoryType(Integer parentId);
+    List<Category> findByParentIdAndCategoryStatusOrderByCategoryType(Integer parentId, Integer categoryStatus);
 
     @Query(value = "select * from category c where c.category_status=0 and c.parent_id is null order by c.category_type", nativeQuery = true)
     List<Category> queryAllCategory();

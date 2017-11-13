@@ -87,13 +87,8 @@
             {name:'categoryType',index:'categoryType', width:100},
             {name:'createTime',index:'createTime', width:80, align:"right", formatter: formatDate},
             {name:'updateTime',index:'updateTime', width:80, align:"right", formatter: formatDate},
-            {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                formatter:'actions',
-                formatoptions:{
-                    keys:true,
-                    delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
-                }
+            {
+                name:'myac',index:'', width:80,align: 'center', sortable:false, resize:false, formatter : returnOperateHref
             }
         ],
         sortname: 'categoryType',
@@ -126,16 +121,8 @@
                 {name:'categoryType',index:'categoryType', width:100},
                 {name:'createTime',index:'createTime', width:80, align:"right", formatter: formatDate},
                 {name:'updateTime',index:'updateTime', width:80, align:"right", formatter: formatDate},
-                {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                    formatter:'actions',
-                    formatoptions:{
-                        keys:true,
-                        delOptions:{
-                            recreateForm: true,
-                            beforeShowForm:beforeDeleteCallback,
-                            url:"/haiwan/ace/category/listQuery"}
-                       // editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
-                    }
+                {
+                    name:'myac',index:'', width:80,align: 'center', sortable:false, resize:false, formatter : returnOperateHref
                 }
             ],
             loadonce: true,
@@ -146,28 +133,16 @@
 
     }
 
-
-    function beforeDeleteCallback(e) {
-        var form = $(e[0]);
-        if(form.data('styled')) return false;
-
-        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-        style_delete_form(form);
-
-        form.data('styled', true);
+    function returnOperateHref(cellvalue, options, rowObject){
+        var detail = '<a href="/haiwan/ace/category/index?categoryId='+ rowObject.categoryId +'">修改</a>';
+        detail+= '&nbsp;&nbsp;&nbsp;<a href="/haiwan/ace/category/delete?categoryId='+ rowObject.categoryId +'">删除</a>';
+        return detail;
     }
 
-    function style_delete_form(form) {
-        var buttons = form.next().find('.EditButton .fm-button');
-        buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove();//ui-icon, s-icon
-        buttons.eq(0).addClass('btn-danger').prepend('<i class="icon-trash"></i>');
-        buttons.eq(1).prepend('<i class="icon-remove"></i>')
-    }
 
     function formatDate(cellvalue, options, rowObject) {
         return (new Date(cellvalue)).format("yyyy-MM-dd hh:mm:ss");
     }
-
 
     $(window).bind("resize", function() {
         var width = $(".jqGrid_wrapper").width();

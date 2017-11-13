@@ -114,7 +114,7 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="form-elements.html">
+                    <a href="/haiwan/ace/category/index">
                         <i class="icon-double-angle-right"></i>
                         类目发布
                     </a>

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Slf4j
 @RequestMapping("/ace/base")
-public class BaseController {
+public class AceBaseController {
 
     @RequestMapping("/toIndex")
     public String toIndex(){

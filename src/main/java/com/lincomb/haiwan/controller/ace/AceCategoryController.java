@@ -52,7 +52,10 @@ public class AceCategoryController {
             Category productCategory = categoryService.findOne(categoryId);
             map.put("category", productCategory);
         }
-        return new ModelAndView("category/index", map);
+
+        List<Category> categoryList = categoryService.findByParentId(null);
+        map.put("categoryList", categoryList);
+        return new ModelAndView("ace/category/index", map);
     }
 
     @PostMapping("/save")
@@ -61,7 +64,7 @@ public class AceCategoryController {
                              Map<String, Object> map){
         if(bindingResult.hasErrors()){
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
-            map.put("url", "/haiwan/backend/category/index");
+            map.put("url", "/haiwan/ace/category/index");
             return new ModelAndView("common/error", map);
         }
 
@@ -74,11 +77,11 @@ public class AceCategoryController {
             categoryService.save(category);
         }catch (HaiwanException e){
             map.put("msg", e.getMessage());
-            map.put("url","/haiwan/backend/category/index");
+            map.put("url","/haiwan/ace/category/index");
             return new ModelAndView("common/error", map);
         }
 
-        map.put("url", "/haiwan/backend/category/list");
+        map.put("url", "/haiwan/ace/category/list");
         return new ModelAndView("common/success", map);
     }
 
@@ -91,11 +94,11 @@ public class AceCategoryController {
             categoryService.save(category);
         }catch (HaiwanException e){
             map.put("msg", e.getMessage());
-            map.put("url","/haiwan/backend/category/list");
+            map.put("url","/haiwan/ace/category/list");
             return new ModelAndView("common/error", map);
         }
 
-        map.put("url", "/haiwan/backend/category/list");
+        map.put("url", "/haiwan/ace/category/list");
         return new ModelAndView("common/success", map);
     }
 
