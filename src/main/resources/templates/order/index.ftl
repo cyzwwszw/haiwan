@@ -50,7 +50,7 @@
                            <td class="info col-md-2">编号</td>
                             <td class="col-md-2">${(product.productId )!''}</td>
                            <td class="info col-md-2">类型</td>
-                            <td class="col-md-2">${(category.categoryName )!''}</td>
+                            <td class="col-md-2">${(categoryName )!''}</td>
                         </tr>
                         <tr>
                            <td class="info col-md-2">位置</td>
@@ -58,7 +58,7 @@
                            <td class="info col-md-2">面积</td>
                             <td class="col-md-2">${(product.productArea )!''}</td>
                            <td class="info col-md-2">规格</td>
-                            <td class="col-md-2">${(product.getProductTypeEnum().message )!''}</td>
+                            <td class="col-md-2">${(ProductTypeName )!''}</td>
                         </tr>
                         <tr>
                             <td class="info col-md-2">退房时间</td>
