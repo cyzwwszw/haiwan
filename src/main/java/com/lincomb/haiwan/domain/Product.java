@@ -80,9 +80,4 @@ public class Product {
     public ProductStatusEnum getProductStatusEnum(){
         return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
     }
-
-    @JsonIgnore
-    public ProductTypeEnum getProductTypeEnum(){
-        return EnumUtil.getByCode(productType, ProductTypeEnum.class);
-    }
 }

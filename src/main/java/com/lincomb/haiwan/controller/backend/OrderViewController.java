@@ -65,8 +65,15 @@ public class OrderViewController {
             RoomUser roomUser = roomUserService.findOne(orderId);
             Order_t order_t = orderService.findOne(orderId);
             Product product = productService.findOne(order_t.getProductId());
+
             Category category = categoryService.findOne(product.getCategoryId());
-            map.put("category", category);
+            if (category!=null){
+                map.put("categoryName", category.getCategoryName());
+            }
+            Category category1 = categoryService.findOne(product.getProductType());
+            if (category1!=null){
+                map.put("ProductTypeName", category1.getCategoryName());
+            }
             map.put("product", product);
             map.put("roomUser", roomUser);
             map.put("order", order_t);
