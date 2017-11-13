@@ -6,22 +6,17 @@ import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.repository.*;
 import com.lincomb.haiwan.service.ProductService;
 import com.lincomb.haiwan.util.DateUtil;
-import com.lincomb.haiwan.util.EnumUtil;
 import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.util.StringUtil;
 import com.lincomb.haiwan.vo.ProductDetailsVO;
 import com.lincomb.haiwan.vo.ProductVO;
 import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import sun.print.resources.serviceui;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.*;
 
 /**

@@ -112,7 +112,7 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setOrderId(view.getOrderId());
                 vo.setProductId(view.getProductId());
                 vo.setProductName(view.getProductName());
-                vo.setProductType(view.getProductTypeEnum().getMessage());
+                vo.setProductType(view.getProductTypeName());
                 vo.setProductPic(StringUtil.null2String(view.getProductPic()) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + view.getProductPic());
                 vo.setOrderAmount(view.getOrderAmount());
                 vo.setProductPrice(view.getProductPrice());
@@ -169,7 +169,7 @@ public class OrderViewServiceImpl implements OrderViewService {
             vo.setOrderId(view.getOrderId());
             vo.setProductId(view.getProductId());
             vo.setProductName(view.getProductName());
-            vo.setProductType(view.getProductTypeEnum().getMessage());
+            vo.setProductType(view.getProductTypeName());
             vo.setProductPic(StringUtil.null2String(view.getProductPic()) == "" ? "" : FastDFSUtil.DOWNLOAD_PATH + view.getProductPic());
             vo.setOrderAmount(view.getOrderAmount());
             vo.setProductPrice(view.getProductPrice());
