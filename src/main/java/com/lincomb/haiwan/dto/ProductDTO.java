@@ -18,50 +18,29 @@ import java.util.Date;
 public class ProductDTO {
 
     private String productId;
-
     private String productName;
-
     private String productDescription;
-
     private Integer categoryId;
-
-    private Integer productType;
-
-    private Integer productArea;
-
-    private String productAddress;
-
-    private String productCheckoutTime;
-
-    private Integer productPayType;
-
-    private BigDecimal productPrice;
-
-    private Integer productQuantity;
-
-    private Integer productStatus;
-
-    private Integer isHaveBreakfast;
-
-    private Integer isHaveBathroom;
-
-    private Integer isHaveYard;
-
-    private Integer isHaveWifi;
-
-    private String equipment;
-
-    private String others;
-
-    private String ruleNo;
-
-    private String productPic;
-
-    private Date createTime;
-
-    private Date updateTime;
-
     private String categoryName;
+    private Integer productType;
+    private String productTypeName;
+    private Integer productArea;
+    private String productAddress;
+    private String productCheckoutTime;
+    private Integer productPayType;
+    private BigDecimal productPrice;
+    private Integer productQuantity;
+    private Integer productStatus;
+    private Integer isHaveBreakfast;
+    private Integer isHaveBathroom;
+    private Integer isHaveYard;
+    private Integer isHaveWifi;
+    private String equipment;
+    private String others;
+    private String ruleNo;
+    private String productPic;
+    private Date createTime;
+    private Date updateTime;
 
     public ProductDTO() {
     }
@@ -70,10 +49,4 @@ public class ProductDTO {
     public ProductStatusEnum getProductStatusEnum(){
         return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
     }
-
-    @JsonIgnore
-    public ProductTypeEnum getProductTypeEnum(){
-        return EnumUtil.getByCode(productType, ProductTypeEnum.class);
-    }
-
 }

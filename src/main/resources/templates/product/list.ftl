@@ -36,7 +36,7 @@
                                 <td>${product.productId}</td>
                                 <td>${product.productName}</td>
                                 <td>${product.categoryName}</td>
-                                <td>${product.getProductTypeEnum().message}</td>
+                                <td>${product.productTypeName}</td>
                                 <td>${product.getProductStatusEnum().message}</td>
                                 <td>${product.createTime}</td>
                                 <td>${product.productQuantity}</td>

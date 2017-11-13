@@ -19,7 +19,9 @@ public class Product2ProductDTOConverter {
         ProductDTO productDTO = new ProductDTO();
         BeanUtils.copyProperties(product, productDTO);
         List<Category> filter = categoryList.stream().filter(category -> category.getCategoryId()==product.getCategoryId()).collect(Collectors.toList());
+        List<Category> filter1 = categoryList.stream().filter(category -> category.getCategoryId()==product.getProductType()).collect(Collectors.toList());
         productDTO.setCategoryName(filter.get(0).getCategoryName());
+        productDTO.setProductTypeName(filter1.get(0).getCategoryName());
         return productDTO;
     }
 
