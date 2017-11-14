@@ -6,7 +6,10 @@
 <#include "../common/top.ftl">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -16,7 +19,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
                 <ul class="breadcrumb">
                     <li>
@@ -60,7 +66,8 @@
                                         <div class="row clearfix">
                                             <div class="col-md-12 column">
                                                 <form role="form" class="form-horizontal" method="post"
-                                                      action="/haiwan/ace/product/savePeictures" enctype="multipart/form-data">
+                                                      action="/haiwan/ace/product/savePeictures"
+                                                      enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         <div class="col-md-12 column">
                                                             <input id="file-zh" name="files" type="file" multiple>
@@ -78,7 +85,8 @@
                                                                 </button>
                                                             </div>
                                                             <div class="col-sm-offset-1 col-sm-1">
-                                                                <button type="submit" class="btn btn-primary">保存</button>
+                                                                <button type="submit" class="btn btn-primary">保存
+                                                                </button>
                                                             </div>
                                                             <div class="col-sm-offset-1 col-sm-1">
                                                                 <button type="button" class="btn btn-primary"
@@ -124,6 +132,8 @@
         Array
         con = new Array();
 
+        var count;
+
         //初始化将测试集包含的用例存在数组里面
     <#if photos??>
         <#list photos as photo>
@@ -136,14 +146,17 @@
                 extra: {id: "${photo.photoId}"}
             };
             con.push(tjson);
+            count =${photo_index + 1};
         </#list>
     </#if>
+
+        count = 50 - count < 0 ? 0 : 50 - count;
 
         $('#file-zh').fileinput({
             language: 'zh',
             uploadAsync: false,  //同步上传
             allowedFileExtensions: ['jpg', 'png'],
-            maxFileCount: 50,
+            maxFileCount: count,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
             showRemove: true,  //是否显示删除按钮
