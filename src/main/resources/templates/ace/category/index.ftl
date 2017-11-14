@@ -29,6 +29,14 @@
                 </ul>
 
                 <div class="page-content">
+                    <div class="page-header">
+                        <h1>
+                            类目发布
+                            <small>
+                                <i class="icon-double-angle-right"></i>
+                            </small>
+                        </h1>
+                    </div>
 
                     <div class="row">
                         <div class="col-xs-12">
@@ -43,11 +51,6 @@
                             </div>
 
                             <div class="container-fluid">
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
-                                        <h3 class="page-header">类目发布</h3>
-                                    </div>
-                                </div>
 
                                 <div class="row clearfix">
                                     <div class="col-md-12 column">

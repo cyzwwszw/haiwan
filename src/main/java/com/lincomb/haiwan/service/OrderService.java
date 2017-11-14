@@ -27,6 +27,8 @@ public interface OrderService {
 
     Order_t overtimeOrder(String orderId);
 
+    Order_t save(Order_t order);
+
     /**
      * 预定
      *

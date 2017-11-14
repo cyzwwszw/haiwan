@@ -308,6 +308,7 @@ public class OrderServiceImpl implements OrderService {
     public Order_t payOrder(String orderId) {
         Order_t order_t = findOne(orderId);
         order_t.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+        order_t.setPayStatus(2);
         return orderRepository.save(order_t);
     }
 
@@ -332,4 +333,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order_t);
     }
 
+    @Override
+    public Order_t save(Order_t order) {
+        return orderRepository.save(order);
+    }
 }

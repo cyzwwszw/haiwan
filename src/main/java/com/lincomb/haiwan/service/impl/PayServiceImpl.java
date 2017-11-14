@@ -66,6 +66,9 @@ public class PayServiceImpl implements PayService {
             throw new HaiwanException(ResultEnum.WX_PAY_ERROR);
         }
         log.info("微信支付响应 response={}", JsonUtil.toJson(payResponse));
+        //更改预支付状态
+        order.setPayStatus(1);
+        orderService.save(order);
         return payResponse;
     }
 

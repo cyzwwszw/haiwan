@@ -62,7 +62,7 @@
                                                 <label class="col-sm-1 control-label">订单号</label>
                                                 <div class="col-sm-2">
                                                     <input name="orderId" type="text" class="form-control"
-                                                           value="${(orderId )!''}"/>
+                                                           value="${(orderId)!''}"/>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <button type="submit" class="btn btn-primary">查询</button>

@@ -137,7 +137,7 @@
                                                 <td>${orderDTO.orderId}</td>
                                                 <td>${orderDTO.productName}</td>
                                                 <td>${orderDTO.categoryName}</td>
-                                                <td>''</td>
+                                                <td>${orderDTO.productTypeName}</td>
                                                 <td>${orderDTO.buyerMobile}</td>
                                                 <td>${orderDTO.orderCount}</td>
                                                 <td>${orderDTO.orderAmount}</td>
