@@ -55,7 +55,9 @@ public class AceBuyerController {
             Buyer buyer = buyerService.findOne(buyerId);
             map.put("buyer", buyer);
             List<WechatInfo> wechatInfo = wechatInfoService.findAllByBuyerId(buyer.getBuyerId());
-            map.put("wechatInfo", wechatInfo.get(0));
+            if(wechatInfo.size() > 0){
+                map.put("wechatInfo", wechatInfo.get(0));
+            }
         }
         return new ModelAndView("ace/buyer/index", map);
     }
