@@ -60,7 +60,7 @@ public class AceProductController {
         map.put("productPage", productPage);
         map.put("currentPage", page);
         map.put("size", size);
-        return new ModelAndView("product/list", map);
+        return new ModelAndView("ace/product/list", map);
     }
 
 
@@ -72,12 +72,12 @@ public class AceProductController {
         }
 
         //查询所有的类目
-        List<Category> categoryList = categoryService.findAll();
+        List<Category> categoryList = categoryService.findByParentId(null);
         List<RefundRule> refundRuleList = refundRuleService.findAll();
         map.put("path", FastDFSUtil.DOWNLOAD_PATH);
         map.put("categoryList", categoryList);
         map.put("refundRuleList", refundRuleList);
-        return new ModelAndView("product/index", map);
+        return new ModelAndView("ace/product/index", map);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AceProductController {
         }
         if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
-            map.put("url", "/haiwan/backend/product/index");
+            map.put("url", "/haiwan/ace/product/index");
             return new ModelAndView("common/error", map);
         }
         Product product = new Product();
@@ -113,11 +113,11 @@ public class AceProductController {
             productService.save(product);
         } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/product/index");
+            map.put("url", "/haiwan/ace/product/index");
             return new ModelAndView("common/error", map);
         }
 
-        map.put("url", "/haiwan/backend/product/index?productId=" + product.getProductId());
+        map.put("url", "/haiwan/ace/product/index?productId=" + product.getProductId());
         return new ModelAndView("common/success", map);
     }
 
@@ -127,10 +127,10 @@ public class AceProductController {
             productService.onSale(productId);
         } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/product/list");
+            map.put("url", "/haiwan/ace/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/haiwan/backend/product/list");
+        map.put("url", "/haiwan/ace/product/list");
         return new ModelAndView("common/success", map);
     }
 
@@ -140,10 +140,10 @@ public class AceProductController {
             productService.offSale(productId);
         } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/product/list");
+            map.put("url", "/haiwan/ace/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/haiwan/backend/product/list");
+        map.put("url", "/haiwan/ace/product/list");
         return new ModelAndView("common/success", map);
     }
 
@@ -153,10 +153,10 @@ public class AceProductController {
             productService.delete(productId);
         } catch (HaiwanException e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/product/list");
+            map.put("url", "/haiwan/ace/product/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/haiwan/backend/product/list");
+        map.put("url", "/haiwan/ace/product/list");
         return new ModelAndView("common/success", map);
     }
 
@@ -175,7 +175,7 @@ public class AceProductController {
             log.error(e.getMessage());
         }
 
-        map.put("url", "/haiwan/backend/product/toItemList?productId=" + itemForm.getProductId());
+        map.put("url", "/haiwan/ace/product/toItemList?productId=" + itemForm.getProductId());
         return new ModelAndView("common/success", map);
     }
 
@@ -192,7 +192,7 @@ public class AceProductController {
         BeanUtils.copyProperties(item, itemForm);
         itemForm.setProductId(productId);
         map.put("itemForm", itemForm);
-        return new ModelAndView("product/item", map);
+        return new ModelAndView("ace/product/item", map);
     }
 
     @RequestMapping("/toItemList")
@@ -204,7 +204,7 @@ public class AceProductController {
             map.put("itemsSize", items.size());
         }
         map.put("productId", productId);
-        return new ModelAndView("product/itemList", map);
+        return new ModelAndView("ace/product/itemList", map);
     }
 
     @RequestMapping("/deleteItem")
@@ -214,7 +214,7 @@ public class AceProductController {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        map.put("url", "/haiwan/backend/product/toItemList?productId=" + productId);
+        map.put("url", "/haiwan/ace/product/toItemList?productId=" + productId);
         return new ModelAndView("common/success", map);
     }
 
@@ -227,7 +227,7 @@ public class AceProductController {
             map.put("photos", photos);
             map.put("path", FastDFSUtil.DOWNLOAD_PATH);
         }
-        return new ModelAndView("product/pictures", map);
+        return new ModelAndView("ace/product/pictures", map);
     }
 
     @RequestMapping("/savePeictures")
@@ -251,10 +251,10 @@ public class AceProductController {
             }
         } catch (Exception e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/product/toPeictures?productId=" + productId);
+            map.put("url", "/haiwan/ace/product/toPeictures?productId=" + productId);
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/haiwan/backend/product/toPeictures?productId=" + productId);
+        map.put("url", "/haiwan/ace/product/toPeictures?productId=" + productId);
         return new ModelAndView("common/success", map);
     }
 

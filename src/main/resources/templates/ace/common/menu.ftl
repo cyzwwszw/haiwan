@@ -28,14 +28,14 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="elements.html">
+                    <a href="/haiwan/ace/product/index">
                         <i class="icon-double-angle-right"></i>
                         产品发布
                     </a>
                 </li>
 
                 <li>
-                    <a href="buttons.html">
+                    <a href="/haiwan/ace/product/list">
                         <i class="icon-double-angle-right"></i>
                         产品查询 &amp; 维护
                     </a>
@@ -55,7 +55,7 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="tables.html">
+                    <a href="/haiwan/ace/order/list">
                         <i class="icon-double-angle-right"></i>
                         订单查询
                     </a>
@@ -74,7 +74,7 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="form-elements.html">
+                    <a href="/haiwan/ace/buyer/list">
                         <i class="icon-double-angle-right"></i>
                         用户查询
                     </a>
@@ -91,13 +91,13 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="form-elements.html">
+                    <a href="/haiwan/ace/rule/index">
                         <i class="icon-double-angle-right"></i>
                         退票规则发布
                     </a>
                 </li>
                 <li>
-                    <a href="form-elements.html">
+                    <a href="/haiwan/ace/rule/list">
                         <i class="icon-double-angle-right"></i>
                         退票规则查询&amp; 维护
                     </a>
@@ -137,7 +137,7 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="form-elements.html">
+                    <a href="/haiwan/ace/transaction/list">
                         <i class="icon-double-angle-right"></i>
                         对账查询
                     </a>

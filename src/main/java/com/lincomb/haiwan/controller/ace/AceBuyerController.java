@@ -45,7 +45,7 @@ public class AceBuyerController {
         map.put("buyerPage", buyerPage);
         map.put("currentPage", page);
         map.put("size", size);
-        return new ModelAndView("buyer/list", map);
+        return new ModelAndView("ace/buyer/list", map);
     }
 
 
@@ -57,7 +57,7 @@ public class AceBuyerController {
             List<WechatInfo> wechatInfo = wechatInfoService.findAllByBuyerId(buyer.getBuyerId());
             map.put("wechatInfo", wechatInfo.get(0));
         }
-        return new ModelAndView("buyer/index", map);
+        return new ModelAndView("ace/buyer/index", map);
     }
 
 

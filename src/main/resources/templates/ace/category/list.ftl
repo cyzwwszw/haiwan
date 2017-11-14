@@ -97,7 +97,7 @@
         multiselect: false,
         subGrid : true,
         subGridRowExpanded: showChildGrid,
-        caption: "类目查询"
+        caption: "类目查询结果"
     });
     jQuery("#grid-table").jqGrid('navGrid','#grid-pager',{add:false,edit:false,del:false});
 

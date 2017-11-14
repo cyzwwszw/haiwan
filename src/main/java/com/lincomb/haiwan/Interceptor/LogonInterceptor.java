@@ -18,21 +18,21 @@ import javax.servlet.http.HttpSession;
 public class LogonInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-//        log.info("------preHandle------");
-//        //获取session
-//        HttpSession session = request.getSession(true);
-//
-//        Admin admin = (Admin) session.getAttribute("admin");
-//        //判断用户是否存在，不存在就跳转到登录界面
-//        if (admin == null) {
-//            log.info("------:跳转到login页面！");
-//            response.sendRedirect(request.getContextPath() + "/backend/adminUser/toLogin");
-//            return false;
-//        } else {
-//            session.setAttribute("admin", session.getAttribute("admin"));
-//            return true;
-//        }
-        return true;
+        log.info("------preHandle------");
+        //获取session
+        HttpSession session = request.getSession(true);
+
+        Admin admin = (Admin) session.getAttribute("admin");
+        //判断用户是否存在，不存在就跳转到登录界面
+        if (admin == null) {
+            log.info("------:跳转到login页面！");
+            response.sendRedirect(request.getContextPath() + "/ace/adminUser/toLogin");
+            return false;
+        } else {
+            session.setAttribute("admin", session.getAttribute("admin"));
+            return true;
+        }
+//        return true;
     }
 
     @Override
