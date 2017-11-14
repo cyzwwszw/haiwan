@@ -78,7 +78,7 @@
                                                 <td>${product.productId}</td>
                                                 <td>${product.productName}</td>
                                                 <td>${product.categoryName}</td>
-                                                <td>''</td>
+                                                <td>${product.productTypeName}</td>
                                                 <td>${product.getProductStatusEnum().message}</td>
                                                 <td>${product.createTime}</td>
                                                 <td>${product.productQuantity}</td>

@@ -370,6 +370,11 @@
                                                 </div>
                                                 <div class="col-sm-1">
                                                     <button type="button" class="btn btn-primary"
+                                                            <#if (product.productId)??>
+
+                                                            <#else>
+                                                                disabled="disabled"
+                                                            </#if>
                                                             onclick='location.href="/haiwan/ace/product/toPeictures?productId=${(product.productId)!''}"'>
                                                         下一步
                                                     </button>
