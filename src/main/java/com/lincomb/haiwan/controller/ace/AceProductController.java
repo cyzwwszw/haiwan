@@ -80,6 +80,16 @@ public class AceProductController {
         return new ModelAndView("ace/product/index", map);
     }
 
+    @RequestMapping(value = "/findByParentId", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String findByParentId(String parentId, Map<String, Object> map) {
+
+        //查询所有的类目
+        List<Category> categoryList = categoryService.findByParentId(Integer.valueOf(parentId));
+        map.put("categoryList", categoryList);
+        return JsonUtil.toJson(map);
+    }
+
     /**
      * 保存更新
      *

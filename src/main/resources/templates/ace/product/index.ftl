@@ -18,7 +18,10 @@
 <#include "../common/top.ftl">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -28,7 +31,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
                 <ul class="breadcrumb">
                     <li>
@@ -83,9 +89,11 @@
                                                 <label class="col-sm-2 control-label"></label>
                                                 <div class="col-sm-4">
                                                     <input id="fileUpload" name="fileUpload" type="file">
-                                                    <input hidden type="text" name="productPic" value="${(product.productPic)!''}"
+                                                    <input hidden type="text" name="productPic"
+                                                           value="${(product.productPic)!''}"
                                                            id="productPic">
-                                                    <input hidden type="text" name="path" value="${(path)!''}" id="path">
+                                                    <input hidden type="text" name="path" value="${(path)!''}"
+                                                           id="path">
                                                 </div>
                                             </div>
 
@@ -100,7 +108,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">类型</label>
                                                 <div class="col-sm-4">
-                                                    <select name="categoryId" class="form-control">
+                                                    <select id="categoryId" name="categoryId" class="form-control">
                                                     <#list categoryList as category>
                                                         <option value="${category.categoryId}"
                                                             <#if (product.categoryId)?? && product.categoryId == category.categoryId>
@@ -128,30 +136,7 @@
                                                 <label class="col-sm-2 control-label">规格</label>
                                                 <div class="col-sm-4">
                                                     <select name="productType" class="form-control" id="productType">
-                                                        <#--<option value="0"-->
-                                                        <#--<#if (product.productType)?? && product.productType == 0>-->
-                                                                <#--selected-->
-                                                        <#--</#if>-->
-                                                        <#-->单人间-->
-                                                        <#--</option>-->
-                                                        <#--<option value="1"-->
-                                                        <#--<#if (product.productType)?? && product.productType == 1>-->
-                                                                <#--selected-->
-                                                        <#--</#if>-->
-                                                        <#-->标准间-->
-                                                        <#--</option>-->
-                                                        <#--<option value="2"-->
-                                                        <#--<#if (product.productType)?? && product.productType == 2>-->
-                                                                <#--selected-->
-                                                        <#--</#if>-->
-                                                        <#-->家庭间-->
-                                                        <#--</option>-->
-                                                        <#--<option value="3"-->
-                                                        <#--<#if (product.productType)?? && product.productType == 3>-->
-                                                                <#--selected-->
-                                                        <#--</#if>-->
-                                                        <#-->VIP间-->
-                                                        <#--</option>-->
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -196,7 +181,8 @@
                                                 <label class="col-sm-2 control-label">标准价格</label>
                                                 <div class="col-sm-4">
                                                     <input name="productPrice" type="text" class="form-control"
-                                                           value="${(product.productPrice?replace(',',''))!''}" onkeyup="clearNoNum(this)">
+                                                           value="${(product.productPrice?replace(',',''))!''}"
+                                                           onkeyup="clearNoNum(this)">
                                                 </div>
                                                 <label class="col-sm-1 control-label">元</label>
                                             </div>
@@ -377,7 +363,8 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <input hidden type="text" name="productId" value="${(product.productId)!''}">
+                                                <input hidden type="text" name="productId"
+                                                       value="${(product.productId)!''}">
                                                 <div class="col-sm-offset-2 col-sm-1">
                                                     <button type="submit" class="btn btn-primary">保存</button>
                                                 </div>
@@ -427,8 +414,54 @@
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
             showUpload: false
+        });
+
+        var type = "${(product.productType)!''}";
+        typeBind(type);
+
+        $("#categoryId").change(function () {
+            typeBind(null);
         })
+
     });
+
+    function typeBind(type) {
+        var category = $("#categoryId option:selected").val();
+        //判断省份这个下拉框选中的值是否为空
+        if (category == "") {
+            return;
+        }
+        $("#productType").html("");
+        var str = "";
+        $.ajax({
+            type: "post",
+            url: "/haiwan/ace/product/findByParentId",
+            data: {
+                "parentId": category
+            },
+            dataType: "JSON",
+            async: false,
+            success: function (data) {
+                //从服务器获取数据进行绑定
+                $.each(data.categoryList,
+                        function (i, item) {
+                            if (type == item.categoryId) {
+                                str += "<option selected='selected' value=" + item.categoryId + ">"
+                                        + item.categoryName
+                                        + "</option>";
+                            } else {
+                                str += "<option value=" + item.categoryId + ">"
+                                        + item.categoryName
+                                        + "</option>";
+                            }
+                        });
+                //将数据添加到省份这个下拉框里面
+                $("#productType").append(str);
+            },
+            error: function () {
+            }
+        });
+    }
 </script>
 </body>
 </html>

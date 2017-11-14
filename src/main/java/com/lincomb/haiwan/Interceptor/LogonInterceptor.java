@@ -32,7 +32,6 @@ public class LogonInterceptor implements HandlerInterceptor {
             session.setAttribute("admin", session.getAttribute("admin"));
             return true;
         }
-//        return true;
     }
 
     @Override
