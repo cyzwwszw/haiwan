@@ -86,7 +86,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label"></label>
+                                                <label class="col-sm-2 control-label">首页图片</label>
                                                 <div class="col-sm-4">
                                                     <input id="fileUpload" name="fileUpload" type="file">
                                                     <input hidden type="text" name="productPic"
