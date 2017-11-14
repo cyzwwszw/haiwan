@@ -27,7 +27,7 @@
                         <a href="#">产品</a>
                     </li>
                     <li>
-                        <a href="#">产品发布</a>
+                        <a href="/haiwan/ace/product/index?productId=${(productId)!''}">产品发布</a>
                     </li>
                     <li class="active">产品图片</li>
                 </ul>
@@ -48,7 +48,7 @@
 
                             <div class="alert alert-info">
                                 <i class="icon-hand-right"></i>
-                                请添加您要发布的类目
+                                请添加您的产品图片
                                 <button class="close" data-dismiss="alert">
                                     <i class="icon-remove"></i>
                                 </button>
@@ -71,16 +71,16 @@
                                                         <div class="col-md-12 column">
                                                             <input hidden type="text" id="productId" name="productId"
                                                                    value="${(productId)!''}">
-                                                            <div class="col-sm-offset-1 col-sm-1">
-                                                                <button type="button" class="btn btn-primary"
-                                                                        onclick='location.href="/haiwan/ace/product/index?productId=${(productId)!''}"'>
-                                                                    上一步
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-sm-offset-1 col-sm-1">
+                                                            <#--<div class="col-sm-offset-1 col-sm-1">-->
+                                                                <#--<button type="button" class="btn btn-primary"-->
+                                                                        <#--onclick='location.href="/haiwan/ace/product/index?productId=${(productId)!''}"'>-->
+                                                                    <#--上一步-->
+                                                                <#--</button>-->
+                                                            <#--</div>-->
+                                                            <div class="col-sm-1">
                                                                 <button type="submit" class="btn btn-primary">保存</button>
                                                             </div>
-                                                            <div class="col-sm-offset-1 col-sm-1">
+                                                            <div class="col-sm-1">
                                                                 <button type="button" class="btn btn-primary"
                                                                         onclick='location.href="/haiwan/ace/product/toItemList?productId=${(productId)!''}"'>
                                                                     下一步

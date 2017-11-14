@@ -29,7 +29,7 @@
                         <a href="#">产品发布</a>
                     </li>
                     <li>
-                        <a href="#">产品图片</a>
+                        <a href="/haiwan/ace/product/toPeictures?productId=${(productId)!''}">产品图片</a>
                     </li>
                     <li class="active">产品项目</li>
                 </ul>
@@ -102,13 +102,7 @@
                                 </div>
                                 <div class="row clearfix">
                                     <div class="col-md-12 column">
-                                        <div class="col-sm-offset-1 col-sm-1">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick='location.href="/haiwan/ace/product/toPeictures?productId=${(productId)!''}"'>
-                                                上一步
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-offset-1 col-sm-1">
+                                        <div class="col-sm-1">
                                             <button type="submit" class="btn btn-primary"
                                                     onclick='location.href="/haiwan/ace/product/list"'>
                                                 发布
