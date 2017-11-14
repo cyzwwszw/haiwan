@@ -2,16 +2,11 @@ package com.lincomb.haiwan.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lincomb.haiwan.enums.ProductStatusEnum;
-import com.lincomb.haiwan.enums.ProductTypeEnum;
-import com.lincomb.haiwan.enums.RefundRuleTypeEnum;
-import com.lincomb.haiwan.service.CategoryService;
 import com.lincomb.haiwan.util.EnumUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
