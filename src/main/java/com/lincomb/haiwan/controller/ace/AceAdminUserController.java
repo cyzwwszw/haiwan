@@ -58,7 +58,7 @@ public class AceAdminUserController {
             map.put("url", "/haiwan/backend/adminUser/toLogin");
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/haiwan/ace/product/index");
+        map.put("url", "/haiwan/ace/base/toIndex");
         return new ModelAndView("common/success", map);
     }
 

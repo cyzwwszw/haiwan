@@ -44,7 +44,7 @@
 
                             <div class="alert alert-info">
                                 <i class="icon-hand-right"></i>
-                                请添加您要发布的类目
+                                请您查看当前用户信息
                                 <button class="close" data-dismiss="alert">
                                     <i class="icon-remove"></i>
                                 </button>

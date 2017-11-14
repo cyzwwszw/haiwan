@@ -12,7 +12,7 @@
 
     <ul class="nav nav-list">
         <li class="active">
-            <a href="index.html">
+            <a href="/haiwan/ace/base/toIndex">
                 <i class="icon-home"></i>
                 <span class="menu-text"> 首页 </span>
             </a>
