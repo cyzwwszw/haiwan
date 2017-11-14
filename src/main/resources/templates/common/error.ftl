@@ -13,7 +13,7 @@
                 <h4>
                     错误!
                 </h4>
-                <strong>${msg}</strong>
+                <strong>${msg!""}</strong>
                 <br>
                 <a href="${url}" class="alert-link">自动跳转</a>
             </div>
@@ -22,6 +22,6 @@
 </div>
 </body>
 <script>
-    setTimeout('location.href="${url}"',3000)
+    setTimeout('location.href="${url}"', 3000)
 </script>
 </html>
