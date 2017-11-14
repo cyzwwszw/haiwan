@@ -55,6 +55,7 @@ public class AceTransactionController {
         map.put("transactionPage", transactionPage);
         map.put("currentPage", page);
         map.put("size", size);
+        map.put("orderId",orderId);
         return new ModelAndView("ace/transaction/list", map);
     }
 
