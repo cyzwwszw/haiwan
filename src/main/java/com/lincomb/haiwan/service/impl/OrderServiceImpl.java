@@ -18,6 +18,7 @@ import com.lincomb.haiwan.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -57,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
+    @Transactional
     public ResultVO<Object> reserve(Map<String, String> map) {
         Map<String, String> map1 = new HashMap<>();
         try {
@@ -83,7 +85,10 @@ public class OrderServiceImpl implements OrderService {
             }
             Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
             Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
-            long days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
+            long days = 1L;
+            if (orderDateIn.getTime() != orderDateOut.getTime()) {
+                days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
+            }
 
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
@@ -110,9 +115,18 @@ public class OrderServiceImpl implements OrderService {
 
             RoomUser roomUser = roomUserRepository.findDistinctTopByBuyerIdOrderByCreateTimeDesc(map.get("buyerId"));
             if (roomUser == null) {
-                map1.put("isHaveRoomUser", YESNOEnum.NO.getCode().toString());
+                map1.put("userId", null);
             } else {
-                map1.put("isHaveRoomUser", YESNOEnum.YES.getCode().toString());
+                RoomUser user = new RoomUser();
+                user.setUserId(KeyUtil.genUniqueKey());
+                user.setOrderId(order_t.getOrderId());
+                user.setUserName(roomUser.getUserName());
+                user.setUserIdentityNo(roomUser.getUserIdentityNo());
+                user.setUserMobile(roomUser.getUserMobile());
+                user.setBuyerId(map.get("buyerId"));
+
+                user = roomUserRepository.save(user);
+                map1.put("userId", user.getUserId());
             }
         } catch (Exception e) {
             log.error("reserve() Exception:[" + e.getMessage() + "]", e);
@@ -159,7 +173,10 @@ public class OrderServiceImpl implements OrderService {
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
 
-            long days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
+            long days = 1L;
+            if (orderDateIn.getTime() != orderDateOut.getTime()) {
+                days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
+            }
 
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
@@ -249,6 +266,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 根据用户ID查询入住人信息
+     *
      * @param buyerId
      * @return
      */
