@@ -5,7 +5,10 @@
 <#include "../common/top.ftl">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -15,7 +18,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
                 <ul class="breadcrumb">
                     <li>
@@ -64,8 +70,14 @@
                                                     <input name="orderId" type="text" class="form-control"
                                                            value="${(orderId)!''}"/>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-2">
                                                     <button type="submit" class="btn btn-primary">查询</button>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick='location.href="/haiwan/ace/transaction/exportExcel?orderId=${(orderId)!''}"'>
+                                                        导出报表
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -113,19 +125,25 @@
                                             <#if currentPage lte 1>
                                                 <li class="disabled"><a href="#">上一页</a></li>
                                             <#else>
-                                                <li><a href="/haiwan/ace/transaction/list?page=${currentPage - 1}&size=${size}&orderId=${(orderId)!''}">上一页</a></li>
+                                                <li>
+                                                    <a href="/haiwan/ace/transaction/list?page=${currentPage - 1}&size=${size}&orderId=${(orderId)!''}">上一页</a>
+                                                </li>
                                             </#if>
                                             <#list 1..transactionPage.getTotalPages() as index>
                                                 <#if currentPage == index>
                                                     <li class="active"><a href="#">${index}</a></li>
                                                 <#else>
-                                                    <li><a href="/haiwan/ace/transaction/list?page=${index}&size=${size}&orderId=${(orderId)!''}">${index}</a></li>
+                                                    <li>
+                                                        <a href="/haiwan/ace/transaction/list?page=${index}&size=${size}&orderId=${(orderId)!''}">${index}</a>
+                                                    </li>
                                                 </#if>
                                             </#list>
                                             <#if currentPage gte transactionPage.getTotalPages()>
                                                 <li class="disabled"><a href="#">下一页</a></li>
                                             <#else>
-                                                <li><a href="/haiwan/ace/transaction/list?page=${currentPage + 1}&size=${size}&orderId=${(orderId)!''}">下一页</a></li>
+                                                <li>
+                                                    <a href="/haiwan/ace/transaction/list?page=${currentPage + 1}&size=${size}&orderId=${(orderId)!''}">下一页</a>
+                                                </li>
                                             </#if>
                                             </ul>
                                         </div>
