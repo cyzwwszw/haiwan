@@ -70,10 +70,10 @@
                                                     <input name="orderId" type="text" class="form-control"
                                                            value="${(orderId)!''}"/>
                                                 </div>
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-1">
                                                     <button type="submit" class="btn btn-primary">查询</button>
                                                 </div>
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-1">
                                                     <button type="button" class="btn btn-primary"
                                                             onclick='location.href="/haiwan/ace/transaction/exportExcel?orderId=${(orderId)!''}"'>
                                                         导出报表
