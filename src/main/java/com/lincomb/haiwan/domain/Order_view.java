@@ -25,6 +25,7 @@ public class Order_view {
     private BigDecimal orderAmount;
     private Integer orderStatus;
     private Integer payType;
+    private Integer payStatus;
     private Integer orderChannel;
     private Date orderDateOut;
     private Date orderDateIn;
@@ -33,14 +34,16 @@ public class Order_view {
     private String productId;
     private String productName;
     private Integer productType;
-    private String  productTypeName;
+    private String productTypeName;
     private String productPic;
     private Integer categoryId;
     private String categoryName;
     private BigDecimal productPrice;
     private Integer productQuantity;
-    private  String productAddress;
+    private String productAddress;
+
     private String ruleNo;
+
     private String buyerId;
     private String buyerMobile;
 

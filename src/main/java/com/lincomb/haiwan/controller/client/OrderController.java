@@ -147,22 +147,6 @@ public class OrderController {
     }
 
     /**
-     * 根据用户ID查询入住人信息
-     *
-     * @param buyerId
-     * @return
-     */
-    @PostMapping("/queryByBuyerIdRoomUser")
-    public ResultVO<Object> queryByBuyerIdRoomUser(@RequestParam String buyerId) {
-
-        if (StringUtil.isEmpty(buyerId)) {
-            return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
-        }
-        ResultVO<Object> result = orderService.queryByBuyerIdRoomUser(buyerId);
-        return result;
-    }
-
-    /**
      * 查询订单
      *
      * @return

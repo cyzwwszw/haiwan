@@ -7,10 +7,7 @@ import com.lincomb.haiwan.repository.BuyerRepository;
 import com.lincomb.haiwan.repository.OrderRepository;
 import com.lincomb.haiwan.repository.OrderViewRepository;
 import com.lincomb.haiwan.repository.RoomUserRepository;
-import com.lincomb.haiwan.service.OrderService;
-import com.lincomb.haiwan.service.OrderViewService;
-import com.lincomb.haiwan.service.ProductService;
-import com.lincomb.haiwan.service.RefundRuleService;
+import com.lincomb.haiwan.service.*;
 import com.lincomb.haiwan.util.DateUtil;
 import com.lincomb.haiwan.util.FastDFSUtil;
 import com.lincomb.haiwan.util.StringUtil;
@@ -39,11 +36,11 @@ public class OrderViewServiceImpl implements OrderViewService {
     @Autowired
     private RoomUserRepository roomUserRepository;
     @Autowired
-    private OrderRepository orderRepository;
+    private BuyerRepository buyerRepository;
     @Autowired
     private RefundRuleService refundRuleService;
     @Autowired
-    private BuyerRepository buyerRepository;
+    private TimedTasksService timedTasksService;
 
     @Override
     public Page<Order_view> findAll(Pageable pageable, String buyerPhone, Integer orderStatus) {
@@ -75,40 +72,32 @@ public class OrderViewServiceImpl implements OrderViewService {
 
         Map<String, Object> map = new HashMap<>();
         try {
-
             Buyer buyer = buyerRepository.findOne(buyerId);
             if (StringUtil.isNull(buyer)) {
                 log.error("用户不存在！");
                 return new ResultVO<Object>(RespCode.USER_DOES_NOT_EXIST, RespMsg.USER_DOES_NOT_EXIST);
             }
 
-            Order_view orderView = new Order_view();
-            orderView.setBuyerId(buyerId);
-            if (!StringUtil.isEmpty(status)) {
-                orderView.setOrderStatus(Integer.valueOf(status));
+            //订单超过十分钟后修改订单状态为已取消
+            timedTasksService.cancelOrderTasks();
+
+            List<Integer> list = new ArrayList<>();
+            if (StringUtil.isEmpty(status)) {
+                list.add(OrderStatusEnum.NEW.getCode());
+                list.add(OrderStatusEnum.WAIT.getCode());
+                list.add(OrderStatusEnum.FINISH.getCode());
+                list.add(OrderStatusEnum.REFUND.getCode());
+            } else {
+                list.add(Integer.valueOf(status));
             }
-            Example<Order_view> ex = Example.of(orderView);
             Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-            PageRequest request = new PageRequest(page - 1, size, sort);
-            Page<Order_view> orderViewPage = orderViewRepository.findAll(ex, request);
+            PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+            Page<Order_view> orderViewPage = orderViewRepository.findAllByBuyerIdAndOrderStatusInOrderByCreateTimeDesc(buyerId, list, pageRequest);
+
             List<OrderVO> orderVOList = new ArrayList<>();
 
-            for (Order_view view : orderViewPage.getContent()) {
-                if (view.getOrderStatus() == OrderStatusEnum.CANCEL.getCode()) {
-                    continue;
-                }
+            orderViewPage.getContent().forEach(view -> {
                 OrderVO vo = new OrderVO();
-
-                if (view.getOrderStatus() == OrderStatusEnum.NEW.getCode()) {
-                    long diff = new Date().getTime() - view.getCreateTime().getTime();
-                    if (diff >= (1000 * 60 * 10)) {
-                        Order_t order_t = orderRepository.findOne(view.getOrderId());
-                        order_t.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
-                        orderRepository.save(order_t);
-                        continue;
-                    }
-                }
-
                 vo.setOrderId(view.getOrderId());
                 vo.setProductId(view.getProductId());
                 vo.setProductName(view.getProductName());
@@ -118,6 +107,7 @@ public class OrderViewServiceImpl implements OrderViewService {
                 vo.setProductPrice(view.getProductPrice());
                 vo.setOrderCount(view.getOrderCount());
                 vo.setOrderStatus(view.getOrderStatusEnum().getMessage());
+                vo.setPayStatus(view.getPayStatus().toString());
                 vo.setOrderDate(DateUtil.toDateTimeString(view.getCreateTime(), DateUtil.SIMPLE_TIME_FORMAT_H));
 
                 RoomUser user = roomUserRepository.findTopByOrderId(view.getOrderId());
@@ -142,12 +132,12 @@ public class OrderViewServiceImpl implements OrderViewService {
                     vo.setRefundMap(map1);
                 }
                 orderVOList.add(vo);
-            }
+            });
             map.put("orderVOList", orderVOList);
             map.put("isLast", orderViewPage.isLast());
             map.put("isFirst", orderViewPage.isFirst());
         } catch (Exception e) {
-            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            log.error("queryOrder() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);

@@ -62,34 +62,33 @@ public class OrderServiceImpl implements OrderService {
     public ResultVO<Object> reserve(Map<String, String> map) {
         Map<String, String> map1 = new HashMap<>();
         try {
-
             Buyer buyer = buyerRepository.findOne(map.get("buyerId"));
             if (StringUtil.isNull(buyer)) {
                 log.error("用户不存在！");
                 return new ResultVO<Object>(RespCode.USER_DOES_NOT_EXIST, RespMsg.USER_DOES_NOT_EXIST);
             }
-            Date inDate = DateUtil.stringToUtilDate(map.get("orderDateIn") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
-            Date outDate = DateUtil.stringToUtilDate(map.get("orderDateOut") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
-            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
-            Integer orderCount = Integer.valueOf(map.get("orderCount"));
-
+            Date inDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_TIME_FORMAT_H));
+            Date outDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_TIME_FORMAT_H));
+            //验证时间
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 log.error("时间验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.TIME_VALIDATION_DOES_NOT_PASS);
             }
+            Integer orderCount = Integer.valueOf(map.get("orderCount")); //订单数量
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
-            if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+            if (orderCount > residualQuantity.intValue()) {
                 log.error("产品数量验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            //验证总金额
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT); //入住时间
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);//离开时间
             long days = 1L;
             if (orderDateIn.getTime() != orderDateOut.getTime()) {
                 days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
             }
-
+            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount")); //订单总价
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
             if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
@@ -148,36 +147,34 @@ public class OrderServiceImpl implements OrderService {
         try {
             Date inDate = DateUtil.stringToUtilDate(map.get("orderDateIn") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
             Date outDate = DateUtil.stringToUtilDate(map.get("orderDateOut") + " 23:59:59", DateUtil.SIMPLE_TIME_FORMAT_H);
-            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));
-            Integer orderCount = Integer.valueOf(map.get("orderCount"));
-
+            //验证时间
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 log.error("时间验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.TIME_VALIDATION_DOES_NOT_PASS);
             }
 
-            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);
-            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);
+            Date orderDateIn = DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT);//入住时间
+            Date orderDateOut = DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT);//离开时间
+            BigDecimal orderAmount = new BigDecimal(map.get("orderAmount"));//订单总价
+            Integer orderCount = Integer.valueOf(map.get("orderCount"));//订单数量
 
             Order_t order_t = orderRepository.findOne(map.get("orderId"));
 
             //验证产品数量
             BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(map.get("orderDateIn"), map.get("orderDateOut"), map.get("productId"));
-
             if (order_t.getOrderDateIn().getTime() == orderDateIn.getTime() && order_t.getOrderDateOut().getTime() == orderDateOut.getTime()) {
                 log.info("修改订单时时间未修改");
                 residualQuantity = residualQuantity.add(new BigDecimal(order_t.getOrderCount()));
             }
-            if (Integer.valueOf(map.get("orderCount")) > residualQuantity.intValue()) {
+            if (orderCount > residualQuantity.intValue()) {
                 log.error("产品数量验证未通过！");
                 return new ResultVO<Object>(RespCode.FAIL, RespMsg.INSUFFICIENT_STOCK);
             }
-
+            //验证总金额
             long days = 1L;
             if (orderDateIn.getTime() != orderDateOut.getTime()) {
                 days = DateUtil.dateDiffDays(orderDateIn, orderDateOut);
             }
-
             Product product = productRepository.findOne(map.get("productId"));
             BigDecimal Amount = product.getProductPrice().multiply(new BigDecimal(days).multiply(new BigDecimal(orderCount))).setScale(2, BigDecimal.ROUND_DOWN);
             if (!orderAmount.setScale(2, BigDecimal.ROUND_DOWN).equals(Amount)) {
@@ -187,8 +184,8 @@ public class OrderServiceImpl implements OrderService {
 
             order_t.setOrderDateIn(orderDateIn);
             order_t.setOrderDateOut(orderDateOut);
-            order_t.setOrderAmount(new BigDecimal(map.get("orderAmount")));
-            order_t.setOrderCount(Integer.valueOf(map.get("orderCount")));
+            order_t.setOrderAmount(orderAmount);
+            order_t.setOrderCount(orderCount);
 
             order_t = orderRepository.save(order_t);
 
@@ -265,29 +262,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 根据用户ID查询入住人信息
-     *
-     * @param buyerId
-     * @return
-     */
-    @Override
-    public ResultVO<Object> queryByBuyerIdRoomUser(String buyerId) {
-
-        Map<String, Object> map = new HashMap<>();
-        try {
-            RoomUser user = roomUserRepository.findDistinctTopByBuyerIdOrderByCreateTimeDesc(buyerId);
-            map.put("userId", user.getUserId());
-            map.put("userIdentityNo", user.getUserIdentityNo());
-            map.put("userMobile", user.getUserMobile());
-            map.put("userName", user.getUserName());
-        } catch (Exception e) {
-            log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
-            return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
-        }
-        return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
-    }
-
-    /**
      * 取消订单
      *
      * @param orderId
@@ -304,7 +278,6 @@ public class OrderServiceImpl implements OrderService {
             log.error("cancel() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
-        System.out.println();
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS);
     }
 
