@@ -123,15 +123,17 @@
 <script src="/haiwan/static/fileinput/js/locales/zh.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        Array previewPath = new Array();
-        Array previewConfig = new Array();
+        Array
+        previewPath = new Array();
+        Array
+        previewConfig = new Array();
         var path = "${(path)!''}";
         var photos = ${(photos)!''};
 
         $.each(photos, function (i, photo) {
             previewPath.push(path + photo.photoUrl);
             var tjson = {
-                caption: "Picture-" + (i+1) + ".jpg", // 展示的文件名
+                caption: "Picture-" + (i + 1) + ".jpg", // 展示的文件名
                 width: '120px',
                 url: '/haiwan/ace/product/deletePeictures', // 删除url
                 key: photo.photoId,  //删除是Ajax向后台传递的参数
