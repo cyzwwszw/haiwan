@@ -372,11 +372,11 @@
                                                 </div>
                                                 <div class="col-sm-1">
                                                     <button type="button" class="btn btn-primary"
-                                                            <#if (product.productId)??>
+                                                    <#if (product.productId)??>
 
-                                                            <#else>
-                                                                disabled="disabled"
-                                                            </#if>
+                                                    <#else>
+                                                            disabled="disabled"
+                                                    </#if>
                                                             onclick='location.href="/haiwan/ace/product/toPeictures?productId=${(product.productId)!''}"'>
                                                         下一步
                                                     </button>
@@ -450,18 +450,17 @@
             async: false,
             success: function (data) {
                 //从服务器获取数据进行绑定
-                $.each(data.categoryList,
-                        function (i, item) {
-                            if (type == item.categoryId) {
-                                str += "<option selected='selected' value=" + item.categoryId + ">"
-                                        + item.categoryName
-                                        + "</option>";
-                            } else {
-                                str += "<option value=" + item.categoryId + ">"
-                                        + item.categoryName
-                                        + "</option>";
-                            }
-                        });
+                $.each(data.categoryList, function (i, item) {
+                    if (type == item.categoryId) {
+                        str += "<option selected='selected' value=" + item.categoryId + ">"
+                                + item.categoryName
+                                + "</option>";
+                    } else {
+                        str += "<option value=" + item.categoryId + ">"
+                                + item.categoryName
+                                + "</option>";
+                    }
+                });
                 //将数据添加到省份这个下拉框里面
                 $("#productType").append(str);
             },

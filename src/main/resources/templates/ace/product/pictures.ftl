@@ -78,14 +78,15 @@
                                                         <div class="col-md-12 column">
                                                             <input hidden type="text" id="productId" name="productId"
                                                                    value="${(productId)!''}">
-                                                            <#--<div class="col-sm-offset-1 col-sm-1">-->
-                                                                <#--<button type="button" class="btn btn-primary"-->
-                                                                        <#--onclick='location.href="/haiwan/ace/product/index?productId=${(productId)!''}"'>-->
-                                                                    <#--上一步-->
-                                                                <#--</button>-->
-                                                            <#--</div>-->
+                                                        <#--<div class="col-sm-offset-1 col-sm-1">-->
+                                                        <#--<button type="button" class="btn btn-primary"-->
+                                                        <#--onclick='location.href="/haiwan/ace/product/index?productId=${(productId)!''}"'>-->
+                                                        <#--上一步-->
+                                                        <#--</button>-->
+                                                        <#--</div>-->
                                                             <div class="col-sm-1">
-                                                                <button type="submit" class="btn btn-primary">保存</button>
+                                                                <button type="submit" class="btn btn-primary">保存
+                                                                </button>
                                                             </div>
                                                             <div class="col-sm-1">
                                                                 <button type="button" class="btn btn-primary"
@@ -122,50 +123,39 @@
 <script src="/haiwan/static/fileinput/js/locales/zh.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        file_input();
-    });
+        Array previewPath = new Array();
+        Array previewConfig = new Array();
+        var path = "${(path)!''}";
+        var photos = ${(photos)!''};
 
-    function file_input() {
-        Array
-        path = new Array();
-        Array
-        con = new Array();
-
-        var count;
-
-        //初始化将测试集包含的用例存在数组里面
-    <#if photos??>
-        <#list photos as photo>
-            path.push("${path}${photo.photoUrl}");
+        $.each(photos, function (i, photo) {
+            previewPath.push(path + photo.photoUrl);
             var tjson = {
-                caption: "Picture-${photo_index + 1}.jpg", // 展示的文件名
+                caption: "Picture-" + (i+1) + ".jpg", // 展示的文件名
                 width: '120px',
                 url: '/haiwan/ace/product/deletePeictures', // 删除url
-                key: "${photo.photoId}",  //删除是Ajax向后台传递的参数
-                extra: {id: "${photo.photoId}"}
+                key: photo.photoId,  //删除是Ajax向后台传递的参数
+                extra: {id: photo.photoId}
             };
-            con.push(tjson);
-            count =${photo_index + 1};
-        </#list>
-    </#if>
-
-        count = 50 - count < 0 ? 0 : 50 - count;
+            previewConfig.push(tjson);
+        });
 
         $('#file-zh').fileinput({
             language: 'zh',
             uploadAsync: false,  //同步上传
             allowedFileExtensions: ['jpg', 'png'],
-            maxFileCount: count,
+            maxFileCount: 50,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
-            showRemove: true,  //是否显示删除按钮
             showUpload: false, //是否显示上传按钮
+            validateInitialCount: true, //验证初始计数
             overwriteInitial: false,  //不覆盖已存在的图片
             initialPreviewAsData: true,
-            initialPreview: path,
-            initialPreviewConfig: con
+            initialPreview: previewPath,
+            initialPreviewConfig: previewConfig
         });
-    }
+
+    });
 </script>
 </body>
 </html>
