@@ -320,7 +320,7 @@
                                                     </label>
                                                     <label class="checkbox-inline">
                                                         <input type="checkbox" name="equipment" value="5"
-                                                        <#if (product.equipment)??&&product.equipment?contains('6')>
+                                                        <#if (product.equipment)??&&product.equipment?contains('5')>
                                                                checked
                                                         </#if>>空调
                                                     </label>
@@ -418,7 +418,6 @@
             initialPreviewAsData: true,
             language: 'zh',
             allowedFileExtensions: ['jpg', 'png'],
-            minFileCount:1,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
             showUpload: false
