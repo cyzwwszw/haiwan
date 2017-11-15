@@ -87,7 +87,7 @@ public class AceProductController {
         //查询所有的类目
         List<Category> categoryList = categoryService.findByParentId(Integer.valueOf(parentId));
         map.put("categoryList", categoryList);
-        return JsonUtil.toJson(map);
+        return JsonUtil.toJSonString(map);
     }
 
     /**
@@ -234,7 +234,7 @@ public class AceProductController {
         if (!StringUtil.isEmpty(productId)) {
             map.put("productId", productId);
             List<Photo> photos = photoService.findByProductId(productId);
-            map.put("photos", photos);
+            map.put("photos", JsonUtil.toJSonString(photos));
             map.put("path", FastDFSUtil.DOWNLOAD_PATH);
         }
         return new ModelAndView("ace/product/pictures", map);
