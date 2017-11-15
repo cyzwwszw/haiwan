@@ -47,6 +47,129 @@
                             </div>
 
 
+                            <div class="row">
+                                <div class="space-6"></div>
+
+                                <div class="col-sm-7 infobox-container">
+                                    <div class="infobox infobox-green  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-user"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span class="infobox-data-number">${(userCount )!''}人</span>
+                                            <div class="infobox-content">用户数</div>
+                                        </div>
+                                        <div class="stat stat-success"></div>
+                                    </div>
+
+                                    <div class="infobox infobox-blue  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-shopping-cart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span class="infobox-data-number">${(orderCount )!''}单</span>
+                                            <div class="infobox-content">已完成订单数</div>
+                                        </div>
+
+                                        <div class="stat stat-success"></div>
+                                    </div>
+
+                                    <div class="infobox infobox-pink  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-money"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span class="infobox-data-number">${(orderMoney )!''}元</span>
+                                            <div class="infobox-content">交易总额</div>
+                                        </div>
+                                        <div class="stat stat-success"></div>
+                                    </div>
+                                </div>
+
+                                <div class="vspace-sm"></div>
+                                <!--
+                                                                <div class="col-sm-5">
+                                                                    <div class="widget-box">
+                                                                        <div class="widget-header widget-header-flat widget-header-small">
+                                                                            <h5>
+                                                                                <i class="icon-signal"></i>
+                                                                                增量
+                                                                            </h5>
+
+                                                                            <div class="widget-toolbar no-border">
+                                                                                <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                                                    本周
+                                                                                    <i class="icon-angle-down icon-on-right bigger-110"></i>
+                                                                                </button>
+
+                                                                                <ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+                                                                                    <li class="active">
+                                                                                        <a href="#" class="blue">
+                                                                                            <i class="icon-caret-right bigger-110">&nbsp;</i>
+                                                                                            本周
+                                                                                        </a>
+                                                                                    </li>
+
+                                                                                    <li>
+                                                                                        <a href="#">
+                                                                                            <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                                            上周
+                                                                                        </a>
+                                                                                    </li>
+
+                                                                                    <li>
+                                                                                        <a href="#">
+                                                                                            <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                                            本月
+                                                                                        </a>
+                                                                                    </li>
+
+                                                                                    <li>
+                                                                                        <a href="#">
+                                                                                            <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                                            上月
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="widget-body">
+                                                                            <div class="widget-main">
+                                                                                <div id="piechart-placeholder"></div>
+
+                                                                                <div class="hr hr8 hr-double"></div>
+
+                                                                                <div class="clearfix">
+                                                                                    <div class="grid3">
+                                                                                            <span class="grey">
+                                                                                                <i class="icon-user icon-2x blue"></i>
+                                                                                            </span>
+                                                                                        <h4 class="bigger pull-right">1,255</h4>
+                                                                                    </div>
+
+                                                                                    <div class="grid3">
+                                                                                            <span class="grey">
+                                                                                                <i class="icon-shopping-cart icon-2x purple"></i>
+                                                                                            </span>
+                                                                                        <h4 class="bigger pull-right">941</h4>
+                                                                                    </div>
+
+                                                                                    <div class="grid3">
+                                                                                            <span class="grey">
+                                                                                                <i class="icon-money icon-2x red"></i>
+                                                                                            </span>
+                                                                                        <h4 class="bigger pull-right">1,050</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><!-- /widget-main -->
+                                        </div><!-- /widget-body -->
+                                    </div><!-- /widget-box -->
+                                </div>
+                            </div>
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->

@@ -4,6 +4,8 @@ import com.lincomb.haiwan.domain.Buyer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 /**
  * @Author: shylqian
@@ -15,4 +17,6 @@ public interface BuyerService {
     Buyer findOne(String buyerId);
 
     Page<Buyer> findAll(Pageable pageable, String buyerMobile);
+
+    Integer count();
 }

@@ -4,6 +4,7 @@ import com.lincomb.haiwan.domain.Order_t;
 import com.lincomb.haiwan.vo.ResultVO;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +29,8 @@ public interface OrderService {
     Order_t overtimeOrder(String orderId);
 
     Order_t save(Order_t order);
+
+    List<Order_t> findAllFinished();
 
     /**
      * 预定

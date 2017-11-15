@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 
 
 /**
@@ -41,5 +42,10 @@ public class BuyerServiceImpl implements BuyerService{
 
         Example<Buyer> example = Example.of(buyer, matcher);
         return buyerRepository.findAll(example,pageable);
+    }
+
+    @Override
+    public Integer count() {
+        return buyerRepository.findAll().size();
     }
 }

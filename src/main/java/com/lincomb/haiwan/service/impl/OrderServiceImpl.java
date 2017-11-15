@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yongsheng.he
@@ -354,5 +351,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order_t save(Order_t order) {
         return orderRepository.save(order);
+    }
+
+
+    @Override
+    public List<Order_t> findAllFinished() {
+        return orderRepository.findAllByOrderStatus(OrderStatusEnum.FINISH.getCode());
     }
 }

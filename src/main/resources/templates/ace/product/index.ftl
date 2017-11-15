@@ -326,20 +326,20 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label"></label>
-                                                <div class="col-sm-2">
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" name="equipment" value="6"
-                                                        <#if (product.equipment)??&& product.equipment?contains('6')>
-                                                               checked
-                                                        </#if>>其他
-                                                    </label>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <input type="text" name="others" value="${(product.others )!''}">
-                                                </div>
-                                            </div>
+                                            <#--<div class="form-group">-->
+                                                <#--<label class="col-sm-2 control-label"></label>-->
+                                                <#--<div class="col-sm-2">-->
+                                                    <#--<label class="checkbox-inline">-->
+                                                        <#--<input type="checkbox" name="equipment" value="6"-->
+                                                        <#--<#if (product.equipment)??&& product.equipment?contains('6')>-->
+                                                               <#--checked-->
+                                                        <#--</#if>>其他-->
+                                                    <#--</label>-->
+                                                <#--</div>-->
+                                                <#--<div class="col-sm-4">-->
+                                                    <#--<input type="text" name="others" value="${(product.others )!''}">-->
+                                                <#--</div>-->
+                                            <#--</div>-->
 
                                             <div class="col-md-12 column">
                                                 <h4 class="page-header">退票配置</h4>
