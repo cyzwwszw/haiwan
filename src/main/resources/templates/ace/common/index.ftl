@@ -3,25 +3,31 @@
 <#include "../common/header.ftl">
 <body>
 <#include "../common/top.ftl">
+<script src="/haiwan/static/js/echarts.min.js"></script>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
-        <#include "../common/menu.ftl">
+    <#include "../common/menu.ftl">
 
 
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
-                        <li class="active">首页</li>
-                    </li>
+                    <li class="active">首页</li>
                 </ul>
 
                 <div class="page-content">
@@ -166,27 +172,93 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div><!-- /widget-main -->
+                            </div><!-- /widget-body -->
+
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-flat">
+                                            <h4 class="lighter">
+                                                <i class="icon-star orange"></i>
+                                                订单具体情况
+                                            </h4>
+
+                                            <div class="widget-toolbar">
+                                                <a href="#" data-action="collapse">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <div id="main" style="width: 600px;height:400px; left: 100; top:20;"></div>
+                                            </div><!-- /widget-main -->
                                         </div><!-- /widget-body -->
                                     </div><!-- /widget-box -->
                                 </div>
+
+
                             </div>
-                            <!-- PAGE CONTENT ENDS -->
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.page-content -->
-            </div>
-
-        </div>
-
-        <#include "../common/design.ftl">
-    </div>
-
-    <!--快速回到顶部控件-->
-    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-        <i class="icon-double-angle-up icon-only bigger-110"></i>
-    </a>
+                        </div><!-- /widget-box -->
+                    </div>
+                </div>
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
 </div>
 
+<#include "../common/design.ftl">
+
+<!--快速回到顶部控件-->
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+
 <#include "../common/footer.ftl">
+// 使用刚指定的配置项和数据显示图表。
+
+<script type="text/javascript">
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    $.get("/haiwan/ace/base/orderStatics", function(data,status){
+        // 指定图表的配置项和数据
+        option = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data:data["legend_data"]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data: data["x_data"]
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : data["series"]
+        };
+        console.log(data);
+        myChart.setOption(option);
+    });
+</script>
 </body>
 </html>
