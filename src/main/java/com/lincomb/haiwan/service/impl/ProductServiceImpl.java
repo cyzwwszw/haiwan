@@ -222,7 +222,7 @@ public class ProductServiceImpl implements ProductService {
             map1.put("isFirst", page1.isFirst());
 
         } catch (Exception e) {
-            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            log.error("findByStartDateOrEndDateOrCategoryIdOrTypeIdOrServiceId() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map1);
@@ -243,7 +243,7 @@ public class ProductServiceImpl implements ProductService {
             BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId);
             map.put("residualQuantity", residualQuantity);
         } catch (Exception e) {
-            log.error("queryPictures() Exception:[" + e.getMessage() + "]", e);
+            log.error("findByStartDateAndEndDateAndProductId() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
