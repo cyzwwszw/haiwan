@@ -16,40 +16,44 @@
         <div class="navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="/haiwan/static/assets/avatars/user.jpg" alt="Admin's Photo" />
-                        <span class="user-info">
-									<small>欢迎光临,</small>
-									主人
-								</span>
 
-                        <i class="icon-caret-down"></i>
-                    </a>
+                   <a class="dropdown-toggle" type="button" href="/haiwan/ace/adminUser/logout">登出</a>
 
-                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="icon-cog"></i>
-                                设置
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="#">
-                                <i class="icon-user"></i>
-                                个人资料
-                            </a>
-                        </li>
+                    <#--<a data-toggle="dropdown" href="#" class="dropdown-toggle">-->
+                        <#--<img class="nav-user-photo" src="/haiwan/static/assets/avatars/user.jpg" alt="Admin's Photo" />-->
+                        <#--<span class="user-info">-->
+									<#--<small>欢迎光临,</small>-->
+									<#--主人-->
+								<#--</span>-->
 
-                        <li class="divider"></li>
+                        <#--<i class="icon-caret-down"></i>-->
+                    <#--</a>-->
 
-                        <li>
-                            <a href="#">
-                                <i class="icon-off"></i>
-                                退出
-                            </a>
-                        </li>
-                    </ul>
+                    <#--<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">-->
+                        <#--<li>-->
+                            <#--<a href="#">-->
+                                <#--<i class="icon-cog"></i>-->
+                                <#--设置-->
+                            <#--</a>-->
+                        <#--</li>-->
+
+                        <#--<li>-->
+                            <#--<a href="#">-->
+                                <#--<i class="icon-user"></i>-->
+                                <#--个人资料-->
+                            <#--</a>-->
+                        <#--</li>-->
+
+                        <#--<li class="divider"></li>-->
+
+                        <#--<li>-->
+                            <#--<a href="#">-->
+                                <#--<i class="icon-off"></i>-->
+                                <#--退出-->
+                            <#--</a>-->
+                        <#--</li>-->
+                    <#--</ul>-->
                 </li>
             </ul>
         </div>

@@ -72,12 +72,12 @@
                             <div class="container-fluid">
                                 <div class="row clearfix">
                                     <div class="col-md-12 column">
-                                        <form id="productForm" role="form" class="form-horizontal" method="post"
-                                              enctype="multipart/form-data" action="/haiwan/ace/product/save">
-                                            <div class="col-md-12 column">
-                                                <h4 class="page-header">基本信息</h4>
+                                        <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/ace/product/save">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12 column">
+                                                    <h4 class="page-header">基本信息</h4>
+                                                </div>
                                             </div>
-
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">名称</label>
                                                 <div class="col-sm-4">
@@ -213,9 +213,10 @@
                                                     </label>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-12 column">
-                                                <h4 class="page-header">提供服务</h4>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12 column">
+                                                    <h4 class="page-header">提供服务</h4>
+                                                </div>
                                             </div>
 
                                             <div class="form-group">
@@ -340,9 +341,10 @@
                                                     <#--<input type="text" name="others" value="${(product.others )!''}">-->
                                                 <#--</div>-->
                                             <#--</div>-->
-
-                                            <div class="col-md-12 column">
-                                                <h4 class="page-header">退票配置</h4>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12 column">
+                                                    <h4 class="page-header">退票配置</h4>
+                                                </div>
                                             </div>
 
                                             <div class="form-group">
@@ -366,7 +368,7 @@
                                                 <input hidden type="text" name="productId"
                                                        value="${(product.productId)!''}">
                                                 <div class="col-sm-offset-2 col-sm-1">
-                                                    <button type="submit" class="btn btn-primary">保存</button>
+                                                    <button type="submit" class="btn btn-primary">保存 </button>
                                                 </div>
                                                 <div class="col-sm-1">
                                                     <button type="button" class="btn btn-primary"

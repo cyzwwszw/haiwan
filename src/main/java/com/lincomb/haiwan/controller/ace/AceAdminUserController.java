@@ -73,7 +73,7 @@ public class AceAdminUserController {
     public ModelAndView logout(HttpSession session, Map<String, Object> map) {
 
         session.removeAttribute("admin");
-        map.put("url", "/haiwan/backend/adminUser/toIndex");
+        map.put("url", "/haiwan/ace/adminUser/toIndex");
         return new ModelAndView("common/success", map);
     }
 

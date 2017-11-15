@@ -55,8 +55,10 @@
                                     <div class="col-md-12 column">
                                         <form id="ruleForm" role="form" class="form-horizontal" method="post" action="/haiwan/ace/rule/save">
                                             <div class="form-group">
+                                                <div class="row clearfix">
                                                 <div class="col-md-12 column">
                                                     <h4 class="page-header">基本信息</h4>
+                                                </div>
                                                 </div>
                                                 <label class="col-sm-2 control-label">规则名称</label>
                                                 <div class="col-sm-4">
@@ -76,9 +78,10 @@
                                                     <textarea name="ruleDescription" class="form-control" rows="3">${(rule.ruleDescription)!''}</textarea>
                                                 </div>
                                             </div>
-
+                                            <div class="row clearfix">
                                             <div class="col-md-12 column">
                                                 <h4 class="page-header">配置参数</h4>
+                                            </div>
                                             </div>
 
                                             <div class="form-group">
