@@ -283,6 +283,9 @@ public class ProductServiceImpl implements ProductService {
 
     private List<Map<String, String>> disposeStr(String str) {
         List<Map<String, String>> maps = new ArrayList<>();
+        if (StringUtil.isEmpty(str)) {
+            return maps;
+        }
         String[] strs = str.split(",");
         for (int i = 0; i < strs.length; i++) {
             String str1 = strs[i];
