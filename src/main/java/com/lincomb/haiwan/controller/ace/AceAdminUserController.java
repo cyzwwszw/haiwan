@@ -50,12 +50,12 @@ public class AceAdminUserController {
                 session.setAttribute("admin", admin);
             } else {
                 map.put("msg", "登录失败！");
-                map.put("url", "/haiwan/backend/adminUser/toLogin");
+                map.put("url", "/haiwan/ace/adminUser/toLogin");
                 return new ModelAndView("common/error", map);
             }
         } catch (Exception e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/backend/adminUser/toLogin");
+            map.put("url", "/haiwan/ace/adminUser/toLogin");
             return new ModelAndView("common/error", map);
         }
         map.put("url", "/haiwan/ace/base/toIndex");

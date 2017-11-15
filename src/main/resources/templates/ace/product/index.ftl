@@ -100,7 +100,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">描述说明</label>
                                                 <div class="col-sm-10">
-                                <textarea name="productDescription" class="form-control"
+                                            <textarea name="productDescription" class="form-control"
                                           rows="3">${(product.productDescription)!''}</textarea>
                                                 </div>
                                             </div>
@@ -418,6 +418,7 @@
             initialPreviewAsData: true,
             language: 'zh',
             allowedFileExtensions: ['jpg', 'png'],
+            minFileCount:1,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
             showUpload: false
