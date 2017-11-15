@@ -47,6 +47,10 @@ public class RefundRuleServiceImpl implements RefundRuleService{
             if(refundRuleRepository.findTopByRuleNo(refundRule.getRuleNo()).getRuleId() != refundRule.getRuleId()){
                 throw new HaiwanException(ResultEnum.REFUND_NO_ERROR);
             }
+        }else{
+            if(refundRuleRepository.findTopByRuleNo(refundRule.getRuleNo()) != null){
+                throw new HaiwanException(ResultEnum.REFUND_NO_ERROR);
+            }
         }
         return refundRuleRepository.save(refundRule);
     }
