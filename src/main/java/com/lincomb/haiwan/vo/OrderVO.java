@@ -19,6 +19,7 @@ public class OrderVO {
     private String productType;
     private String productPic;
     private String orderStatus;
+    private String payStatus;
     private String orderId;
     private Integer orderCount;
     private BigDecimal orderAmount;

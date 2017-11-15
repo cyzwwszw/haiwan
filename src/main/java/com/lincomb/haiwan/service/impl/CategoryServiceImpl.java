@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
                 mapList.add(map);
             });
         } catch (Exception e) {
-            log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
+            log.error("queryCategory() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, mapList);
@@ -118,7 +118,7 @@ public class CategoryServiceImpl implements CategoryService {
             map.put("service", serviceList);
 
         } catch (Exception e) {
-            log.error("queryRoomUser() Exception:[" + e.getMessage() + "]", e);
+            log.error("queryType() Exception:[" + e.getMessage() + "]", e);
             return new ResultVO<Object>(RespCode.SYS_ERROR, RespMsg.SYS_ERROR);
         }
         return new ResultVO<Object>(RespCode.SUCCESS, RespMsg.SUCCESS, map);
