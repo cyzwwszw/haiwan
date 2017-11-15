@@ -2,6 +2,8 @@ package com.lincomb.haiwan.service.impl;
 
 import com.lincomb.haiwan.domain.RefundRule;
 import com.lincomb.haiwan.enums.RefundRuleStatusEnum;
+import com.lincomb.haiwan.enums.ResultEnum;
+import com.lincomb.haiwan.exception.HaiwanException;
 import com.lincomb.haiwan.repository.RefundRuleRepository;
 import com.lincomb.haiwan.service.RefundRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,12 @@ public class RefundRuleServiceImpl implements RefundRuleService{
 
     @Override
     public RefundRule save(RefundRule refundRule) {
+        //如果是修改，refundRuleId存在，修改ruleNo， 根据ruleNo查询，如果存在，并且id不等于当前id，则报错
+        if(refundRule.getRuleId()!= null){
+            if(refundRuleRepository.findTopByRuleNo(refundRule.getRuleNo()).getRuleId() != refundRule.getRuleId()){
+                throw new HaiwanException(ResultEnum.REFUND_NO_ERROR);
+            }
+        }
         return refundRuleRepository.save(refundRule);
     }
 

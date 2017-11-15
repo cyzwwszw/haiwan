@@ -19,6 +19,7 @@ public enum  ResultEnum {
     CATEGORY_NOT_EXIST(41,"类目不存在"),
     REFUND_NOT_EXIST(42,"退款规则不存在"),
     REFUND_OVERTIME(43,"退款超过了限制天数"),
+    REFUND_NO_ERROR(44,"退款规则号不能一致"),
 
 
     WX_MP_ERROR(51,"微信异常"),

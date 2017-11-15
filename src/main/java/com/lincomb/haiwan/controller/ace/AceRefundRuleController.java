@@ -65,9 +65,9 @@ public class AceRefundRuleController {
             }
             BeanUtils.copyProperties(form, refundRule);
             refundRuleService.save(refundRule);
-        } catch (HaiwanException e) {
+        } catch (Exception e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/haiwan/ace/rule/index");
+            map.put("url", "/haiwan/ace/rule/list");
             return new ModelAndView("common/error", map);
         }
         map.put("url", "/haiwan/ace/rule/list");
