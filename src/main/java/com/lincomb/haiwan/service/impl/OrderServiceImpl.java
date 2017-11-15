@@ -67,8 +67,8 @@ public class OrderServiceImpl implements OrderService {
                 log.error("用户不存在！");
                 return new ResultVO<Object>(RespCode.USER_DOES_NOT_EXIST, RespMsg.USER_DOES_NOT_EXIST);
             }
-            Date inDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_TIME_FORMAT_H));
-            Date outDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_TIME_FORMAT_H));
+            Date inDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateIn"), DateUtil.SIMPLE_DATE_FORMAT));
+            Date outDate = DateUtil.setTheLastSecond(DateUtil.stringToUtilDate(map.get("orderDateOut"), DateUtil.SIMPLE_DATE_FORMAT));
             //验证时间
             if (inDate.before(new Date()) || outDate.before(new Date()) || outDate.before(inDate)) {
                 log.error("时间验证未通过！");
