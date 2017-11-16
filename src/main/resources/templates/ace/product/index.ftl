@@ -420,7 +420,7 @@
             showRemove: false,
             language: 'zh',
             allowedFileExtensions: ['jpg', 'png'],
-            minFileCount: 1,
+//            minFileCount: 1,
             maxFileCount: 1,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
