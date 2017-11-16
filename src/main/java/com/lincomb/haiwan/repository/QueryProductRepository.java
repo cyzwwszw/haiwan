@@ -33,5 +33,5 @@ public interface QueryProductRepository<T, ID extends Serializable> {
      * @param productId
      * @return
      */
-    BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId);
+    BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId,String orderId);
 }
