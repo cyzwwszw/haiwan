@@ -193,7 +193,7 @@
 
                                         <div class="widget-body">
                                             <div class="widget-main no-padding">
-                                                <div id="main" style="width: 600px;height:400px; left: 100; top:20;"></div>
+                                                <div id="main" style="width: 80%;height:400px; left: 100px; right: 200px top:20px;"></div>
                                             </div><!-- /widget-main -->
                                         </div><!-- /widget-body -->
                                     </div><!-- /widget-box -->
