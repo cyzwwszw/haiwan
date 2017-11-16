@@ -72,7 +72,8 @@
                             <div class="container-fluid">
                                 <div class="row clearfix">
                                     <div class="col-md-12 column">
-                                        <form id="productForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="/haiwan/ace/product/save">
+                                        <form id="productForm" role="form" class="form-horizontal" method="post"
+                                              enctype="multipart/form-data" action="/haiwan/ace/product/save">
                                             <div class="row clearfix">
                                                 <div class="col-md-12 column">
                                                     <h4 class="page-header">基本信息</h4>
@@ -101,7 +102,7 @@
                                                 <label class="col-sm-2 control-label">描述说明</label>
                                                 <div class="col-sm-10">
                                             <textarea name="productDescription" class="form-control"
-                                          rows="3">${(product.productDescription)!''}</textarea>
+                                                      rows="3">${(product.productDescription)!''}</textarea>
                                                 </div>
                                             </div>
 
@@ -327,20 +328,20 @@
                                                 </div>
                                             </div>
 
-                                            <#--<div class="form-group">-->
-                                                <#--<label class="col-sm-2 control-label"></label>-->
-                                                <#--<div class="col-sm-2">-->
-                                                    <#--<label class="checkbox-inline">-->
-                                                        <#--<input type="checkbox" name="equipment" value="6"-->
-                                                        <#--<#if (product.equipment)??&& product.equipment?contains('6')>-->
-                                                               <#--checked-->
-                                                        <#--</#if>>其他-->
-                                                    <#--</label>-->
-                                                <#--</div>-->
-                                                <#--<div class="col-sm-4">-->
-                                                    <#--<input type="text" name="others" value="${(product.others )!''}">-->
-                                                <#--</div>-->
-                                            <#--</div>-->
+                                        <#--<div class="form-group">-->
+                                        <#--<label class="col-sm-2 control-label"></label>-->
+                                        <#--<div class="col-sm-2">-->
+                                        <#--<label class="checkbox-inline">-->
+                                        <#--<input type="checkbox" name="equipment" value="6"-->
+                                        <#--<#if (product.equipment)??&& product.equipment?contains('6')>-->
+                                        <#--checked-->
+                                        <#--</#if>>其他-->
+                                        <#--</label>-->
+                                        <#--</div>-->
+                                        <#--<div class="col-sm-4">-->
+                                        <#--<input type="text" name="others" value="${(product.others )!''}">-->
+                                        <#--</div>-->
+                                        <#--</div>-->
                                             <div class="row clearfix">
                                                 <div class="col-md-12 column">
                                                     <h4 class="page-header">退票配置</h4>
@@ -368,7 +369,7 @@
                                                 <input hidden type="text" name="productId"
                                                        value="${(product.productId)!''}">
                                                 <div class="col-sm-offset-2 col-sm-1">
-                                                    <button type="submit" class="btn btn-primary">保存 </button>
+                                                    <button type="submit" class="btn btn-primary">保存</button>
                                                 </div>
                                                 <div class="col-sm-1">
                                                     <button type="button" class="btn btn-primary"
@@ -408,7 +409,7 @@
 <script src="/haiwan/static/js/productForm_validate.js"></script>
 <script>
     $(document).ready(function () {
-        var url1 = ""
+        var url1 = "";
         if ($("#productPic").val() !== "") {
             url1 = $("#path").val() + $("#productPic").val();
         }
@@ -416,9 +417,10 @@
         $('#fileUpload').fileinput({
             initialPreview: url1,
             initialPreviewAsData: true,
+            showRemove: false,
             language: 'zh',
             allowedFileExtensions: ['jpg', 'png'],
-            minFileCount:1,
+            minFileCount: 1,
             maxFileSize: 1000,
             textEncoding: 'UTF-8',
             showUpload: false
