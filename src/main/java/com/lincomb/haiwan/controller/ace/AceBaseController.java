@@ -42,9 +42,13 @@ public class AceBaseController {
         List<Order_t> orderList = orderService.findAllFinished();
         map.put("orderCount", orderList.size());
 
-        BigDecimal orderMoney = orderList.stream().map(order -> order.getOrderAmount()).reduce((sum, order)->sum.add(order)).get();
+        if(orderList.size() != 0){
+            BigDecimal orderMoney = orderList.stream().map(order -> order.getOrderAmount()).reduce((sum, order)->sum.add(order)).get();
+            map.put("orderMoney", orderMoney.toString());
+        }else{
+            map.put("orderMoney", 0);
+        }
 
-        map.put("orderMoney", orderMoney.toString());
         return new ModelAndView("ace/common/index", map);
     }
 
