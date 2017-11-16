@@ -102,7 +102,7 @@
                                                 <td class="info col-md-2">票据状态</td>
                                                 <td class="col-md-2">${(order.getOrderStatusEnum().message )!''}</td>
                                                 <td class="info col-md-2">退款金额</td>
-                                                <td class="col-md-2">${(order.orderAmount)!''}</td>
+                                                <td class="col-md-2">${(transaction.refundAmount)!''}</td>
                                             </tr>
                                             <tr>
                                                 <td class="info col-md-2">退票时间</td>
