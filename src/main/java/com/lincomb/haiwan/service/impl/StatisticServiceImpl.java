@@ -26,7 +26,12 @@ public class StatisticServiceImpl implements StatisticService{
     @Override
     public Map<String, Object> analysisOrder() {
         Map<String, Object> resultMap = new HashMap<>();
-        List<Order_t> orderTList = orderRepository.findAll();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, - 10);
+        Date beforeTenDay = c.getTime();
+        List<Order_t> orderTList = orderRepository.findAllByCreateTimeAfterOrderByCreateTime(beforeTenDay);
         SimpleDateFormat yyyymmdd=new SimpleDateFormat("yyyy-MM-dd");
         List<String> result = orderTList.stream().map((one)->(yyyymmdd.format(one.getCreateTime()))).distinct().collect(Collectors.toList());
         String[] legend = {"新订单笔数","已取消笔数","待使用笔数","已完成笔数","已过期笔数","已退款笔数"};

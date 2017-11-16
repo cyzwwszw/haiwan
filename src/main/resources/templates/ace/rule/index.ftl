@@ -4,6 +4,7 @@
 <body>
 <#include "../common/top.ftl">
 <div class="main-container" id="main-container">
+    <script src="/haiwan/static/js/ruleForm_validate.js"></script>
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
