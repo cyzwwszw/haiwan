@@ -47,13 +47,14 @@ public class ClientProductController {
     public ResultVO<Object> findByStartDateAndEndDateAndProductId(
             @RequestParam String orderDateIn,
             @RequestParam String orderDateOut,
-            @RequestParam String productId
+            @RequestParam String productId,
+            @RequestParam(value = "orderId", required = false) String orderId
     ) {
         if (StringUtil.isEmpty(orderDateIn) || StringUtil.isEmpty(orderDateOut) || StringUtil.isEmpty(productId)) {
             return new ResultVO<Object>(RespCode.FAIL, RespMsg.RISK_PARAM_VALID_FAIL);
         }
 
-        ResultVO<Object> resultVO = productService.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId);
+        ResultVO<Object> resultVO = productService.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId, orderId);
         return resultVO;
     }
 
@@ -129,11 +130,12 @@ public class ClientProductController {
 
     /**
      * 查询类型
+     *
      * @param categoryId
      * @return
      */
     @PostMapping("/queryType")
-    public ResultVO<Object> queryType(@RequestParam(value = "categoryId",required = false) String categoryId) {
+    public ResultVO<Object> queryType(@RequestParam(value = "categoryId", required = false) String categoryId) {
 
         ResultVO<Object> result = categoryService.queryType(categoryId);
         return result;

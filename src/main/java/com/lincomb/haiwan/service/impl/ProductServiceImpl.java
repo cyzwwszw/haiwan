@@ -237,10 +237,10 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId) {
+    public ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId, String orderId) {
         Map<String, Object> map = new HashMap<>();
         try {
-            BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId);
+            BigDecimal residualQuantity = queryProductRepository.findByStartDateAndEndDateAndProductId(orderDateIn, orderDateOut, productId, orderId);
             map.put("residualQuantity", residualQuantity);
         } catch (Exception e) {
             log.error("findByStartDateAndEndDateAndProductId() Exception:[" + e.getMessage() + "]", e);

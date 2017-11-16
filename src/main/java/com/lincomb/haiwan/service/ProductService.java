@@ -60,7 +60,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId);
+    ResultVO<Object> findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId,String orderId);
 
     /**
      * 添加/修改产品须知

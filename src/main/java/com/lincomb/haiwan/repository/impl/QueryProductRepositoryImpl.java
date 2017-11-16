@@ -121,7 +121,7 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
     }
 
     @Override
-    public BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId) {
+    public BigDecimal findByStartDateAndEndDateAndProductId(String orderDateIn, String orderDateOut, String productId, String orderId) {
 
         StringBuffer sql = new StringBuffer("SELECT IF(ISNULL(b.r),b.pq,b.r) AS residualQuantity FROM " +
                 "( SELECT p.product_quantity AS pq,p.product_quantity-( " +
@@ -129,8 +129,12 @@ public class QueryProductRepositoryImpl<T, ID extends Serializable> implements Q
                 "      WHERE o.order_status IN (0, 2, 3) " +
                 "      AND o.product_id=p.product_id " +
                 "      AND ((STR_TO_DATE('" + orderDateIn + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out) " +
-                "             OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) " +
-                "      GROUP BY o.product_id " +
+                "             OR (STR_TO_DATE('" + orderDateOut + "', '%Y-%m-%d') BETWEEN o.order_date_in AND o.order_date_out)) ");
+        if (!StringUtil.isEmpty(orderId)) {
+            sql.append(" AND o.order_id <> '" + orderId + "' ");
+        }
+
+        sql.append("      GROUP BY o.product_id " +
                 "      ) as r " +
                 " FROM product p " +
                 " WHERE p.product_status=0 " +
